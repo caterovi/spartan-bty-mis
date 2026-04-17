@@ -1,0 +1,690 @@
+/* ══════════════════════════════════════════════════════════
+   SPARTAN BTY MIS — Global Styles + Responsive Layer
+   Desktop design is untouched. CSS only activates on mobile.
+══════════════════════════════════════════════════════════ */
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f0fa;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #c4607a; border-radius: 10px; }
+
+/* ── Print ───────────────────────────────────────────────── */
+@media print {
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
+  body { background: white !important; }
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area {
+    position: fixed !important;
+    left: 0 !important; top: 0 !important;
+    width: 100% !important;
+    padding: 30px 40px !important;
+    background: white !important;
+  }
+}
+@media screen { .print-only { display: none !important; } }
+
+
+/* ══════════════════════════════════════════════════════════
+   TABLE SCROLL — Core utility
+   Add className="tbl" to any div wrapping a <table>
+══════════════════════════════════════════════════════════ */
+.tbl {
+  width: 100%;
+}
+@media (max-width: 1024px) {
+  .tbl {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+  }
+  .tbl table {
+    min-width: 600px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   STICKY HEADER + SCROLLABLE CONTENT
+   For module pages: Marketing, Sales, Logistics,
+   CRM, Inventory, HR
+   Uses className="mod-wrapper", "mod-header",
+   "mod-scroll", "mod-content"
+══════════════════════════════════════════════════════════ */
+
+/* Desktop: sticky header + scrollable content */
+.mod-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 108px); /* topbar height approx */
+}
+.mod-header {
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: transparent;
+}
+.mod-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.mod-content {
+  min-height: 100%;
+}
+
+/* Mobile: disable sticky scroll, let content flow */
+@media (max-width: 768px) {
+  .mod-wrapper {
+    height: auto !important;
+    display: block !important;
+  }
+  .mod-header {
+    position: static !important;
+  }
+  .mod-scroll {
+    overflow-y: visible !important;
+    flex: none !important;
+    height: auto !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   MODULE TABS — horizontal scroll on mobile
+   Add className="mod-tabs-row" to tab container div
+══════════════════════════════════════════════════════════ */
+.mod-tabs-row {
+  display: flex;
+  gap: 8px;
+}
+@media (max-width: 768px) {
+  .mod-tabs-row {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .mod-tabs-row::-webkit-scrollbar { display: none; }
+  .mod-tabs-row > button {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   FILTER ROW — horizontal scroll on mobile
+   Add className="filter-row" to filter pills container
+══════════════════════════════════════════════════════════ */
+.filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+  .filter-row {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .filter-row::-webkit-scrollbar { display: none; }
+  .filter-row > button {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   TOP ROW — wraps on mobile
+   Add className="top-row" to section header row
+══════════════════════════════════════════════════════════ */
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+@media (max-width: 640px) {
+  .top-row {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  .top-row > div {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex: 1;
+  }
+  .top-row > div > input[type="text"] {
+    flex: 1 !important;
+    min-width: 0 !important;
+    width: auto !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   NOTIFICATION DROPDOWN
+   Add className="notif-dropdown" to the dropdown div
+══════════════════════════════════════════════════════════ */
+.notif-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 360px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  border: 1px solid #eee;
+  z-index: 1000;
+  overflow: hidden;
+}
+@media (max-width: 480px) {
+  .notif-dropdown {
+    width: calc(100vw - 24px) !important;
+    right: -50px !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   TABLET — max-width: 1024px
+══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+
+  /* Sidebar narrower on tablet */
+  div[style*="width: 260px"][style*="position: fixed"][style*="height: 100vh"] {
+    width: 220px !important;
+  }
+
+  /* Main content offset matches sidebar */
+  div[style*="marginLeft: 260px"],
+  div[style*="margin-left: 260px"] {
+    margin-left: 220px !important;
+  }
+
+  /* Stat cards: 2 columns on tablet */
+  div[style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* 3-col grids become 2-col */
+  div[style*="repeat(3, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE — max-width: 768px
+══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── Prevent iOS font zoom ── */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* ── Prevent horizontal overflow ── */
+  body, #root { overflow-x: hidden; }
+
+  /* ── Sidebar: full overlay on mobile ── */
+  div[style*="width: 260px"][style*="position: fixed"][style*="height: 100vh"],
+  div[style*="width: 220px"][style*="position: fixed"][style*="height: 100vh"] {
+    width: 260px !important;
+    z-index: 999 !important;
+    transition: transform 0.3s ease !important;
+  }
+
+  /* ── Main: remove left offset on mobile ── */
+  div[style*="marginLeft: 260px"],
+  div[style*="margin-left: 260px"],
+  div[style*="marginLeft: 220px"],
+  div[style*="margin-left: 220px"] {
+    margin-left: 0 !important;
+  }
+
+  /* ── Top bar: reduce padding ── */
+  div[style*="position: sticky"][style*="zIndex: 50"],
+  div[style*="position: sticky"][style*="z-index: 50"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* ── Page content padding ── */
+  div[style*="padding: 28px"],
+  div[style*="padding: 24px"] {
+    padding: 12px !important;
+  }
+  div[style*="padding: 20px"] {
+    padding: 12px !important;
+  }
+
+  /* ── All grids collapse ── */
+  div[style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  div[style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="repeat(5, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Module header ── */
+  div[style*="borderRadius: 14px"][style*="padding: 20px 24px"] {
+    padding: 14px 14px 0 !important;
+    border-radius: 10px !important;
+  }
+
+  /* ── Module content box ── */
+  div[style*="padding: 24px"][style*="borderRadius"] {
+    padding: 14px !important;
+  }
+
+  /* ── Top row (title + search + button) ── */
+  div[style*="justifyContent: space-between"][style*="alignItems: center"][style*="marginBottom: 16px"] {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+  div[style*="justifyContent: space-between"][style*="alignItems: center"][style*="marginBottom: 16px"] > div {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* ── Search inputs ── */
+  input[placeholder*="Search"],
+  input[placeholder*="search"] {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* ── Tabs horizontal scroll ── */
+  div[style*="display: flex"][style*="gap: 8px"][style*="marginBottom"] {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  div[style*="display: flex"][style*="gap: 8px"][style*="marginBottom"]::-webkit-scrollbar {
+    display: none;
+  }
+  div[style*="display: flex"][style*="gap: 8px"][style*="marginBottom"] button {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  /* ── Dashboard insights: span-2 cards collapse ── */
+  div[style*="gridColumn: 'span 2'"],
+  div[style*='gridColumn: "span 2"'] {
+    grid-column: span 1 !important;
+  }
+
+  /* ── Form grids: single column ── */
+  div[style*="gridTemplateColumns: 'repeat(3, 1fr)'"],
+  div[style*="gridTemplateColumns: 'repeat(4, 1fr)'"],
+  div[style*='gridTemplateColumns: "repeat(3, 1fr)"'],
+  div[style*='gridTemplateColumns: "repeat(4, 1fr)"'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Cards with gridColumn span ── */
+  div[style*="gridColumn: 'span 2'"],
+  div[style*="gridColumn: 'span 3'"] {
+    grid-column: span 1 !important;
+  }
+
+  /* ── Notification dropdown ── */
+  div[style*="width: 360px"][style*="position: absolute"] {
+    width: calc(100vw - 24px) !important;
+    right: -60px !important;
+  }
+
+  /* ── Campaign / promo cards ── */
+  div[style*="repeat(3, 1fr)"][style*="gap: 16px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Kanban board ── */
+  div[style*="repeat(4, 1fr)"][style*="gap: 16px"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Charts: full width ── */
+  div[style*="repeat(2, 1fr)"][style*="gap: 16px"][style*="marginBottom: 28px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Module wrapper height fix ── */
+  div[style*="height: calc(100vh - 130px)"] {
+    height: auto !important;
+  }
+  div[style*="flex: 1"][style*="overflowY: 'auto'"] {
+    overflow-y: visible !important;
+    flex: none !important;
+  }
+
+  /* ── CRM filter grid ── */
+  div[style*="repeat(5, 1fr)"][style*="gap: 16px"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── HR/Reports summary cards ── */
+  div[style*="repeat(5, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Reports filter grid ── */
+  div[style*="display: 'flex'"][style*="alignItems: 'flex-end'"] {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  /* ── Modal boxes ── */
+  div[style*="maxWidth: '700px'"],
+  div[style*="maxWidth: 700px"] {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
+
+  /* ── Analysis charts ── */
+  div[style*="gridTemplateColumns: '1fr 1fr'"],
+  div[style*='gridTemplateColumns: "1fr 1fr"'] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="gridTemplateColumns: 'repeat(4, 1fr)'"],
+  div[style*='gridTemplateColumns: "repeat(4, 1fr)"'] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* ── Profile info grid ── */
+  div[style*="gridTemplateColumns: 'repeat(2, 1fr)'"],
+  div[style*='gridTemplateColumns: "repeat(2, 1fr)"'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Campaign detail header ── */
+  div[style*="justifyContent: 'space-between'"][style*="alignItems: 'flex-start'"][style*="padding: '24px'"] {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  /* ── Equipment grid ── */
+  div[style*="display: 'flex'"][style*="gap: '16px'"] > div[style*="flex: 1"][style*="borderRadius: '10px'"] {
+    flex: none !important;
+    width: 100%;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SMALL MOBILE — max-width: 480px
+══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+  div[style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  div[style*="repeat(4, 1fr)"][style*="gap: 16px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  h1[style*="fontSize: 24px"],
+  h1[style*="fontSize: '24px'"] {
+    font-size: 20px !important;
+  }
+
+  div[style*="padding: 20px"][style*="borderRadius: 12px"],
+  div[style*="padding: 20px"][style*="borderRadius: '12px'"] {
+    padding: 14px !important;
+  }
+
+  div[style*="width: 360px"][style*="position: absolute"] {
+    width: calc(100vw - 16px) !important;
+    right: -70px !important;
+  }
+
+  div[style*="padding: 12px"] {
+    padding: 10px !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   TABLE SCROLLING
+══════════════════════════════════════════════════════════ */
+table { width: 100%; }
+
+@media (max-width: 768px) {
+  div > table {
+    min-width: 580px;
+  }
+  div:has(> table) {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    display: block !important;
+  }
+  div[style*="borderLeft: '4px solid"] {
+    min-width: 0 !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   HAMBURGER BUTTON
+══════════════════════════════════════════════════════════ */
+@media (min-width: 769px) {
+  button[aria-label="Open menu"] { display: none !important; }
+}
+@media (max-width: 768px) {
+  button[aria-label="Open menu"] { display: flex !important; }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   TOUCH TARGETS
+══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  button { min-height: 44px; touch-action: manipulation; min-width: 44px; }
+  select { min-height: 44px; }
+  input, textarea { min-height: 44px; font-size: 16px; }
+  *::-webkit-scrollbar { height: 3px; width: 3px; }
+  
+  /* Enhanced touch feedback */
+  button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* Better spacing for touch */
+  .clickable {
+    padding: 8px;
+    margin: -8px;
+  }
+  
+  /* Prevent zoom on focus */
+  input:focus, select:focus, textarea:focus {
+    font-size: 16px !important;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   MISC
+══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  #root { overflow-x: hidden; }
+}
+img { max-width: 100%; height: auto; }
+
+/* Mobile-first enhancements */
+@media (max-width: 768px) {
+  /* Safe area insets for notched devices */
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* Better visual hierarchy on mobile */
+  h1 { font-size: 24px !important; line-height: 1.2; }
+  h2 { font-size: 20px !important; line-height: 1.3; }
+  h3 { font-size: 18px !important; line-height: 1.4; }
+  
+  /* Card optimizations */
+  div[style*="borderRadius"] {
+    border-radius: 12px !important;
+  }
+  
+  /* Status bar awareness */
+  .mobile-header {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  /* Bottom navigation safe area */
+  .mobile-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Dark mode support for mobile */
+@media (prefers-color-scheme: dark) and (max-width: 768px) {
+  body { background-color: #1a1a1a; }
+  .card { background-color: #2d2d2d; }
+}
+
+/* Universal Mobile Layout Fixes */
+@media (max-width: 768px) {
+  /* Action buttons - ensure visibility and proper sizing */
+  .mobile-action-btn {
+    min-width: auto !important;
+    width: 100% !important;
+    margin: 8px 0 !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    min-height: 44px !important;
+  }
+  
+  /* Search bars - make fully visible */
+  .mobile-search {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 8px 0 !important;
+    font-size: 16px !important;
+    min-height: 44px !important;
+  }
+  
+  /* Table containers - ensure horizontal scrolling */
+  .mobile-table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 8px 0 !important;
+  }
+  
+  .mobile-table-container table {
+    min-width: 600px !important;
+    width: 100% !important;
+  }
+  
+  /* Form grids - single column on mobile */
+  .mobile-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  
+  /* Filter rows - horizontal scroll */
+  .mobile-filter-row {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 8px !important;
+    padding-bottom: 4px !important;
+  }
+  
+  .mobile-filter-row::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  .mobile-filter-row > * {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+  
+  /* Top rows with buttons and search */
+  .mobile-top-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: stretch !important;
+  }
+  
+  .mobile-top-row > div {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  
+  /* Summary cards - better layout */
+  .mobile-summary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  
+  /* Button groups - stack vertically */
+  .mobile-button-group {
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  
+  .mobile-button-group button {
+    width: 100% !important;
+    min-height: 44px !important;
+  }
+}
+
+/* Small mobile specific fixes */
+@media (max-width: 480px) {
+  .mobile-action-btn {
+    font-size: 13px !important;
+    padding: 10px 12px !important;
+  }
+  
+  .mobile-search {
+    font-size: 16px !important; /* Prevent zoom */
+    padding: 10px 12px !important;
+  }
+}
+
+
+
