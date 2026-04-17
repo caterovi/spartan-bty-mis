@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import HR from './pages/HR/HR';
@@ -16,7 +17,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/dashboard"  element={<ProtectedRoute page="dashboard"><Dashboard /></ProtectedRoute>} />
         <Route path="/hr"         element={<ProtectedRoute page="hr"><HR /></ProtectedRoute>} />
         <Route path="/marketing"  element={<ProtectedRoute page="marketing"><Marketing /></ProtectedRoute>} />

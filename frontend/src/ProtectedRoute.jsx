@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
 
 const roleAccess = {
   admin:     ['dashboard','marketing','sales','logistics','crm','inventory','hr','users','reports','profile'],
@@ -11,10 +12,18 @@ const roleAccess = {
 };
 
 function ProtectedRoute({ children, page }) {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  if (!user || !user.role) return <Navigate to="/" />;
-  const allowed = roleAccess[user.role] || [];
-  if (!allowed.includes(page)) return <Navigate to="/dashboard" />;
+  const { isAuthenticated, user, hasPermission } = useAuth();
+  
+  // Check if user is authenticated
+  if (!isAuthenticated()) {
+    return <Navigate to="/" replace />;
+  }
+  
+  // Check if user has permission for this specific page
+  if (!hasPermission(page)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
   return children;
 }
 

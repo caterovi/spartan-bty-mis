@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../api/axiosConfig';
 import logo from '../assets/spartanbtylogo.webp';
 import NotificationBell from '../components/NotificationBell';
@@ -15,7 +16,7 @@ import { FaBullhorn, FaShoppingCart, FaTruck, FaComment, FaBoxes, FaUsers, FaFil
 function Dashboard() {
   const navigate  = useNavigate();
   const location  = useLocation();
-  const [user, setUser]       = useState(null);
+  const { user, logout, getAccessibleModules } = useAuth();
   const [stats, setStats]     = useState(null);
   const [hovered, setHovered] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,11 +24,9 @@ function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('user');
-    if (!stored) { navigate('/'); return; }
-    setUser(JSON.parse(stored));
+    if (!user) { navigate('/'); return; }
     fetchStats();
-  }, []);
+  }, [user, navigate]);
 
   useEffect(() => {
   const handleResize = () => {
@@ -47,12 +46,8 @@ function Dashboard() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/');
+    logout();
   };
-
-  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
   const allNavItems = [
   { key: 'dashboard',  icon: <MdDashboard />,    label: 'Dashboard',        path: '/dashboard' },
@@ -66,18 +61,10 @@ function Dashboard() {
   { key: 'users',      icon: <FaUserCog/>,       label: 'User Management',  path: '/users' },
 ];
 
-const roleAccess = {
-  admin:     ['dashboard','marketing','sales','logistics','crm','inventory','hr','users','reports'],
-  hr:        ['dashboard','hr','users','reports'],
-  marketing: ['dashboard','marketing','reports'],
-  sales:     ['dashboard','sales','reports'],
-  logistics: ['dashboard','logistics','inventory','reports'],
-  crm:       ['dashboard','crm','reports'],
-  inventory: ['dashboard','inventory','logistics','reports'],
-};
+const accessibleModules = getAccessibleModules();
 
 const navItems = allNavItems.filter(item =>
-  (roleAccess[currentUser.role] || []).includes(item.key)
+  accessibleModules.includes(item.key)
 );
 const handleNav = (path) => {
   if (location.pathname !== path) navigate(path);

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../api/axiosConfig';
 import logo from '../assets/spartanbtylogo.webp';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -9,6 +11,8 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,10 +20,12 @@ function Login() {
     setError('');
 
     try {
-      const res = await api.post('/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      window.location.href = '/dashboard';
+      const result = await login({ email, password });
+      if (result.success) {
+        navigate('/'); // Redirect to landing page after successful login
+      } else {
+        setError(result.error || 'Login failed. Try again.');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Try again.');
     } finally {
