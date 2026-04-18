@@ -7,9 +7,17 @@ require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
 
-// Temporary CORS configuration - will be replaced with security middleware after installing dependencies
+// CORS configuration
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174'],
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
+    'https://spartan-bty-mis.vercel.app',
+    // Add your Vercel domain here if different
+  ],
   credentials: true
 }));
 app.use(express.json());
