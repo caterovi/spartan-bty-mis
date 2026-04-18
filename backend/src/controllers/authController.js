@@ -5,28 +5,34 @@ const jwt = require('jsonwebtoken');
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
+    console.log('Login attempt for:', email);
     const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    console.log('User query completed, found:', rows.length);
     if (rows.length === 0) return res.status(401).json({ message: 'Invalid email or password' });
     const user = rows[0];
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log('Password comparison completed, match:', isMatch);
     if (!isMatch) return res.status(401).json({ message: 'Invalid email or password' });
-    
+
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '3d' });
-    
-    res.json({ 
-      token, 
+
+    console.log('Login successful for:', email);
+    res.json({
+      token,
       refreshToken,
-      user: { id: user.id, full_name: user.full_name, email: user.email, role: user.role } 
+      user: { id: user.id, full_name: user.full_name, email: user.email, role: user.role }
     });
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Login error:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
 
 exports.refreshToken = async (req, res) => {
   const { refreshToken } = req.body;
   try {
+    console.log('Refresh token attempt for:', refreshToken);
     if (!refreshToken) {
       return res.status(401).json({ message: 'Refresh token required' });
     }
