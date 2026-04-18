@@ -5,7 +5,7 @@ const getBaseURL = () => {
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     return 'http://localhost:5000/api';
   }
-  return '/api';
+  return 'https://spartan-bty-mis.onrender.com/api';
 };
 
 const api = axios.create({
