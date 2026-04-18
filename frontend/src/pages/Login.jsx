@@ -86,6 +86,23 @@ function Login() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+
+        {/* Back to Website Link */}
+        <div style={styles.backLink}>
+          <span 
+            onClick={() => navigate('/')}
+            style={styles.backLinkText}
+          >
+             Back to Website
+          </span>
+        </div>
+
+        {/* Account Request Note */}
+        <div style={styles.accountNote}>
+          <p style={styles.noteText}>
+            Don't have an account? Contact your HR department to request access.
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -203,6 +220,34 @@ const styles = {
     borderRadius: '8px',
     fontSize: '14px',
     textAlign: 'center',
+  },
+
+  backLink: {
+    textAlign: 'center',
+    marginBottom: '20px',
+  },
+
+  backLinkText: {
+    color: '#c4607a',
+    fontSize: '14px',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    fontWeight: '500',
+    transition: 'color 0.2s ease',
+  },
+
+  accountNote: {
+    marginTop: '24px',
+    textAlign: 'center',
+    borderTop: '1px solid #eee',
+    paddingTop: '20px',
+  },
+
+  noteText: {
+    color: '#666',
+    fontSize: '13px',
+    margin: 0,
+    lineHeight: '1.4',
   },
 };
 

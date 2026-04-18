@@ -19,12 +19,12 @@ export const AuthProvider = ({ children }) => {
   // Role-based access configuration
   const rolePermissions = {
     admin: ['dashboard', 'hr', 'marketing', 'crm', 'inventory', 'sales', 'logistics', 'users', 'reports', 'profile'],
-    marketing: ['dashboard', 'marketing', 'profile'],
-    sales: ['dashboard', 'sales', 'profile'],
-    logistics: ['dashboard', 'logistics', 'profile'],
-    crm: ['dashboard', 'crm', 'profile'],
-    inventory: ['dashboard', 'inventory', 'profile'],
-    hr: ['dashboard', 'hr', 'users', 'profile']
+    marketing: ['dashboard', 'marketing', 'reports', 'profile'],
+    sales: ['dashboard', 'sales', 'reports', 'profile'],
+    logistics: ['dashboard', 'logistics', 'reports', 'profile'],
+    crm: ['dashboard', 'crm', 'reports', 'profile'],
+    inventory: ['dashboard', 'inventory', 'reports', 'profile'],
+    hr: ['dashboard', 'hr', 'users', 'reports', 'profile']
   };
 
   useEffect(() => {

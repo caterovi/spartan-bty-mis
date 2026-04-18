@@ -125,7 +125,99 @@ function Feedback() {
   const msgText   = message.replace(/^(success:|error:)/, '');
 
   return (
-    <div>
+    <div style={{ maxWidth: '100%', overflowX: 'hidden' }}>
+      <style>{`
+        .feedback-card-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 16px;
+        }
+
+        .feedback-card {
+          min-width: 0;
+        }
+
+        .feedback-form-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 16px;
+        }
+
+        .feedback-filter-grid {
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 16px;
+        }
+
+        @media (max-width: 1024px) {
+          .feedback-card-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .feedback-form-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .feedback-filter-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 768px) {
+          .feedback-card-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .feedback-form-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .feedback-filter-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .feedback-card-actions {
+            flex-direction: column;
+          }
+
+          .feedback-status-select,
+          .feedback-delete-btn {
+            width: 100%;
+          }
+
+          .feedback-subject-span-2,
+          .feedback-message-span-3 {
+            grid-column: span 1 !important;
+          }
+
+          .filterPanel {
+            padding: 12px !important;
+          }
+
+          /* Ensure filter inputs don't overflow on mobile */
+          .feedback-filter-grid select,
+          .feedback-filter-grid input {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+          }
+        }
+
+        /* Ensure filter panel doesn't cause overflow */
+        .filterPanel {
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: hidden !important;
+          box-sizing: border-box !important;
+          background-color: #fff;
+          border: 1px solid #eee;
+          border-radius: 12px;
+          padding: 20px;
+          margin-bottom: 16px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+      `}</style>
+
       {/* Top Row */}
       <div style={styles.topRow} className="mobile-top-row">
         <h3 style={styles.sectionTitle}>Customer Feedback</h3>
@@ -166,7 +258,7 @@ function Feedback() {
 
       {/* Expanded Filter Panel */}
       {showFilters && (
-        <div style={styles.filterPanel}>
+        <div className="filterPanel">
           <div style={styles.filterPanelHeader}>
             <h4 style={styles.filterPanelTitle}> Filter Options</h4>
             {hasActiveFilters && (
@@ -176,7 +268,7 @@ function Feedback() {
             )}
           </div>
 
-          <div style={styles.filterGrid} className="mobile-form-grid">
+          <div className="feedback-filter-grid">
             {/* Filter by Type */}
             <div style={styles.filterGroup}>
               <label style={styles.filterLabel}>Feedback Type</label>
@@ -271,7 +363,7 @@ function Feedback() {
       {showForm && (
         <div style={styles.form}>
           <h4 style={styles.formTitle}>Add Feedback</h4>
-          <div style={styles.grid} className="mobile-form-grid">
+          <div className="feedback-form-grid">
             <div style={styles.inputGroup}>
               <label style={styles.label}>Customer Name</label>
               <input type="text" placeholder="Customer name" value={form.customer_name} onChange={e => setForm({ ...form, customer_name: e.target.value })} style={styles.input} />
@@ -294,7 +386,7 @@ function Feedback() {
                 ))}
               </select>
             </div>
-            <div style={{ ...styles.inputGroup, gridColumn: 'span 2' }}>
+            <div style={{ ...styles.inputGroup, gridColumn: 'span 2' }} className="feedback-subject-span-2">
               <label style={styles.label}>Subject</label>
               <input type="text" placeholder="Brief subject" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} style={styles.input} />
             </div>
@@ -306,7 +398,7 @@ function Feedback() {
                 ))}
               </select>
             </div>
-            <div style={{ ...styles.inputGroup, gridColumn: 'span 3' }}>
+            <div style={{ ...styles.inputGroup, gridColumn: 'span 3' }} className="feedback-message-span-3">
               <label style={styles.label}>Message</label>
               <textarea
                 placeholder="Detailed feedback message..."
@@ -337,9 +429,9 @@ function Feedback() {
           </p>
         </div>
       ) : (
-        <div style={styles.cardList}>
+        <div className="feedback-card-grid">
           {filtered.map(f => (
-            <div key={f.id} style={styles.card}>
+            <div key={f.id} style={styles.card} className="feedback-card">
               {/* Card Header */}
               <div style={styles.cardHeader}>
                 <div style={styles.cardHeaderLeft}>
@@ -405,17 +497,18 @@ function Feedback() {
                 </div>
 
                 {/* Actions */}
-                <div style={styles.cardActions}>
+                <div style={styles.cardActions} className="feedback-card-actions">
                   <select
                     value={f.status}
                     onChange={e => handleStatusChange(f.id, e.target.value)}
                     style={{ ...styles.statusSelect, ...statusColors[f.status] }}
+                    className="feedback-status-select"
                   >
                     <option value="new">New</option>
                     <option value="in-review">In Review</option>
                     <option value="resolved">Resolved</option>
                   </select>
-                  <button onClick={() => handleDelete(f.id)} style={styles.deleteBtn}>
+                  <button onClick={() => handleDelete(f.id)} style={styles.deleteBtn} className="feedback-delete-btn">
                     Delete
                   </button>
                 </div>

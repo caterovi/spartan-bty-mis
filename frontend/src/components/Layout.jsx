@@ -11,9 +11,9 @@ const roleAccess = {
   hr:        ['dashboard','hr','users','reports','profile'],
   marketing: ['dashboard','marketing','reports','profile'],
   sales:     ['dashboard','sales','reports','profile'],
-  logistics: ['dashboard','logistics','inventory','reports','profile'],
+  logistics: ['dashboard','logistics','reports','profile'],
   crm:       ['dashboard','crm','reports','profile'],
-  inventory: ['dashboard','inventory','logistics','reports','profile'],
+  inventory: ['dashboard','inventory','reports','profile'],
 };
 
 const allNavItems = [

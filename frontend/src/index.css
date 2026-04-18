@@ -603,7 +603,10 @@ img { max-width: 100%; height: auto; }
   }
   
   /* Table containers - ensure horizontal scrolling */
-  .mobile-table-container {
+  .mobile-table-container,
+  .tbl,
+  .resp-table-wrap,
+  .perf-table-wrap {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
     display: block !important;
@@ -611,9 +614,59 @@ img { max-width: 100%; height: auto; }
     margin: 8px 0 !important;
   }
   
-  .mobile-table-container table {
-    min-width: 600px !important;
+  .mobile-table-container table,
+  .tbl table,
+  .resp-table-wrap table,
+  .perf-table-wrap table,
+  table {
+    min-width: 800px !important;
     width: 100% !important;
+    display: table !important;
+  }
+  
+  /* Force all divs containing tables to allow horizontal scroll */
+  div table {
+    min-width: 800px !important;
+    width: 100% !important;
+  }
+  
+  div > table {
+    display: table !important;
+  }
+  
+  /* Force parent divs to allow overflow */
+  .mobile-table-container,
+  .tbl,
+  .resp-table-wrap,
+  .perf-table-wrap,
+  div:has(table) {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Scrollbar styling */
+  .mobile-table-container::-webkit-scrollbar,
+  .tbl::-webkit-scrollbar,
+  .resp-table-wrap::-webkit-scrollbar,
+  .perf-table-wrap::-webkit-scrollbar {
+    height: 8px !important;
+  }
+  
+  .mobile-table-container::-webkit-scrollbar-thumb,
+  .tbl::-webkit-scrollbar-thumb,
+  .resp-table-wrap::-webkit-scrollbar-thumb,
+  .perf-table-wrap::-webkit-scrollbar-thumb {
+    background: #c4607a !important;
+    border-radius: 4px !important;
+  }
+  
+  .mobile-table-container::-webkit-scrollbar-track,
+  .tbl::-webkit-scrollbar-track,
+  .resp-table-wrap::-webkit-scrollbar-track,
+  .perf-table-wrap::-webkit-scrollbar-track {
+    background: #f0f0f0 !important;
   }
   
   /* Form grids - single column on mobile */
@@ -665,6 +718,23 @@ img { max-width: 100%; height: auto; }
     flex-direction: column !important;
     gap: 8px !important;
     width: 100% !important;
+    position: static !important;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
+  }
+
+  /* Ensure filter panels don't cause horizontal overflow */
+  .filterPanel {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent body horizontal overflow */
+  body, html {
+    overflow-x: hidden !important;
   }
   
   .mobile-button-group button {

@@ -252,7 +252,7 @@ function Reports() {
           )}
           {(dateFrom || dateTo) && (
             <div style={styles.activeFilter}>
-               {dateFrom || 'mdash;'} to {dateTo || 'mdash;'}
+               {dateFrom || ''} to {dateTo || ''}
               <span style={styles.recordBadge}>{rows.length} record{rows.length !== 1 ? 's' : ''}</span>
             </div>
           )}
@@ -299,17 +299,17 @@ function Reports() {
                       <tr key={o.id} style={styles.tr}>
                         <td style={styles.td}>{o.order_code}</td>
                         <td style={styles.td}>{o.customer_name}</td>
-                        <td style={styles.td}>{o.salesperson || 'mdash;'}</td>
-                        <td style={styles.td}>{o.customer_phone || 'mdash;'}</td>
+                        <td style={styles.td}>{o.salesperson || ''}</td>
+                        <td style={styles.td}>{o.customer_phone || ''}</td>
                         <td style={styles.td}>{new Date(o.order_date).toLocaleDateString()}</td>
-                        <td style={styles.td}>mbox;{Number(o.total_amount).toLocaleString()}</td>
+                        <td style={styles.td}>{Number(o.total_amount).toLocaleString()}</td>
                         <td style={styles.td}>{o.status}</td>
                       </tr>
                     ))}
                     {rows.length > 0 && (
                       <tr style={styles.totalRow}>
                         <td colSpan="5" style={{ ...styles.td, textAlign: 'right', fontWeight: '700' }}>Total Revenue:</td>
-                        <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>mbox;{rows.reduce((s, o) => s + Number(o.total_amount), 0).toLocaleString()}</td>
+                        <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>{rows.reduce((s, o) => s + Number(o.total_amount), 0).toLocaleString()}</td>
                         <td></td>
                       </tr>
                     )}
@@ -335,17 +335,17 @@ function Reports() {
                       <tr key={i.id} style={styles.tr}>
                         <td style={styles.td}>{i.item_code}</td>
                         <td style={styles.td}>{i.name}</td>
-                        <td style={styles.td}>{i.category || 'mdash;'}</td>
+                        <td style={styles.td}>{i.category || ''}</td>
                         <td style={styles.td}>{i.quantity} {i.unit}</td>
-                        <td style={styles.td}>mbox;{Number(i.unit_price).toLocaleString()}</td>
-                        <td style={styles.td}>mbox;{(i.quantity * Number(i.unit_price)).toLocaleString()}</td>
+                        <td style={styles.td}>{Number(i.unit_price).toLocaleString()}</td>
+                        <td style={styles.td}>{(i.quantity * Number(i.unit_price)).toLocaleString()}</td>
                         <td style={styles.td}>{i.status}</td>
                       </tr>
                     ))}
                     {rows.length > 0 && (
                       <tr style={styles.totalRow}>
                         <td colSpan="5" style={{ ...styles.td, textAlign: 'right', fontWeight: '700' }}>Total Value:</td>
-                        <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>mbox;{rows.reduce((s, i) => s + (i.quantity * Number(i.unit_price)), 0).toLocaleString()}</td>
+                        <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>{rows.reduce((s, i) => s + (i.quantity * Number(i.unit_price)), 0).toLocaleString()}</td>
                         <td></td>
                       </tr>
                     )}
@@ -374,14 +374,14 @@ function Reports() {
                         <td style={styles.td}>{e.department}</td>
                         <td style={styles.td}>{e.position}</td>
                         <td style={styles.td}>{e.employment_type}</td>
-                        <td style={styles.td}>mbox;{Number(e.salary).toLocaleString()}</td>
+                        <td style={styles.td}>{Number(e.salary).toLocaleString()}</td>
                         <td style={styles.td}>{e.status}</td>
                       </tr>
                     ))}
                     {rows.length > 0 && (
                       <tr style={styles.totalRow}>
                         <td colSpan="5" style={{ ...styles.td, textAlign: 'right', fontWeight: '700' }}>Total Payroll:</td>
-                        <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>mbox;{rows.reduce((s, e) => s + Number(e.salary), 0).toLocaleString()}</td>
+                        <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>{rows.reduce((s, e) => s + Number(e.salary), 0).toLocaleString()}</td>
                         <td></td>
                       </tr>
                     )}
@@ -406,12 +406,12 @@ function Reports() {
                     : rows.map(s => (
                       <tr key={s.id} style={styles.tr}>
                         <td style={styles.td}>{s.shipment_code}</td>
-                        <td style={styles.td}>{s.order_code || 'mdash;'}</td>
+                        <td style={styles.td}>{s.order_code || ''}</td>
                         <td style={styles.td}>{s.customer_name}</td>
-                        <td style={styles.td}>{s.courier || 'mdash;'}</td>
+                        <td style={styles.td}>{s.courier || ''}</td>
                         <td style={styles.td}>{s.packing_status}</td>
                         <td style={styles.td}>{s.shipping_status}</td>
-                        <td style={styles.td}>{s.estimated_delivery ? new Date(s.estimated_delivery).toLocaleDateString() : 'mdash;'}</td>
+                        <td style={styles.td}>{s.estimated_delivery ? new Date(s.estimated_delivery).toLocaleDateString() : ''}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -436,7 +436,7 @@ function Reports() {
                         <td style={styles.td}>{f.customer_name}</td>
                         <td style={styles.td}>{f.type}</td>
                         <td style={styles.td}>{f.subject}</td>
-                        <td style={styles.td}>{'mbox;'.repeat(f.rating)}</td>
+                        <td style={styles.td}>{f.rating}</td>
                         <td style={styles.td}>{f.status}</td>
                         <td style={styles.td}>{new Date(f.created_at).toLocaleDateString()}</td>
                       </tr>
@@ -488,10 +488,10 @@ function Reports() {
                     : rows.map(p => (
                       <tr key={p.id} style={styles.tr}>
                         <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>{p.promo_code}</td>
-                        <td style={styles.td}>{p.description || 'mdash;'}</td>
+                        <td style={styles.td}>{p.description || ''}</td>
                         <td style={styles.td}>{p.discount_type}</td>
-                        <td style={styles.td}>{p.discount_type === 'percentage' ? `${p.discount_value}%` : `mbox;${Number(p.discount_value).toLocaleString()}`}</td>
-                        <td style={styles.td}>mbox;{Number(p.min_order).toLocaleString()}</td>
+                        <td style={styles.td}>{p.discount_type === 'percentage' ? `${p.discount_value}%` : `${Number(p.discount_value).toLocaleString()}`}</td>
+                        <td style={styles.td}>{Number(p.min_order).toLocaleString()}</td>
                         <td style={styles.td}>{new Date(p.start_date).toLocaleDateString()}</td>
                         <td style={styles.td}>{new Date(p.end_date).toLocaleDateString()}</td>
                         <td style={styles.td}>{p.status}</td>
@@ -521,9 +521,9 @@ function Reports() {
                         <td style={styles.td}>{l.title}</td>
                         <td style={styles.td}>{l.platform}</td>
                         <td style={styles.td}>{new Date(l.scheduled_date).toLocaleString()}</td>
-                        <td style={styles.td}>{l.host || 'mdash;'}</td>
-                        <td style={styles.td}>mbox;{Number(l.target_sales).toLocaleString()}</td>
-                        <td style={styles.td}>mbox;{Number(l.actual_sales).toLocaleString()}</td>
+                        <td style={styles.td}>{l.host || ''}</td>
+                        <td style={styles.td}>{Number(l.target_sales).toLocaleString()}</td>
+                        <td style={styles.td}>{Number(l.actual_sales).toLocaleString()}</td>
                         <td style={styles.td}>{Number(l.viewers).toLocaleString()}</td>
                         <td style={styles.td}>{l.status}</td>
                       </tr>
@@ -531,7 +531,7 @@ function Reports() {
                     {rows.length > 0 && (
                       <tr style={styles.totalRow}>
                         <td colSpan="4" style={{ ...styles.td, textAlign: 'right', fontWeight: '700' }}>Total Actual Sales:</td>
-                        <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>mbox;{rows.reduce((s, l) => s + Number(l.actual_sales), 0).toLocaleString()}</td>
+                        <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>{rows.reduce((s, l) => s + Number(l.actual_sales), 0).toLocaleString()}</td>
                         <td colSpan="3"></td>
                       </tr>
                     )}
@@ -559,8 +559,8 @@ function Reports() {
                         <td style={styles.td}>{c.title}</td>
                         <td style={styles.td}>{c.platform}</td>
                         <td style={styles.td}>{c.content_type}</td>
-                        <td style={styles.td}>{c.assigned_to || 'mdash;'}</td>
-                        <td style={styles.td}>{c.due_date ? new Date(c.due_date).toLocaleDateString() : 'mdash;'}</td>
+                        <td style={styles.td}>{c.assigned_to || ''}</td>
+                        <td style={styles.td}>{c.due_date ? new Date(c.due_date).toLocaleDateString() : ''}</td>
                         <td style={styles.td}>{Number(c.views).toLocaleString()}</td>
                         <td style={styles.td}>{Number(c.likes).toLocaleString()}</td>
                         <td style={styles.td}>{c.status}</td>
@@ -584,7 +584,7 @@ function Reports() {
           <div className="print-only" style={{ marginTop: '24px' }}>
             <hr />
             <p style={{ fontSize: '12px', color: '#888', textAlign: 'center', marginTop: '8px' }}>
-              Spartan BTY Inc. mdash; Management Information System mdash; Confidential
+              Spartan BTY Inc. | Management Information System | Confidential
             </p>
           </div>
         </div>
@@ -622,8 +622,8 @@ const styles = {
   pageTitle: { fontSize: '24px', fontWeight: '700', color: '#302e2e', margin: '0 0 4px' },
   pageSubtitle: { fontSize: '14px', color: '#888', margin: 0 },
   btnGroup: { display: 'flex', gap: '10px', alignItems: 'center', position: 'absolute', right: '24px', top: '50%', transform: 'translateY(-50%)' },
-  printBtn: { padding: '10px 20px', backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
-  pdfBtn: { padding: '10px 20px', backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
+  printBtn: { backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
+  pdfBtn: { backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
   groupLabel: { fontSize: '11px', fontWeight: '700', color: '#888', letterSpacing: '1px', marginBottom: '8px', marginTop: '4px' },
   reportTabs: { display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' },
   tab: { padding: '9px 14px', borderRadius: '8px', border: '1px solid #ddd', backgroundColor: '#fff', cursor: 'pointer', fontSize: '13px', color: '#555' },
