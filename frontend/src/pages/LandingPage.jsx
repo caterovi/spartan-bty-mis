@@ -506,35 +506,15 @@ export default function LandingPage() {
               <strong>We put the CARE in skincare.</strong>
             </p>
             <div className="lp-hero-btns">
-              <button 
-                className="lp-btn-primary" 
-                onClick={handleAccessSystem}
-                disabled={!isAuthenticated()}
-                style={{
-                  opacity: isAuthenticated() ? 1 : 0.6,
-                  cursor: isAuthenticated() ? 'pointer' : 'not-allowed'
-                }}
-              >
-                {isAuthenticated() ? 'Enter Dashboard' : 'Access the System'}
+              <button className="lp-btn-primary" onClick={handleAccessSystem}>
+                Access System
               </button>
-              {/* "Our Story" - scrolls down to the story section. More purposeful than "Learn More" */}
               <button className="lp-btn-outline" onClick={() => scrollTo("story")}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 5v14M5 12l7 7 7-7"/>
                 </svg>
                 Our Story
               </button>
-              {!isAuthenticated() && (
-                <div style={{ 
-                  fontSize: '11px', 
-                  color: 'var(--ink-soft)', 
-                  marginTop: '0.5rem',
-                  textAlign: 'center',
-                  fontStyle: 'italic'
-                }}>
-                  Please sign in first to access the system!
-                </div>
-              )}
             </div>
           </div>
 

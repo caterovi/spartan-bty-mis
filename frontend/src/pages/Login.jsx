@@ -22,7 +22,7 @@ function Login() {
     try {
       const result = await login({ email, password });
       if (result.success) {
-        navigate('/'); // Redirect to landing page after successful login
+        navigate('/dashboard'); // Redirect to dashboard after successful login
       } else {
         setError(result.error || 'Login failed. Try again.');
       }
