@@ -38,46 +38,49 @@ const schemas = {
 
   // Employee schemas
   employee: Joi.object({
+    employee_id: Joi.string().optional(),
     full_name: Joi.string().min(2).max(100).required(),
     email: Joi.string().email().required(),
-    position: Joi.string().min(2).max(100).required(),
+    phone: Joi.string().optional(),
     department: Joi.string().min(2).max(100).required(),
-    salary: Joi.number().min(15000).max(500000).required().messages({
-      'number.min': 'Salary must be at least ₱15,000',
-      'number.max': 'Salary cannot exceed ₱500,000'
-    }),
-    hire_date: Joi.date().required(),
-    role: Joi.string().valid('admin', 'hr', 'marketing', 'sales', 'crm', 'inventory', 'logistics').required()
+    position: Joi.string().min(2).max(100).required(),
+    employment_type: Joi.string().valid('full-time', 'part-time', 'contractual').required(),
+    date_hired: Joi.date().required(),
+    salary: Joi.number().min(0).max(500000).optional()
+  }),
+
+  // Employee params schema
+  params_employee: Joi.object({
+    id: Joi.number().integer().positive().required()
   }),
 
   // Order schemas
   order: Joi.object({
+    order_code: Joi.string().optional(),
     customer_name: Joi.string().min(2).max(100).required(),
-    customer_email: Joi.string().email().required(),
-    customer_phone: Joi.string().pattern(new RegExp('^[0-9]{11}$')).required().messages({
-      'string.pattern.base': 'Phone number must be 11 digits'
+    customer_phone: Joi.string().pattern(/^\+63\d{10}$/).required().messages({
+      'string.pattern.base': 'Phone number must start with +63 followed by 10 digits'
     }),
-    shipping_address: Joi.string().min(10).max(500).required(),
+    customer_address: Joi.string().min(5).max(500).required(),
+    order_date: Joi.date().required(),
+    notes: Joi.string().max(500).optional(),
+    salesperson: Joi.string().max(100).optional(),
     items: Joi.array().items(Joi.object({
+      item_id: Joi.number().optional(),
       item_name: Joi.string().required(),
       quantity: Joi.number().min(1).max(1000).required(),
       unit_price: Joi.number().min(0).required()
-    })).min(1).required(),
-    payment_method: Joi.string().valid('cash', 'card', 'bank_transfer', 'gcash', 'maya').required(),
-    down_payment: Joi.number().min(0).required()
+    })).min(1).required()
   }),
 
   // Inventory schemas
   inventoryItem: Joi.object({
     name: Joi.string().min(2).max(200).required(),
-    item_code: Joi.string().min(3).max(50).required(),
-    category: Joi.string().min(2).max(100).required(),
-    description: Joi.string().max(1000).optional(),
-    unit_price: Joi.number().min(0).required(),
+    item_code: Joi.string().min(3).max(50).optional().allow(''),
+    category: Joi.string().min(2).max(100).optional().allow(''),
     quantity: Joi.number().min(0).required(),
     reorder_level: Joi.number().min(1).required(),
-    supplier: Joi.string().min(2).max(200).required(),
-    status: Joi.string().valid('in-stock', 'low-stock', 'out-of-stock').required()
+    supplier: Joi.string().min(2).max(200).optional().allow('')
   }),
 
   // Customer schemas

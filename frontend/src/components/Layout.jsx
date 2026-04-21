@@ -44,8 +44,8 @@ function Layout({ children }) {
   const isMobile  = useIsMobile();
   const [hovered, setHovered] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const profileRef = useRef(null);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const userDropdownRef = useRef(null);
 
   const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
   const userRole    = currentUser.role || '';
@@ -63,11 +63,11 @@ function Layout({ children }) {
     if (!isMobile) setSidebarOpen(false);
   }, [isMobile]);
 
-  // Close profile dropdown on outside click
+  // Close user dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
-      if (profileRef.current && !profileRef.current.contains(e.target)) {
-        setProfileOpen(false);
+      if (userDropdownRef.current && !userDropdownRef.current.contains(e.target)) {
+        setUserDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -149,66 +149,6 @@ function Layout({ children }) {
             );
           })}
           </nav>
-
-        {/* Profile */}
-        <div style={s.profileWrap} ref={profileRef}>
-          <div style={s.profileRow} onClick={() => setProfileOpen(!profileOpen)}>
-            <div style={s.profileAvatar}>
-              {currentUser.full_name?.charAt(0).toUpperCase() || 'U'}
-            </div>
-            <div style={s.profileText}>
-              <p style={s.profileName}>{currentUser.full_name || 'User'}</p>
-              <p style={s.profileRole}>{userRole.toUpperCase()}</p>
-            </div>
-            <span style={{
-              fontSize: '10px',
-              color: 'rgba(48,46,46,0.6)',
-              flexShrink: 0,
-              transform: profileOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 0.2s',
-            }}>▲</span>
-          </div>
-
-          {profileOpen && (
-            <div style={s.dropdown}>
-              <div style={s.dropHead}>
-                <div style={s.dropAvatar}>
-                  {currentUser.full_name?.charAt(0).toUpperCase() || 'U'}
-                </div>
-                <div>
-                  <p style={s.dropName}>{currentUser.full_name}</p>
-                  <p style={s.dropEmail}>{currentUser.email}</p>
-                </div>
-              </div>
-              <div style={s.dropDivider} />
-              {[
-                { icon: <FaUser />, label: 'View Profile',    path: '/profile' },
-                { icon: <FaKey />, label: 'Change Password', path: '/profile' },
-              ].map(item => (
-                <div
-                  key={item.label}
-                  style={s.dropItem}
-                  onClick={() => { setProfileOpen(false); handleNav(item.path); }}
-                  onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)'}
-                  onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
-                >
-                  <span>{item.icon}</span>
-                  <span>{item.label}</span>
-                </div>
-              ))}
-              <div style={s.dropDivider} />
-              <div
-                style={{ ...s.dropItem, color: '#ffcccc' }}
-                onClick={handleLogout}
-                onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(255,80,80,0.15)'}
-                onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
-              >
-                <span>{<FaSignOutAlt />}</span>
-                <span>Logout</span>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
 
       {/* ── Main Content ─────────────────────────────── */}
@@ -238,18 +178,75 @@ function Layout({ children }) {
             </p>
           </div>
 
-          {/* RIGHT: Bell + Divider + User */}
+          {/* RIGHT: Bell + Divider + User Dropdown */}
           <div style={s.topRight}>
             <NotificationBell />
             <div style={s.topDivider} />
-            <div style={s.topUser}>
-              <div style={s.topAvatar}>
-                {currentUser.full_name?.charAt(0).toUpperCase() || 'U'}
+            <div ref={userDropdownRef} style={{ position: 'relative' }}>
+              <div
+                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '6px 12px', borderRadius: '50px',
+                  backgroundColor: '#fff', border: '1px solid #eee',
+                  cursor: 'pointer', transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fdf0f3'}
+                onMouseLeave={e => e.currentTarget.style.backgroundColor = '#fff'}
+              >
+                <div style={s.topAvatar}>
+                  {currentUser.full_name?.charAt(0).toUpperCase() || 'U'}
+                </div>
+                {!isMobile && (
+                  <>
+                    <div style={s.topUserText}>
+                      <p style={s.topUserName}>{currentUser.full_name}</p>
+                      <span style={s.topUserRole}>{userRole.toUpperCase()}</span>
+                    </div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.2s', transform: userDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </>
+                )}
               </div>
-              {!isMobile && (
-                <div style={s.topUserText}>
-                  <p style={s.topUserName}>{currentUser.full_name}</p>
-                  <span style={s.topUserRole}>{userRole.toUpperCase()}</span>
+              {userDropdownOpen && (
+                <div style={{
+                  position: 'absolute', top: 'calc(100% + 8px)', right: '0',
+                  backgroundColor: '#fff', border: '1px solid #eee',
+                  borderRadius: '12px', padding: '6px 0', minWidth: '160px',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.1)', zIndex: 1000,
+                }}>
+                  <div
+                    onClick={() => { setUserDropdownOpen(false); handleNav('/profile'); }}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '10px',
+                      padding: '10px 16px', fontSize: '13px', fontWeight: '400',
+                      color: '#302e2e', cursor: 'pointer', transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fdf0f3'}
+                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Profile
+                  </div>
+                  <div style={{ height: '1px', backgroundColor: '#eee', margin: '4px 0' }} />
+                  <div
+                    onClick={() => { setUserDropdownOpen(false); handleLogout(); }}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '10px',
+                      padding: '10px 16px', fontSize: '13px', fontWeight: '400',
+                      color: '#302e2e', cursor: 'pointer', transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fdf0f3'}
+                    onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    Sign Out
+                  </div>
                 </div>
               )}
             </div>

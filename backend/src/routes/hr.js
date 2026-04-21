@@ -6,7 +6,7 @@ const { validate } = require('../middleware/validation');
 
 // Employees - Admin and HR only
 router.get('/employees', authenticateToken, requireRole(['admin', 'hr']), hr.getEmployees);
-router.get('/employees/:id', authenticateToken, requireRole(['admin', 'hr']), validate('params', 'employee'), hr.getEmployeeById);
+router.get('/employees/:id', authenticateToken, requireRole(['admin', 'hr']), validate('params_employee', 'params'), hr.getEmployeeById);
 router.post('/employees', authenticateToken, requireRole(['admin', 'hr']), validate('employee'), hr.addEmployee);
 router.put('/employees/:id', authenticateToken, requireRole(['admin', 'hr']), validate('employee'), hr.updateEmployee);
 router.delete('/employees/:id', authenticateToken, requireRole(['admin']), hr.deleteEmployee);

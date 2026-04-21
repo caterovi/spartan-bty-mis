@@ -128,11 +128,19 @@ function Orders() {
         estimated_delivery: null,
         notes:              order.notes || '',
       });
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || err.response?.data?.error || err.message || 'Error creating shipment';
+      setMessage('error:' + errorMsg);
+      return;
+    }
+
+    try {
       await api.put(`/sales/orders/${order.id}/status`, { status: 'forwarded' });
       setMessage('success:Order forwarded to Logistics successfully!');
       fetchOrders();
     } catch (err) {
-      setMessage('error:Error forwarding. Make sure shipment code is unique.');
+      const errorMsg = err.response?.data?.message || err.response?.data?.error || err.message || 'Error updating order status';
+      setMessage('error:' + errorMsg);
     } finally { setTimeout(() => setMessage(''), 4000); }
   };
 

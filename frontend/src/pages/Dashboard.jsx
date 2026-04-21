@@ -22,6 +22,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (!user) { navigate('/'); return; }
@@ -36,6 +37,18 @@ function Dashboard() {
   window.addEventListener('resize', handleResize);
   return () => window.removeEventListener('resize', handleResize);
 }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userDropdownOpen && !event.target.closest('.user-dropdown-container')) {
+        setUserDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [userDropdownOpen]);
 
   const fetchStats = async () => {
     try {
@@ -140,14 +153,6 @@ const handleNav = (path) => {
             );
           })}
         </nav>
-        <button
-          onClick={handleLogout}
-          onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.2)'}
-          onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-          style={styles.logout}
-        >
-           Logout
-        </button>
       </div>
 
       {/* Main Content */}
@@ -198,27 +203,84 @@ const handleNav = (path) => {
     </div>
   </div>
 
-  {/* RIGHT: Bell + Divider + User Info */}
+  {/* RIGHT: Bell + Divider + User Dropdown */}
   <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
      <NotificationBell />
     <div style={{ width: '1px', height: '32px', backgroundColor: '#eee', flexShrink: 0 }} />
-    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      <div style={{
-        width: '40px', height: '40px', borderRadius: '50%',
-        backgroundColor: '#c4607a', color: '#fff',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: '16px', fontWeight: '700', flexShrink: 0,
-      }}>
-        {user?.full_name?.charAt(0).toUpperCase()}
+    <div className="user-dropdown-container" style={{ position: 'relative' }}>
+      <div
+        onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: '10px',
+          padding: '6px 12px', borderRadius: '50px',
+          backgroundColor: '#fff', border: '1px solid #eee',
+          cursor: 'pointer', transition: 'all 0.2s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fdf0f3'}
+        onMouseLeave={e => e.currentTarget.style.backgroundColor = '#fff'}
+      >
+        <div style={{
+          width: '36px', height: '36px', borderRadius: '50%',
+          backgroundColor: '#c4607a', color: '#fff',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '15px', fontWeight: '700', flexShrink: 0,
+        }}>
+          {user?.full_name?.charAt(0).toUpperCase()}
+        </div>
+        {!isMobile && (
+          <>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <p style={{ fontSize: '13px', fontWeight: '600', color: '#302e2e', margin: 0, whiteSpace: 'nowrap' }}>
+                {user?.full_name}
+              </p>
+              <span style={{ backgroundColor: '#fdf0f3', color: '#c4607a', padding: '1px 8px', borderRadius: '12px', fontSize: '10px', fontWeight: '600', alignSelf: 'flex-start' }}>
+                {user?.role?.toUpperCase()}
+              </span>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transition: 'transform 0.2s', transform: userDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </>
+        )}
       </div>
-      {!isMobile && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-          <p style={{ fontSize: '14px', fontWeight: '600', color: '#302e2e', margin: 0, whiteSpace: 'nowrap' }}>
-            {user?.full_name}
-          </p>
-          <span style={{ backgroundColor: '#fdf0f3', color: '#c4607a', padding: '2px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '600', alignSelf: 'flex-start' }}>
-            {user?.role?.toUpperCase()}
-          </span>
+      {userDropdownOpen && (
+        <div style={{
+          position: 'absolute', top: 'calc(100% + 8px)', right: '0',
+          backgroundColor: '#fff', border: '1px solid #eee',
+          borderRadius: '12px', padding: '6px 0', minWidth: '160px',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.1)', zIndex: 1000,
+        }}>
+          <div
+            onClick={() => { setUserDropdownOpen(false); navigate('/profile'); }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '10px 16px', fontSize: '13px', fontWeight: '400',
+              color: '#302e2e', cursor: 'pointer', transition: 'background 0.15s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fdf0f3'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            Profile
+          </div>
+          <div style={{ height: '1px', backgroundColor: '#eee', margin: '4px 0' }} />
+          <div
+            onClick={() => { setUserDropdownOpen(false); logout(); navigate('/'); }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '10px 16px', fontSize: '13px', fontWeight: '400',
+              color: '#302e2e', cursor: 'pointer', transition: 'background 0.15s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#fdf0f3'}
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            Sign Out
+          </div>
         </div>
       )}
     </div>

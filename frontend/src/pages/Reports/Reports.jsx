@@ -325,8 +325,6 @@ function Reports() {
                     <th style={styles.th}>Name</th>
                     <th style={styles.th}>Category</th>
                     <th style={styles.th}>Quantity</th>
-                    <th style={styles.th}>Unit Price</th>
-                    <th style={styles.th}>Total Value</th>
                     <th style={styles.th}>Status</th>
                   </tr></thead>
                   <tbody>
@@ -337,8 +335,6 @@ function Reports() {
                         <td style={styles.td}>{i.name}</td>
                         <td style={styles.td}>{i.category || ''}</td>
                         <td style={styles.td}>{i.quantity} {i.unit}</td>
-                        <td style={styles.td}>{Number(i.unit_price).toLocaleString()}</td>
-                        <td style={styles.td}>{(i.quantity * Number(i.unit_price)).toLocaleString()}</td>
                         <td style={styles.td}>{i.status}</td>
                       </tr>
                     ))}
@@ -568,7 +564,7 @@ function Reports() {
                     ))}
                     {rows.length > 0 && (
                       <tr style={styles.totalRow}>
-                        <td colSpan="5" style={{ ...styles.td, textAlign: 'right', fontWeight: '700' }}>Total Views:</td>
+                        <td colSpan="5" style={{ ...styles.td, textAlign: 'right', fontWeight: '700' }}>Total:</td>
                         <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>{rows.reduce((s, c) => s + Number(c.views), 0).toLocaleString()}</td>
                         <td style={{ ...styles.td, fontWeight: '700', color: '#c4607a' }}>{rows.reduce((s, c) => s + Number(c.likes), 0).toLocaleString()}</td>
                         <td></td>
