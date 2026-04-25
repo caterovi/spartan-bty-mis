@@ -7,6 +7,7 @@ function LiveSelling() {
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId]     = useState(null);
   const [message, setMessage]   = useState('');
+  const [isError, setIsError]   = useState(false);
   const [search, setSearch]     = useState('');
   const [editForm, setEditForm] = useState({});
   const [form, setForm] = useState({
@@ -27,11 +28,13 @@ function LiveSelling() {
     try {
       await api.post('/marketing/live-selling', form);
       setMessage('Live selling event created!');
+      setIsError(false);
       setShowForm(false);
       setForm({ title: '', platform: 'tiktok', scheduled_date: '', host: '', products_featured: '', target_sales: '', notes: '' });
       fetchEvents();
     } catch (err) {
       setMessage('Error creating event.');
+      setIsError(true);
     } finally { setTimeout(() => setMessage(''), 3000); }
   };
 
@@ -39,10 +42,12 @@ function LiveSelling() {
     try {
       await api.put(`/marketing/live-selling/${editId}`, editForm);
       setMessage('Event updated!');
+      setIsError(false);
       setEditId(null);
       fetchEvents();
     } catch (err) {
       setMessage('Error updating event.');
+      setIsError(true);
     } finally { setTimeout(() => setMessage(''), 3000); }
   };
 
@@ -89,7 +94,7 @@ function LiveSelling() {
         </div>
       </div>
 
-      {message && <div style={styles.message}>{message}</div>}
+      {message && <div style={isError ? styles.errorMessage : styles.message}>{message}</div>}
 
       {showForm && (
         <div style={styles.form}>
@@ -219,6 +224,7 @@ const styles = {
   searchInput: { padding: '10px 14px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px', outline: 'none', width: '200px' },
   addBtn: { padding: '10px 18px', backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
   message: { backgroundColor: '#eafaf1', color: '#27ae60', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' },
+  errorMessage: { backgroundColor: '#fdf0f3', color: '#c4607a', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' },
   form: { backgroundColor: '#f8f9fa', borderRadius: '10px', padding: '20px', marginBottom: '24px' },
   formTitle: { fontSize: '16px', fontWeight: '600', color: '#302e2e', margin: '0 0 16px' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' },

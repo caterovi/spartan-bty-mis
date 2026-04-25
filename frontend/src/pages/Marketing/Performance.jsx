@@ -7,6 +7,7 @@ function Performance() {
   const [campaigns, setCampaigns] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
   const [search, setSearch] = useState('');
   const [form, setForm] = useState({
     campaign_id: '',
@@ -45,6 +46,7 @@ function Performance() {
     try {
       await api.post('/marketing/performance', form);
       setMessage('Performance data added!');
+      setIsError(false);
       setShowForm(false);
       setForm({
         campaign_id: '',
@@ -58,6 +60,7 @@ function Performance() {
       fetchPerformance();
     } catch (err) {
       setMessage('Error adding performance data.');
+      setIsError(true);
     } finally {
       setTimeout(() => setMessage(''), 3000);
     }
@@ -80,11 +83,11 @@ function Performance() {
   const totalSpend = filtered.reduce((s, p) => s + Number(p.spend), 0);
 
   return (
-  <div style={{
-    width: '100%',
-    maxWidth: '100%',
-    minWidth: 0,
-  }}>
+    <div style={{
+      width: '100%',
+      maxWidth: '100%',
+      minWidth: 0,
+    }}>
       <style>{`
         .perf-root {
           width: 100%;
@@ -312,7 +315,7 @@ function Performance() {
         </div>
       </div>
 
-      {message && <div style={styles.message}>{message}</div>}
+      {message && <div style={isError ? styles.errorMessage : styles.message}>{message}</div>}
 
       <div className="perf-summary mobile-summary-grid">
         {[
@@ -431,7 +434,7 @@ function Performance() {
         {filtered.length} record{filtered.length !== 1 ? 's' : ''} found
       </p>
 
-         <div className="perf-table-wrap mobile-table-container">
+      <div className="perf-table-wrap mobile-table-container">
         <table className="perf-table">
           <thead>
             <tr className="perf-thead">
@@ -506,6 +509,14 @@ const styles = {
   message: {
     backgroundColor: '#eafaf1',
     color: '#27ae60',
+    padding: '12px',
+    borderRadius: '8px',
+    marginBottom: '16px',
+    fontSize: '14px',
+  },
+  errorMessage: {
+    backgroundColor: '#fdf0f3',
+    color: '#c4607a',
     padding: '12px',
     borderRadius: '8px',
     marginBottom: '16px',

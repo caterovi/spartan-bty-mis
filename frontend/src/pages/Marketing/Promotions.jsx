@@ -5,6 +5,7 @@ function Promotions() {
   const [promos, setPromos] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
   const [search, setSearch] = useState('');
   const [form, setForm] = useState({
     promo_code: '',
@@ -33,6 +34,7 @@ function Promotions() {
     try {
       await api.post('/marketing/promotions', form);
       setMessage('Promotion created successfully!');
+      setIsError(false);
       setShowForm(false);
       setForm({
         promo_code: '',
@@ -46,6 +48,7 @@ function Promotions() {
       fetchPromos();
     } catch (err) {
       setMessage('Error creating promotion.');
+      setIsError(true);
     } finally {
       setTimeout(() => setMessage(''), 3000);
     }
@@ -238,7 +241,7 @@ function Promotions() {
         </div>
       </div>
 
-      {message && <div style={styles.message}>{message}</div>}
+      {message && <div style={isError ? styles.errorMessage : styles.message}>{message}</div>}
 
       {showForm && (
         <div style={styles.form}>
@@ -420,6 +423,14 @@ const styles = {
   message: {
     backgroundColor: '#eafaf1',
     color: '#27ae60',
+    padding: '12px',
+    borderRadius: '8px',
+    marginBottom: '16px',
+    fontSize: '14px',
+  },
+  errorMessage: {
+    backgroundColor: '#fdf0f3',
+    color: '#c4607a',
     padding: '12px',
     borderRadius: '8px',
     marginBottom: '16px',

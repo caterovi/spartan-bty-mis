@@ -792,3 +792,423 @@
 {"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T15:25:54.534Z"}
 {"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T15:26:54.583Z"}
 {"errors":[{"context":{"key":"item_code","label":"item_code","value":""},"message":"\"item_code\" is not allowed to be empty","path":["item_code"],"type":"string.empty"}],"input":{"category":"Packaging","item_code":"","name":"T4 Box","quantity":"40","reorder_level":"10","supplier":"Unknown"},"ip":"::1","level":"warn","message":"Validation failed","schema":"inventoryItem","service":"spartan-bty-mis","timestamp":"2026-04-21T15:27:50.658Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:35:54.712Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:36:09.685Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:36:39.688Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:37:10.657Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:37:40.665Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:38:10.650Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:38:40.447Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:39:10.669Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:39:40.662Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:40:41.667Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:41:42.801Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:42:43.659Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:43:44.689Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:44:45.663Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:45:39.859Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:46:09.710Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:46:40.674Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:47:54.791Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:48:54.674Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:49:54.725Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:50:55.021Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:51:54.717Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:52:54.861Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:53:54.694Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:54:54.782Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:55:54.828Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:56:54.851Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:57:54.781Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:58:54.847Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T17:59:46.582Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:09.692Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:17.815Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:17.821Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:17.831Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:17.845Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:22.212Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:22.217Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:22.226Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T18:00:22.235Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:00:51.490Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:01:21.959Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:01:52.693Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:02:21.945Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:02:51.943Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:02:54.368Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:02:54.374Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:02:54.380Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:02:54.389Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:03:24.371Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:03:54.369Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:04:24.384Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:04:54.381Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:05:24.366Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:05:54.366Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:05:59.605Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:05:59.613Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:05:59.625Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:05:59.630Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:11.253Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:11.265Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:11.271Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:11.280Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:12.261Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:12.270Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:12.276Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:12.286Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:14.049Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:14.055Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:14.063Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:14.068Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:14.621Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:14.634Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:14.641Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:14.646Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:15.154Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:15.162Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:15.174Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:15.183Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:15.566Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:15.571Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:15.578Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:15.584Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:16.531Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:16.538Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:16.589Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:16.607Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:17.439Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:17.448Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:17.457Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:17.462Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:18.891Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:18.897Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:19.875Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:19.880Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:20.956Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:20.962Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:21.370Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:21.375Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:21.385Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:21.389Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:21.892Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:21.898Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:23.271Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:23.281Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:23.289Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:23.294Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:25.032Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:25.038Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:25.763Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:25.768Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:26.547Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:26.553Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:28.082Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:28.088Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:28.828Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:28.833Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:06:47.434Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:07.569Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:07.582Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:07.589Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:07.595Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:09.044Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:09.055Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:09.062Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:09.068Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:09.986Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:09.997Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:10.004Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:10.017Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:10.570Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:10.595Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:10.611Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:10.631Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:10.996Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:11.001Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:11.019Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:11.030Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:11.476Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:11.484Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:11.496Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:11.500Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:12.461Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:12.468Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:12.479Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:12.490Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:07:42.464Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:08:12.455Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:08:42.694Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:09:12.452Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:09:13.530Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-21T19:09:13.538Z"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-21T20:06:37.342Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-21T20:06:37.355Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-21T20:06:39.654Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-21T20:06:39.942Z","userRole":"sales"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-21T20:11:14.284Z","userRole":"logistics"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-21T20:11:14.300Z","userRole":"logistics"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-21T20:11:19.360Z","userRole":"logistics"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-21T20:11:19.424Z","userRole":"logistics"}
+{"errors":[{"context":{"key":"employee_id","label":"employee_id","value":""},"message":"\"employee_id\" must be a number","path":["employee_id"],"type":"number.base"},{"context":{"key":"date","label":"date","value":""},"message":"\"date\" must be a valid date","path":["date"],"type":"date.base"}],"input":{"date":"","employee_id":"","remarks":"","status":"present","time_in":"","time_out":""},"ip":"::1","level":"warn","message":"Validation failed","schema":"attendanceCreate","service":"spartan-bty-mis","timestamp":"2026-04-22T14:44:25.137Z"}
+{"errors":[{"context":{"key":"customer_name","label":"customer_name","value":""},"message":"\"customer_name\" is not allowed to be empty","path":["customer_name"],"type":"string.empty"},{"context":{"key":"customer_phone","label":"customer_phone","regex":{},"value":"+63"},"message":"Phone number must start with +63 followed by 10 digits","path":["customer_phone"],"type":"string.pattern.base"},{"context":{"key":"customer_address","label":"customer_address","value":""},"message":"\"customer_address\" is not allowed to be empty","path":["customer_address"],"type":"string.empty"},{"context":{"key":"order_date","label":"order_date","value":""},"message":"\"order_date\" must be a valid date","path":["order_date"],"type":"date.base"},{"context":{"key":"notes","label":"notes","value":""},"message":"\"notes\" is not allowed to be empty","path":["notes"],"type":"string.empty"},{"context":{"key":"salesperson","label":"salesperson","value":""},"message":"\"salesperson\" is not allowed to be empty","path":["salesperson"],"type":"string.empty"}],"input":{"customer_address":"","customer_name":"","customer_phone":"+63","items":[{"item_id":6,"item_name":"Sunstick Daily Radiance","quantity":"150","unit_price":"780"},{"item_id":8,"item_name":"Insta Glow","quantity":"167","unit_price":"650"}],"notes":"","order_code":"ORD-008","order_date":"","salesperson":""},"ip":"::1","level":"warn","message":"Validation failed","schema":"order","service":"spartan-bty-mis","timestamp":"2026-04-22T14:58:12.677Z"}
+{"errors":[{"context":{"key":"notes","label":"notes","value":""},"message":"\"notes\" is not allowed to be empty","path":["notes"],"type":"string.empty"}],"input":{"customer_address":"Toronto, Canada","customer_name":"Kirk","customer_phone":"+639238923829","items":[{"item_id":6,"item_name":"Sunstick Daily Radiance","quantity":"150","unit_price":"780"},{"item_id":8,"item_name":"Insta Glow","quantity":"167","unit_price":"650"}],"notes":"","order_code":"ORD-008","order_date":"2026-04-22","salesperson":"Luffy"},"ip":"::1","level":"warn","message":"Validation failed","schema":"order","service":"spartan-bty-mis","timestamp":"2026-04-22T14:59:36.160Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:03:21.552Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:03:29.815Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:03:36.091Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:03:44.405Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:03:51.551Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:03:52.008Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:04:13.428Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:04:21.554Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:04:23.085Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:04:36.489Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:04:42.286Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:04:43.588Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T15:04:51.555Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:46.422Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:46.442Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:46.457Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:46.464Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:49.743Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:49.789Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:49.816Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:49.859Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:51.669Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:51.677Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:51.686Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T17:29:51.694Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:30:46.447Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:30:46.874Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:30:46.891Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:35:14.730Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:35:50.882Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:36:16.774Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:36:47.482Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:37:16.764Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:38:25.832Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:39:25.787Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:40:25.776Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:41:25.788Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:42:25.778Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:43:25.836Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:44:25.780Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:45:25.780Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:46:25.769Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:47:25.846Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:48:25.797Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:49:25.777Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:50:25.785Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:51:25.780Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:52:25.779Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:53:25.807Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:54:25.795Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:55:25.780Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:56:25.781Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:57:25.775Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:58:25.808Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T18:59:25.802Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:00:25.778Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:01:25.769Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:02:25.771Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:03:25.853Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:04:25.782Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:05:25.771Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:06:25.768Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:07:25.766Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:08:25.774Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:09:25.791Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:10:25.778Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:11:25.785Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:12:25.775Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:13:25.791Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:14:25.813Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:15:25.766Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:16:25.974Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:17:25.817Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:18:25.844Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:19:25.768Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:20:25.744Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:21:25.766Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:22:25.769Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:23:25.783Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:24:25.847Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:25:25.819Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:26:25.758Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:27:25.767Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:28:25.770Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:29:25.766Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:30:25.763Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:31:25.772Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:32:25.748Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:33:25.759Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:34:25.759Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:35:25.765Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:36:25.769Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:37:25.751Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:38:25.773Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:39:25.760Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:40:25.771Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:41:25.766Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:42:25.762Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:43:25.757Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:44:25.765Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:45:25.764Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:46:25.762Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:47:25.764Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:48:25.771Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:49:25.760Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:50:25.779Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:51:25.763Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:52:25.760Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:53:25.759Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:54:25.756Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:55:25.758Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:56:25.756Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:57:25.757Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:58:25.763Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T19:59:25.753Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:00:25.759Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:01:25.765Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:02:25.757Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:03:25.760Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:04:25.748Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:05:25.746Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:06:25.759Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:07:25.764Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:08:25.760Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:09:25.755Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:10:25.749Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:11:25.767Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:12:25.750Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:13:25.758Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:14:25.754Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:15:25.749Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:16:25.755Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:17:25.771Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:18:25.798Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:19:25.761Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:20:25.744Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:21:25.785Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:22:25.762Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:23:25.733Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:24:25.751Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:24:55.931Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:25:04.432Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:25:04.444Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:25:04.463Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-22T20:25:04.469Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-23T05:39:39.885Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-23T05:39:39.899Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-23T05:39:39.906Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-23T05:39:39.913Z"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:10:44.033Z","userRole":"marketing"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:10:44.051Z","userRole":"marketing"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:12:12.256Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:12:12.275Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:12:42.754Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:12:42.773Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:12:52.478Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:12:52.492Z","userRole":"sales"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:14:05.804Z","userRole":"crm"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:14:05.825Z","userRole":"crm"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:15:42.491Z","userRole":"logistics"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:15:42.515Z","userRole":"logistics"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:01.734Z","userRole":"inventory"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:01.749Z","userRole":"inventory"}
+{"endpoint":"/api/hr/employees","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","hr"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:11.232Z","userRole":"inventory"}
+{"endpoint":"/api/logistics/shipments","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:11.969Z","userRole":"inventory"}
+{"endpoint":"/api/crm/feedback","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","crm"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:12.834Z","userRole":"inventory"}
+{"endpoint":"/api/marketing/live-selling","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","marketing"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:13.718Z","userRole":"inventory"}
+{"endpoint":"/api/marketing/content","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","marketing"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:14.130Z","userRole":"inventory"}
+{"endpoint":"/api/marketing/promotions","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","marketing"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:14.873Z","userRole":"inventory"}
+{"endpoint":"/api/marketing/campaigns","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","marketing"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:17:15.539Z","userRole":"inventory"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:17.861Z","userRole":"hr"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:17.871Z","userRole":"hr"}
+{"endpoint":"/api/logistics/shipments","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:21.538Z","userRole":"hr"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:22.434Z","userRole":"hr"}
+{"endpoint":"/api/logistics/shipments","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:23.323Z","userRole":"hr"}
+{"endpoint":"/api/crm/feedback","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","crm"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:23.994Z","userRole":"hr"}
+{"endpoint":"/api/marketing/content","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","marketing"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:24.404Z","userRole":"hr"}
+{"endpoint":"/api/marketing/live-selling","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","marketing"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:24.804Z","userRole":"hr"}
+{"endpoint":"/api/marketing/promotions","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","marketing"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:25.196Z","userRole":"hr"}
+{"endpoint":"/api/marketing/campaigns","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","marketing"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:25.657Z","userRole":"hr"}
+{"endpoint":"/api/auth/users","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:27.671Z","userRole":"hr"}
+{"endpoint":"/api/auth/users","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:27.684Z","userRole":"hr"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:40.549Z","userRole":"hr"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-23T21:20:40.562Z","userRole":"hr"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:15:25.393Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:16:23.275Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:17:23.300Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:18:23.265Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:18:57.803Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:19:03.993Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:19:04.023Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:19:04.078Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:19:04.112Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:19:07.463Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:19:07.666Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:19:07.844Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T16:19:07.866Z"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-24T16:35:46.516Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-24T16:35:46.529Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-24T16:35:57.139Z","userRole":"sales"}
+{"endpoint":"/api/inventory/items","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","inventory","logistics"],"service":"spartan-bty-mis","timestamp":"2026-04-24T16:35:57.261Z","userRole":"sales"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-24T16:51:37.428Z","userRole":"inventory"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-24T16:51:37.441Z","userRole":"inventory"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-24T18:31:42.994Z","userRole":"marketing"}
+{"endpoint":"/api/sales/orders","ip":"::1","level":"warn","message":"Unauthorized access attempt","requiredRoles":["admin","sales"],"service":"spartan-bty-mis","timestamp":"2026-04-24T18:31:43.012Z","userRole":"marketing"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:49:23.275Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:50:23.287Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:51:23.319Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:52:23.340Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:53:23.318Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:54:23.357Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:55:23.808Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:56:23.292Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:57:23.397Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:58:23.321Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T19:59:23.328Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:00:23.325Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:01:23.290Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:02:23.355Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:03:23.374Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:04:23.340Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:05:23.302Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:06:23.323Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:07:23.367Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:08:23.347Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:09:23.399Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:10:23.328Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:11:23.494Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:11:55.516Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-24T20:11:57.773Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T11:34:16.536Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T11:34:46.531Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T11:35:16.529Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:02:52.380Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:03:52.384Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:04:52.403Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:05:52.384Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:06:52.391Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:07:52.377Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:08:52.389Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:09:52.391Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:10:52.385Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:11:52.392Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:12:52.387Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:13:52.392Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:14:52.387Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:15:52.412Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:16:52.393Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:17:52.387Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:18:52.389Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:19:52.390Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:20:52.384Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:21:52.393Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:22:51.447Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:22:59.439Z"}
+{"error":"jwt expired","ip":"::1","level":"warn","message":"Invalid token attempt","service":"spartan-bty-mis","timestamp":"2026-04-25T14:22:59.445Z"}
+{"errors":[{"context":{"key":"password","label":"password","limit":6,"value":"test"},"message":"Password must be at least 6 characters long","path":["password"],"type":"string.min"}],"input":{"email":"test@spartanbty.com","password":"test"},"ip":"::1","level":"warn","message":"Validation failed","schema":"login","service":"spartan-bty-mis","timestamp":"2026-04-25T16:35:04.606Z"}
+{"errors":[{"context":{"key":"password","label":"password","limit":6,"value":"admin"},"message":"Password must be at least 6 characters long","path":["password"],"type":"string.min"}],"input":{"email":"test@spartanbty.com","password":"admin"},"ip":"::1","level":"warn","message":"Validation failed","schema":"login","service":"spartan-bty-mis","timestamp":"2026-04-25T16:35:14.752Z"}

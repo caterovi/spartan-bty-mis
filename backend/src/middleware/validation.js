@@ -35,24 +35,69 @@ const schemas = {
       'any.required': 'Role is required'
     })
   }),
+  refreshToken: Joi.object({
+  refreshToken: Joi.string().required()
+}),
 
-  // Employee schemas
-  employee: Joi.object({
-    employee_id: Joi.string().optional(),
-    full_name: Joi.string().min(2).max(100).required(),
-    email: Joi.string().email().required(),
-    phone: Joi.string().optional(),
-    department: Joi.string().min(2).max(100).required(),
-    position: Joi.string().min(2).max(100).required(),
-    employment_type: Joi.string().valid('full-time', 'part-time', 'contractual').required(),
-    date_hired: Joi.date().required(),
-    salary: Joi.number().min(0).max(500000).optional()
-  }),
+  // ─── EMPLOYEE SCHEMAS ───────────────────────────────────
 
-  // Employee params schema
-  params_employee: Joi.object({
-    id: Joi.number().integer().positive().required()
-  }),
+employeeCreate: Joi.object({
+  employee_id: Joi.string().optional().allow('', null),
+  full_name: Joi.string().min(2).max(100).required(),
+  email: Joi.string().email().required(),
+  phone: Joi.string().optional().allow('', null),
+  department: Joi.string().min(2).max(100).required(),
+  position: Joi.string().min(2).max(100).required(),
+  employment_type: Joi.string().valid('full-time', 'part-time', 'contractual').required(),
+  date_hired: Joi.date().required(),
+  salary: Joi.number().min(0).max(500000).optional().allow(null)
+}),
+
+employeeUpdate: Joi.object({
+  full_name: Joi.string().min(2).max(100).required(),
+  email: Joi.string().email().required(),
+  phone: Joi.string().optional().allow('', null),
+  department: Joi.string().min(2).max(100).required(),
+  position: Joi.string().min(2).max(100).required(),
+  employment_type: Joi.string().valid('full-time', 'part-time', 'contractual').required(),
+  salary: Joi.number().min(0).max(500000).optional().allow(null),
+  status: Joi.string().valid('active', 'inactive').required()
+}),
+
+// ─── ATTENDANCE ─────────────────────────────────────────
+
+attendanceCreate: Joi.object({
+  employee_id: Joi.number().integer().positive().required(),
+  date: Joi.date().required(),
+  time_in: Joi.string().allow('', null),
+  time_out: Joi.string().allow('', null),
+  status: Joi.string().valid('present', 'late', 'absent', 'half-day').required(),
+  remarks: Joi.string().max(255).optional().allow('', null)
+}),
+
+// ─── PAYROLL ───────────────────────────────────────────
+
+payrollCreate: Joi.object({
+  employee_id: Joi.number().integer().positive().required(),
+  period_start: Joi.date().required(),
+  period_end: Joi.date().required(),
+  basic_salary: Joi.number().min(0).required(),
+  deductions: Joi.number().min(0).default(0),
+  notes: Joi.string().max(500).optional().allow('', null)
+}),
+
+payrollUpdate: Joi.object({
+  basic_salary: Joi.number().min(0).required(),
+  deductions: Joi.number().min(0).default(0),
+  status: Joi.string().valid('pending', 'paid').required(),
+  notes: Joi.string().max(500).optional().allow('', null)
+}),
+
+// ─── PARAMS ─────────────────────────────────────────────
+
+params_id: Joi.object({
+  id: Joi.number().integer().positive().required()
+}),
 
   // Order schemas
   order: Joi.object({

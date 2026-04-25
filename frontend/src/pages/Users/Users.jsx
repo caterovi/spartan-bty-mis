@@ -17,6 +17,27 @@ function Users() {
   useEffect(() => {
     if (!['admin','hr'].includes(currentUser.role)) { navigate('/dashboard'); return; }
     fetchUsers();
+
+    // Scroll animation observer
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('mod-visible');
+        }
+      });
+    }, observerOptions);
+
+    const animatedElements = document.querySelectorAll('.mod-animate');
+    animatedElements.forEach(el => observer.observe(el));
+
+    return () => {
+      animatedElements.forEach(el => observer.unobserve(el));
+    };
   }, []);
 
   const fetchUsers = async () => {
@@ -75,9 +96,17 @@ function Users() {
 
   return (
     <Layout>
+      <style>{`
+        @keyframes mod-fadeUp { from{ opacity:0; transform:translateY(30px); } to{ opacity:1; transform:translateY(0); } }
+        .mod-animate { opacity: 0; transform: translateY(30px); transition: opacity 0.3s ease-out, transform 0.3s ease-out; }
+        .mod-animate.mod-visible { opacity: 1; transform: translateY(0); }
+        .mod-stagger-1 { transition-delay: 0.05s; }
+        .mod-stagger-2 { transition-delay: 0.1s; }
+        .mod-stagger-3 { transition-delay: 0.15s; }
+      `}</style>
       <div>
         {/* Top Bar */}
-        <div style={styles.topbar} className="mobile-top-row">
+        <div style={styles.topbar} className="mobile-top-row mod-animate">
           <div>
             <h1 style={styles.pageTitle}>User Management</h1>
             <p style={styles.pageSubtitle}>Manage system users and their access roles</p>

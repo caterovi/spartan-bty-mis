@@ -238,6 +238,31 @@ const styles = `
   .lp-fg-submit { width: 100%; padding: 14px; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 1px; background: var(--rose); color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
   .lp-fg-submit:hover { background: var(--rose-deep); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(194, 64, 96, 0.3); }
 
+  /* SUPPORT CENTER */
+  .lp-support { background: var(--white); padding: 7rem 3rem; }
+  .lp-support-inner { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; }
+  .lp-support-info { display: flex; flex-direction: column; gap: 2rem; }
+  .lp-support-item { display: flex; align-items: start; gap: 1rem; }
+  .lp-support-icon { width: 44px; height: 44px; background: var(--rose-pale); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--rose); flex-shrink: 0; transition: all 0.3s ease; }
+  .lp-support-item:hover .lp-support-icon { background: var(--rose); color: #fff; transform: translateY(-3px); }
+  .lp-support-icon svg { width: 20px; height: 20px; }
+  .lp-support-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.3rem; }
+  .lp-support-value { font-size: 14px; font-weight: 500; color: var(--ink); line-height: 1.6; }
+  .lp-support-value a { color: var(--rose); text-decoration: none; transition: color 0.2s; }
+  .lp-support-value a:hover { color: var(--rose-deep); text-decoration: underline; }
+  .lp-support-form { background: var(--cream); border-radius: 16px; padding: 2.5rem; border: 1px solid var(--line); }
+  .lp-support-note { font-size: 12px; color: var(--ink-soft); font-weight: 300; margin-top: 1rem; line-height: 1.6; }
+  .lp-support-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .lp-support-file { display: flex; align-items: center; gap: 0.75rem; padding: 12px 16px; background: var(--white); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+  .lp-support-file:hover { border-color: var(--rose); background: var(--rose-pale); }
+  .lp-support-file svg { width: 18px; height: 18px; color: var(--ink-soft); }
+  .lp-support-file:hover svg { color: var(--rose); }
+  .lp-support-file-text { font-size: 13px; color: var(--ink-soft); font-weight: 400; }
+  .lp-support-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+  .lp-support-status.pending { background: #fff3cd; color: #856404; }
+  .lp-support-status.in-progress { background: #cce5ff; color: #004085; }
+  .lp-support-status.resolved { background: #d4edda; color: #155724; }
+
   /* FOOTER */
   .lp-footer { background: #120810; padding: 5rem 3rem 2.5rem; }
   .lp-footer-inner { max-width: 1140px; margin: 0 auto; }
@@ -345,6 +370,9 @@ const styles = `
     .lp-quickstart { padding: 3.5rem 1.2rem; }
     .lp-faq { padding: 3.5rem 1.2rem; }
     .lp-feedback { padding: 3.5rem 1.2rem; }
+    .lp-support { padding: 3.5rem 1.2rem; }
+    .lp-support-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .lp-support-row { grid-template-columns: 1fr; }
     .lp-footer { padding: 3rem 1.2rem 2rem; }
     .lp-footer-top { grid-template-columns: 1fr; gap: 2rem; }
     .lp-footer-bottom { flex-direction: column; align-items: flex-start; gap: 1rem; }
@@ -362,6 +390,7 @@ const styles = `
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
 
@@ -387,6 +416,33 @@ export default function LandingPage() {
     return () => {
       animatedElements.forEach(el => observer.unobserve(el));
     };
+  }, []);
+
+  // Track active section on scroll
+  useEffect(() => {
+    const sections = ['hero', 'story', 'faq', 'support'];
+    
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100;
+      
+      for (const sectionId of sections) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollTo = (id) => {
@@ -430,12 +486,12 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Nav: Home | Story | Contact */}
+          {/* Nav: Home | Story | FAQ | Support */}
           <div className="lp-nav-center">
-            <a className="active" onClick={() => scrollTo("hero")}>Home</a>
-            <a onClick={() => scrollTo("story")}>Our Story</a>
-            <a onClick={() => scrollTo("faq")}>FAQ</a>
-            <a onClick={() => scrollTo("contact")}>Contact</a>
+            <a className={activeSection === "hero" ? "active" : ""} onClick={() => scrollTo("hero")}>Home</a>
+            <a className={activeSection === "story" ? "active" : ""} onClick={() => scrollTo("story")}>Our Story</a>
+            <a className={activeSection === "faq" ? "active" : ""} onClick={() => scrollTo("faq")}>FAQ</a>
+            <a className={activeSection === "support" ? "active" : ""} onClick={() => scrollTo("support")}>Support</a>
           </div>
 
           <div className="lp-nav-right">
@@ -474,7 +530,7 @@ export default function LandingPage() {
           <a onClick={() => scrollTo("hero")}>Home</a>
           <a onClick={() => scrollTo("story")}>Our Story</a>
           <a onClick={() => scrollTo("faq")}>FAQ</a>
-          <a onClick={() => scrollTo("contact")}>Contact</a>
+          <a onClick={() => scrollTo("support")}>Support</a>
           <div className="lp-mob-menu-btns">
             {isAuthenticated() ? (
               <>
@@ -668,6 +724,146 @@ export default function LandingPage() {
               </div>
               <button type="submit" className="lp-fg-submit">Submit Feedback</button>
             </form>
+          </div>
+        </section>
+
+        {/* SUPPORT CENTER */}
+        <section className="lp-support" id="support">
+          <div className="lp-support-inner">
+            <div className="lp-support-info lp-animate-left">
+              <div className="lp-s-label">System Support</div>
+              <h2 className="lp-s-title">Support <em>Center</em></h2>
+              
+              <div className="lp-support-item">
+                <div className="lp-support-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                </div>
+                <div>
+                  <div className="lp-support-label">Email Support</div>
+                  <div className="lp-support-value">
+                    <a href="mailto:itsupport@spartanbty.com">itsupport@spartanbty.com</a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="lp-support-item">
+                <div className="lp-support-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                </div>
+                <div>
+                  <div className="lp-support-label">Response Time</div>
+                  <div className="lp-support-value">24-48 hours during business days</div>
+                </div>
+              </div>
+
+              <div className="lp-support-item">
+                <div className="lp-support-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div className="lp-support-label">Hotline</div>
+                  <div className="lp-support-value">
+                    <a href="tel:+639927956848">+63 992 795 6848</a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="lp-support-item">
+                <div className="lp-support-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                </div>
+                <div>
+                  <div className="lp-support-label">Ticket Status</div>
+                  <div className="lp-support-value">
+                    <span className="lp-support-status pending">● Pending</span>
+                    <span className="lp-support-status in-progress">● In Progress</span>
+                    <span className="lp-support-status resolved">● Resolved</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lp-support-form lp-animate-right">
+              <div className="lp-s-label">Submit a Ticket</div>
+              <h2 className="lp-s-title">New <em>Request</em></h2>
+              <form onSubmit={(e) => { e.preventDefault(); alert('Support ticket submitted successfully! You will receive a confirmation email shortly.'); }}>
+                <div className="lp-fg-group">
+                  <label className="lp-fg-label">Your Name</label>
+                  <input 
+                    type="text" 
+                    className="lp-fg-input" 
+                    placeholder="Enter your name" 
+                    defaultValue={user?.full_name || user?.name || ''}
+                    required 
+                  />
+                </div>
+                <div className="lp-support-row">
+                  <div className="lp-fg-group">
+                    <label className="lp-fg-label">Module</label>
+                    <select className="lp-fg-input" required>
+                      <option value="">Select module...</option>
+                      <option value="sales">Sales</option>
+                      <option value="inventory">Inventory</option>
+                      <option value="logistics">Logistics</option>
+                      <option value="crm">CRM</option>
+                      <option value="hr">HR</option>
+                      <option value="marketing">Marketing</option>
+                    </select>
+                  </div>
+                  <div className="lp-fg-group">
+                    <label className="lp-fg-label">Issue Type</label>
+                    <select className="lp-fg-input" required>
+                      <option value="">Select type...</option>
+                      <option value="bug">Bug</option>
+                      <option value="request">Request</option>
+                      <option value="access">Access Issue</option>
+                      <option value="data">Data Error</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="lp-fg-group">
+                  <label className="lp-fg-label">Priority</label>
+                  <select className="lp-fg-input" required>
+                    <option value="">Select priority...</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </div>
+                <div className="lp-fg-group">
+                  <label className="lp-fg-label">Description</label>
+                  <textarea className="lp-fg-input lp-fg-textarea" placeholder="Describe the issue in detail..." required />
+                </div>
+                <div className="lp-fg-group">
+                  <label className="lp-fg-label">Attach Screenshot (Optional)</label>
+                  <label className="lp-support-file">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="17 8 12 3 7 8"/>
+                      <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    <span className="lp-support-file-text">Click to upload screenshot</span>
+                    <input type="file" accept="image/*" style={{ display: 'none' }} />
+                  </label>
+                </div>
+                <button type="submit" className="lp-fg-submit">Submit Ticket</button>
+                <p className="lp-support-note">You will receive a confirmation email with your ticket number. Track your ticket status in the Dashboard.</p>
+              </form>
+            </div>
           </div>
         </section>
 

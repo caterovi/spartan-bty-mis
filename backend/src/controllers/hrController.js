@@ -12,9 +12,15 @@ exports.getEmployees = async (req, res) => {
 };
 
 exports.getEmployeeById = async (req, res) => {
+  const { id } = req.validated.params;
+
   try {
-    const [rows] = await db.query('SELECT * FROM employees WHERE id = ?', [req.params.id]);
-    if (rows.length === 0) return res.status(404).json({ message: 'Employee not found' });
+    const [rows] = await db.query('SELECT * FROM employees WHERE id = ?', [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: 'Employee not found' });
+    }
+
     res.json(rows[0]);
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -22,12 +28,24 @@ exports.getEmployeeById = async (req, res) => {
 };
 
 exports.addEmployee = async (req, res) => {
-  const { employee_id, full_name, email, phone, department, position, employment_type, date_hired, salary } = req.body;
+  const {
+    employee_id,
+    full_name,
+    email,
+    phone,
+    department,
+    position,
+    employment_type,
+    date_hired,
+    salary
+  } = req.validated.body;
+
   try {
     await db.query(
       'INSERT INTO employees (employee_id, full_name, email, phone, department, position, employment_type, date_hired, salary) VALUES (?,?,?,?,?,?,?,?,?)',
-      [employee_id, full_name, email, phone, department, position, employment_type, date_hired, salary]
+      [employee_id, full_name, email, phone, department, position, employment_type, date_hired, salary ?? null]
     );
+
     res.json({ message: 'Employee added successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -35,12 +53,28 @@ exports.addEmployee = async (req, res) => {
 };
 
 exports.updateEmployee = async (req, res) => {
-  const { full_name, email, phone, department, position, employment_type, salary, status } = req.body;
+  const { id } = req.validated.params;
+  const {
+    full_name,
+    email,
+    phone,
+    department,
+    position,
+    employment_type,
+    salary,
+    status
+  } = req.validated.body;
+
   try {
-    await db.query(
+    const [result] = await db.query(
       'UPDATE employees SET full_name=?, email=?, phone=?, department=?, position=?, employment_type=?, salary=?, status=? WHERE id=?',
-      [full_name, email, phone, department, position, employment_type, salary, status, req.params.id]
+      [full_name, email, phone, department, position, employment_type, salary ?? null, status, id]
     );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Employee not found' });
+    }
+
     res.json({ message: 'Employee updated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -48,8 +82,15 @@ exports.updateEmployee = async (req, res) => {
 };
 
 exports.deleteEmployee = async (req, res) => {
+  const { id } = req.validated.params;
+
   try {
-    await db.query('DELETE FROM employees WHERE id = ?', [req.params.id]);
+    const [result] = await db.query('DELETE FROM employees WHERE id = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Employee not found' });
+    }
+
     res.json({ message: 'Employee deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -73,12 +114,14 @@ exports.getAttendance = async (req, res) => {
 };
 
 exports.addAttendance = async (req, res) => {
-  const { employee_id, date, time_in, time_out, status, remarks } = req.body;
+  const { employee_id, date, time_in, time_out, status, remarks } = req.validated.body;
+
   try {
     await db.query(
       'INSERT INTO attendance (employee_id, date, time_in, time_out, status, remarks) VALUES (?,?,?,?,?,?)',
-      [employee_id, date, time_in, time_out, status, remarks]
+      [employee_id, date, time_in, time_out, status, remarks ?? null]
     );
+
     res.json({ message: 'Attendance recorded' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -102,13 +145,15 @@ exports.getPayroll = async (req, res) => {
 };
 
 exports.generatePayroll = async (req, res) => {
-  const { employee_id, period_start, period_end, basic_salary, deductions, notes } = req.body;
-  const net_salary = basic_salary - deductions;
+  const { employee_id, period_start, period_end, basic_salary, deductions, notes } = req.validated.body;
+  const net_salary = Number(basic_salary) - Number(deductions || 0);
+
   try {
     await db.query(
       'INSERT INTO payroll (employee_id, period_start, period_end, basic_salary, deductions, net_salary, notes) VALUES (?,?,?,?,?,?,?)',
-      [employee_id, period_start, period_end, basic_salary, deductions, net_salary, notes || null]
+      [employee_id, period_start, period_end, basic_salary, deductions, net_salary, notes ?? null]
     );
+
     res.json({ message: 'Payroll generated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -116,8 +161,15 @@ exports.generatePayroll = async (req, res) => {
 };
 
 exports.markAsPaid = async (req, res) => {
+  const { id } = req.validated.params;
+
   try {
-    await db.query('UPDATE payroll SET status = ? WHERE id = ?', ['paid', req.params.id]);
+    const [result] = await db.query('UPDATE payroll SET status = ? WHERE id = ?', ['paid', id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Payroll record not found' });
+    }
+
     res.json({ message: 'Payroll marked as paid' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -125,12 +177,20 @@ exports.markAsPaid = async (req, res) => {
 };
 
 exports.updatePayroll = async (req, res) => {
-  const { basic_salary, deductions, net_salary, status, notes } = req.body;
+  const { id } = req.validated.params;
+  const { basic_salary, deductions, status, notes } = req.validated.body;
+  const net_salary = Number(basic_salary) - Number(deductions || 0);
+
   try {
-    await db.query(
+    const [result] = await db.query(
       'UPDATE payroll SET basic_salary=?, deductions=?, net_salary=?, status=?, notes=? WHERE id=?',
-      [basic_salary, deductions, net_salary, status, notes || null, req.params.id]
+      [basic_salary, deductions, net_salary, status, notes ?? null, id]
     );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Payroll record not found' });
+    }
+
     res.json({ message: 'Payroll updated' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });

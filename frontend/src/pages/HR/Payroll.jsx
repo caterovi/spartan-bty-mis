@@ -77,7 +77,7 @@ function Payroll() {
 
   const handleMarkPaid = async (id) => {
     try {
-      await api.put(`/hr/payroll/${id}/pay`);
+      await api.patch(`/hr/payroll/${id}/pay`);
       fetchPayroll();
     } catch (err) { console.error(err); }
   };
