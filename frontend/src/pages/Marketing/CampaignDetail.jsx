@@ -1,25 +1,44 @@
 import { useState, useEffect } from 'react';
 import api from '../../api/axiosConfig';
-import { FaBars, FaCamera, FaPalette, FaVideo, FaGlobe, FaCalendar, FaLightbulb, FaMicrophone } from "react-icons/fa";
+import {
+  FaBars,
+  FaCamera,
+  FaPalette,
+  FaVideo,
+  FaGlobe,
+  FaCalendar,
+  FaLightbulb,
+  FaMicrophone,
+  FaArrowLeft,
+  FaPlus,
+  FaTimes,
+  FaTrash,
+  FaEdit,
+  FaCheck,
+  FaBullhorn,
+  FaClipboardList,
+} from "react-icons/fa";
 
 const TASK_CATEGORIES = [
-  { key: 'tasks',         icon: <FaBars />, label: 'Tasks' },
-  { key: 'photoshoot',    icon: <FaCamera />, label: 'Photoshoot' },
-  { key: 'graphics',      icon: <FaPalette />, label: 'Graphics' },
+  { key: 'tasks', icon: <FaBars />, label: 'Tasks' },
+  { key: 'photoshoot', icon: <FaCamera />, label: 'Photoshoot' },
+  { key: 'graphics', icon: <FaPalette />, label: 'Graphics' },
   { key: 'video-editing', icon: <FaVideo />, label: 'Video Editing' },
 ];
 
 function CampaignDetail({ campaignId, onBack }) {
-  const [campaign, setCampaign]   = useState(null);
-  const [tasks, setTasks]         = useState([]);
+  const [campaign, setCampaign] = useState(null);
+  const [tasks, setTasks] = useState([]);
   const [activeTab, setActiveTab] = useState('tasks');
-  const [showForm, setShowForm]   = useState(false);
-  const [message, setMessage]     = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [message, setMessage] = useState('');
   const [editTaskId, setEditTaskId] = useState(null);
   const [editTaskForm, setEditTaskForm] = useState({});
-  const [newTask, setNewTask]     = useState({ title: '', description: '' });
+  const [newTask, setNewTask] = useState({ title: '', description: '' });
   const [equipment, setEquipment] = useState({
-    equip_lights: false, equip_mic: false, equip_camera: false,
+    equip_lights: false,
+    equip_mic: false,
+    equip_camera: false,
   });
 
   useEffect(() => {
@@ -32,66 +51,80 @@ function CampaignDetail({ campaignId, onBack }) {
       const res = await api.get(`/marketing/campaigns/${campaignId}`);
       setCampaign(res.data);
       setEquipment({
-        equip_lights:  !!res.data.equip_lights,
-        equip_mic:     !!res.data.equip_mic,
-        equip_camera:  !!res.data.equip_camera,
+        equip_lights: !!res.data.equip_lights,
+        equip_mic: !!res.data.equip_mic,
+        equip_camera: !!res.data.equip_camera,
       });
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const fetchTasks = async () => {
     try {
       const res = await api.get(`/marketing/campaigns/${campaignId}/tasks`);
       setTasks(res.data);
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleAddTask = async () => {
     if (!newTask.title.trim()) return;
     try {
       await api.post(`/marketing/campaigns/${campaignId}/tasks`, {
-        category:    activeTab,
-        title:       newTask.title,
+        category: activeTab,
+        title: newTask.title,
         description: newTask.description,
       });
-      setMessage('success:Task added!');
+      setMessage('success:Task added successfully!');
       setNewTask({ title: '', description: '' });
       setShowForm(false);
       fetchTasks();
       fetchCampaign();
     } catch (err) {
       setMessage('error:Error adding task.');
-    } finally { setTimeout(() => setMessage(''), 3000); }
+    } finally {
+      setTimeout(() => setMessage(''), 3000);
+    }
   };
 
   const handleToggleTask = async (task) => {
     const newStatus = task.status === 'done' ? 'todo' : 'done';
     try {
       await api.put(`/marketing/tasks/${task.id}`, {
-        status:      newStatus,
-        title:       task.title,
+        status: newStatus,
+        title: task.title,
         description: task.description || '',
       });
       fetchTasks();
       fetchCampaign();
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleEditTask = (task) => {
     setEditTaskId(task.id);
-    setEditTaskForm({ title: task.title, description: task.description || '', status: task.status });
+    setEditTaskForm({
+      title: task.title,
+      description: task.description || '',
+      status: task.status,
+    });
   };
 
   const handleUpdateTask = async () => {
     try {
       await api.put(`/marketing/tasks/${editTaskId}`, editTaskForm);
-      setMessage('success:Task updated!');
+      setMessage('success:Task updated successfully!');
       setEditTaskId(null);
       fetchTasks();
       fetchCampaign();
     } catch (err) {
       setMessage('error:Error updating task.');
-    } finally { setTimeout(() => setMessage(''), 3000); }
+    } finally {
+      setTimeout(() => setMessage(''), 3000);
+    }
   };
 
   const handleDeleteTask = async (id) => {
@@ -100,7 +133,9 @@ function CampaignDetail({ campaignId, onBack }) {
       await api.delete(`/marketing/tasks/${id}`);
       fetchTasks();
       fetchCampaign();
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleEquipmentChange = async (key, value) => {
@@ -108,414 +143,961 @@ function CampaignDetail({ campaignId, onBack }) {
     setEquipment(updated);
     try {
       await api.put(`/marketing/campaigns/${campaignId}/equipment`, updated);
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  if (!campaign) {
+    return <div className="cd-loading">Loading campaign...</div>;
+  }
 
   const tabTasks = tasks.filter(t => t.category === activeTab);
   const doneTasks = tabTasks.filter(t => t.status === 'done').length;
   const totalTasks = tabTasks.length;
 
   const statusColors = {
-    draft:         { backgroundColor: '#f0f0f0', color: '#888' },
-    'in-progress': { backgroundColor: '#fff3cd', color: '#856404' },
-    completed:     { backgroundColor: '#d4edda', color: '#155724' },
-    cancelled:     { backgroundColor: '#f8d7da', color: '#721c24' },
+    draft: { backgroundColor: '#f8f3f5', color: '#6b5b63', borderColor: '#c9b6bf' },
+    'in-progress': { backgroundColor: '#fff7e8', color: '#9a5f0f', borderColor: '#d98a1f' },
+    completed: { backgroundColor: '#ecfdf3', color: '#2f7d56', borderColor: '#2f9d6a' },
+    cancelled: { backgroundColor: '#fff1f5', color: '#b5536b', borderColor: '#c4607a' },
   };
 
   const taskStatusColors = {
-    todo:          { backgroundColor: '#f0f0f0', color: '#888' },
-    'in-progress': { backgroundColor: '#fff3cd', color: '#856404' },
-    done:          { backgroundColor: '#d4edda', color: '#155724' },
+    todo: { backgroundColor: '#f8f3f5', color: '#6b5b63', borderColor: '#c9b6bf' },
+    'in-progress': { backgroundColor: '#fff7e8', color: '#9a5f0f', borderColor: '#d98a1f' },
+    done: { backgroundColor: '#ecfdf3', color: '#2f7d56', borderColor: '#2f9d6a' },
   };
 
-  const isSuccess = message.startsWith('success:');
-  const isError   = message.startsWith('error:');
-  const msgText   = message.replace(/^(success:|error:)/, '');
+  const isError = message.startsWith('error:');
+  const msgText = message.replace(/^(success:|error:)/, '');
 
-  if (!campaign) return <div style={{ padding: '40px', textAlign: 'center', color: '#aaa' }}>Loading...</div>;
+  const progressColor =
+    campaign.progress === 100 ? '#2f9d6a' :
+    campaign.progress >= 50 ? '#d98a1f' :
+    '#c4607a';
 
-
-  <style>{`
-@media (max-width: 768px) {
-  .cd-header {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .cd-progress {
-    margin-left: 0 !important;
-    align-self: center;
-  }
-
-  .cd-meta {
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .cd-equip {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .cd-tabs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .cd-form {
-    grid-template-columns: 1fr !important;
-  }
-
-  .cd-task {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .cd-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-`}</style>
-
+  const activeCategory = TASK_CATEGORIES.find(t => t.key === activeTab);
+  const tabProgressPercent = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
 
   return (
-    <div>
+    <div className="cd-page">
       <style>{`
-@media (max-width: 768px) {
-  .cd-back-btn {
-    width: 100%;
-  }
+        .cd-page {
+          width: 100%;
+          animation: cdFadeUp 0.35s ease both;
+        }
 
-  .cd-header {
-    flex-direction: column;
-    align-items: stretch !important;
-    gap: 18px;
-    padding: 18px !important;
-  }
+        .cd-loading {
+          min-height: 240px;
+          display: grid;
+          place-items: center;
+          color: #b5536b;
+          font-size: 14px;
+          font-weight: 700;
+        }
 
-  .cd-header-top {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+        .cd-back-btn {
+          margin-bottom: 18px;
+          border: 1px solid #d8b8c2;
+          border-radius: 12px;
+          padding: 10px 14px;
+          background: #ffffff;
+          color: #b5536b;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+        }
 
-  .cd-header-left {
-    width: 100%;
-    min-width: 0;
-  }
+        .cd-back-btn:hover {
+          transform: translateY(-1px);
+          border-color: #c4607a;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
 
-  .cd-progress {
-    margin-left: 0 !important;
-    width: 100%;
-    align-self: center;
-  }
+        .cd-header {
+          background:
+            radial-gradient(circle at top right, rgba(196, 96, 122, 0.18), transparent 34%),
+            linear-gradient(135deg, #fff7fa 0%, #ffffff 100%);
+          border: 1px solid #ead1d9;
+          border-radius: 18px;
+          padding: 24px;
+          margin-bottom: 18px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 20px;
+        }
 
-  .cd-meta {
-    flex-direction: column;
-    gap: 8px;
-  }
+        .cd-header-left {
+          flex: 1;
+          min-width: 0;
+        }
 
-  .cd-equipment-box {
-    padding: 16px !important;
-  }
+        .cd-header-top {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-bottom: 10px;
+        }
 
-  .cd-equip-grid {
-    display: grid !important;
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
+        .cd-campaign-icon {
+          width: 44px;
+          height: 44px;
+          border-radius: 14px;
+          display: grid;
+          place-items: center;
+          background: #fff1f5;
+          color: #b5536b;
+          border: 1px solid #e8b9c6;
+          flex: 0 0 auto;
+        }
 
-  .cd-equip-item {
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-  }
+        .cd-title {
+          margin: 0;
+          color: #1f2937;
+          font-size: 28px;
+          font-weight: 850;
+          letter-spacing: -0.04em;
+          line-height: 1.2;
+        }
 
-  .cd-tab-row {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
+        .cd-status-badge,
+        .cd-task-badge {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 6px 10px;
+          border-radius: 9999px;
+          font-size: 12px;
+          font-weight: 800;
+          text-transform: capitalize;
+          border: 1px solid;
+          white-space: nowrap;
+        }
 
-  .cd-tab-btn {
-    width: 100%;
-    min-width: 0;
-    justify-content: center;
-    text-align: center;
-    padding: 10px 12px !important;
-    border-radius: 8px !important;
-    border-bottom: 1px solid #ddd !important;
-  }
+        .cd-desc {
+          margin: 0 0 14px;
+          color: #64748b;
+          font-size: 14px;
+          line-height: 1.6;
+          max-width: 760px;
+        }
 
-  .cd-tab-btn-active {
-    width: 100%;
-    min-width: 0;
-    justify-content: center;
-    text-align: center;
-    padding: 10px 12px !important;
-    border-radius: 8px !important;
-    border-bottom: 1px solid #c4607a !important;
-  }
+        .cd-meta {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
 
-  .cd-task-box {
-    border-radius: 12px !important;
-    padding: 16px !important;
-  }
+        .cd-meta-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 11px;
+          border-radius: 9999px;
+          background: #ffffff;
+          border: 1px solid #ead1d9;
+          color: #374151;
+          font-size: 13px;
+          font-weight: 700;
+          text-transform: capitalize;
+        }
 
-  .cd-task-header {
-    flex-direction: column;
-    align-items: stretch !important;
-    gap: 12px;
-  }
+        .cd-progress-card {
+          width: 150px;
+          flex: 0 0 auto;
+          text-align: center;
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 18px;
+          padding: 16px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
 
-  .cd-add-task-btn {
-    width: 100%;
-  }
+        .cd-progress-circle {
+          position: relative;
+          width: 92px;
+          height: 92px;
+          margin: 0 auto 8px;
+        }
 
-  .cd-form-grid {
-    grid-template-columns: 1fr !important;
-  }
+        .cd-progress-text {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          color: #1f2937;
+          font-size: 19px;
+          font-weight: 850;
+        }
 
-  .cd-form-actions {
-    flex-direction: column;
-  }
+        .cd-progress-label {
+          margin: 0 0 4px;
+          color: #1f2937;
+          font-size: 13px;
+          font-weight: 800;
+        }
 
-  .cd-form-actions button {
-    width: 100%;
-  }
+        .cd-progress-sub {
+          margin: 0;
+          color: #64748b;
+          font-size: 12px;
+          font-weight: 600;
+        }
 
-  .cd-task-item {
-    flex-direction: column;
-    align-items: flex-start !important;
-    gap: 10px;
-  }
+        .cd-panel {
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 18px;
+          padding: 22px;
+          margin-bottom: 18px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
 
-  .cd-task-badge {
-    align-self: flex-start;
-  }
+        .cd-panel-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 14px;
+          margin-bottom: 18px;
+        }
 
-  .cd-task-actions {
-    width: 100%;
-    justify-content: stretch;
-  }
+        .cd-panel-title-wrap {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
 
-  .cd-task-actions button {
-    flex: 1;
-  }
-}
-`}</style>
+        .cd-panel-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 13px;
+          display: grid;
+          place-items: center;
+          background: #fff1f5;
+          border: 1px solid #e8b9c6;
+          color: #b5536b;
+          flex: 0 0 auto;
+        }
 
-      {/* Back Button */}
-      <button onClick={onBack} style={styles.backBtn} className="cd-back-btn">
-        ← Back to Campaigns
+        .cd-panel-title {
+          margin: 0;
+          color: #1f2937;
+          font-size: 18px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
+
+        .cd-panel-note {
+          margin: 4px 0 0;
+          color: #64748b;
+          font-size: 13px;
+        }
+
+        .cd-equip-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+        }
+
+        .cd-equip-item {
+          border-radius: 16px;
+          padding: 16px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          cursor: pointer;
+          border: 1px solid;
+          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+        }
+
+        .cd-equip-item:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .cd-equip-icon {
+          width: 38px;
+          height: 38px;
+          border-radius: 12px;
+          display: grid;
+          place-items: center;
+          background: rgba(255, 255, 255, 0.72);
+          border: 1px solid rgba(255, 255, 255, 0.9);
+          flex: 0 0 auto;
+          font-size: 17px;
+        }
+
+        .cd-equip-label {
+          flex: 1;
+          color: #1f2937;
+          font-size: 14px;
+          font-weight: 800;
+        }
+
+        .cd-equip-check {
+          width: 24px;
+          height: 24px;
+          border-radius: 9999px;
+          display: grid;
+          place-items: center;
+          color: #ffffff;
+          font-size: 12px;
+          flex: 0 0 auto;
+        }
+
+        .cd-message {
+          margin-bottom: 18px;
+          padding: 13px 15px;
+          border-radius: 14px;
+          font-size: 14px;
+          font-weight: 700;
+          border: 1px solid;
+        }
+
+        .cd-message-success {
+          background: #ecfdf3;
+          color: #2f7d56;
+          border-color: #2f9d6a;
+        }
+
+        .cd-message-error {
+          background: #fff1f5;
+          color: #b5536b;
+          border-color: #c4607a;
+        }
+
+        .cd-tab-row {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-bottom: 14px;
+        }
+
+        .cd-tab-btn {
+          border: 1px solid #d8b8c2;
+          border-radius: 14px;
+          padding: 11px 14px;
+          background: #ffffff;
+          color: #374151;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 800;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+        }
+
+        .cd-tab-btn:hover {
+          transform: translateY(-1px);
+          border-color: #c4607a;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .cd-tab-btn-active {
+          background: linear-gradient(135deg, #c4607a, #e58ca3);
+          color: #ffffff;
+          border-color: #c4607a;
+          box-shadow: 0 8px 18px rgba(196, 96, 122, 0.22);
+        }
+
+        .cd-tab-badge {
+          padding: 3px 8px;
+          border-radius: 9999px;
+          font-size: 11px;
+          font-weight: 850;
+          background: #fff1f5;
+          color: #b5536b;
+          border: 1px solid #e8b9c6;
+        }
+
+        .cd-tab-btn-active .cd-tab-badge {
+          background: rgba(255, 255, 255, 0.24);
+          color: #ffffff;
+          border-color: rgba(255, 255, 255, 0.34);
+        }
+
+        .cd-task-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          gap: 14px;
+          margin-bottom: 14px;
+        }
+
+        .cd-add-btn,
+        .cd-submit-btn {
+          border: none;
+          border-radius: 12px;
+          padding: 11px 15px;
+          background: linear-gradient(135deg, #c4607a, #e58ca3);
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          box-shadow: 0 8px 18px rgba(196, 96, 122, 0.22);
+          transition: transform 180ms ease, box-shadow 180ms ease;
+          white-space: nowrap;
+        }
+
+        .cd-add-btn:hover,
+        .cd-submit-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 10px 22px rgba(196, 96, 122, 0.28);
+        }
+
+        .cd-tab-progress-bar {
+          height: 10px;
+          border-radius: 9999px;
+          background: #f3e8ec;
+          overflow: hidden;
+          border: 1px solid #ead1d9;
+          margin-bottom: 16px;
+        }
+
+        .cd-tab-progress-fill {
+          height: 100%;
+          border-radius: 9999px;
+          transition: width 320ms ease;
+          min-width: 8px;
+        }
+
+        .cd-form-box {
+          background: #fff7fa;
+          border: 1px solid #ead1d9;
+          border-radius: 16px;
+          padding: 16px;
+          margin-bottom: 16px;
+        }
+
+        .cd-form-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+          margin-bottom: 14px;
+        }
+
+        .cd-field {
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+        }
+
+        .cd-label {
+          font-size: 13px;
+          font-weight: 800;
+          color: #374151;
+        }
+
+        .cd-input {
+          width: 100%;
+          box-sizing: border-box;
+          padding: 11px 12px;
+          border-radius: 12px;
+          border: 1px solid #d8b8c2;
+          background: #ffffff;
+          color: #1f2937;
+          font-size: 14px;
+          outline: none;
+          font-family: Segoe UI, sans-serif;
+          transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+        }
+
+        .cd-input:focus {
+          border-color: #c4607a;
+          box-shadow: 0 0 0 4px rgba(196, 96, 122, 0.12);
+          background: #fffafa;
+        }
+
+        .cd-form-actions {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        .cd-cancel-btn {
+          border: 1px solid #d8b8c2;
+          border-radius: 12px;
+          padding: 11px 15px;
+          background: #ffffff;
+          color: #64748b;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+
+        .cd-empty {
+          background: #ffffff;
+          border: 1px dashed #e2c6cf;
+          border-radius: 16px;
+          padding: 34px 18px;
+          text-align: center;
+          color: #94a3b8;
+          font-size: 14px;
+          font-weight: 700;
+        }
+
+        .cd-task-list {
+          display: grid;
+          gap: 10px;
+        }
+
+        .cd-task-item {
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 16px;
+          padding: 14px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+        }
+
+        .cd-task-item:hover {
+          transform: translateY(-1px);
+          border-color: #c4607a;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .cd-checkbox {
+          width: 26px;
+          height: 26px;
+          border-radius: 9999px;
+          border: 2px solid;
+          display: grid;
+          place-items: center;
+          cursor: pointer;
+          flex: 0 0 auto;
+          transition: background-color 180ms ease, border-color 180ms ease;
+        }
+
+        .cd-task-info {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .cd-task-title {
+          margin: 0 0 3px;
+          color: #1f2937;
+          font-size: 14px;
+          font-weight: 800;
+          line-height: 1.4;
+        }
+
+        .cd-task-desc {
+          margin: 0;
+          color: #64748b;
+          font-size: 12px;
+          line-height: 1.4;
+        }
+
+        .cd-task-actions {
+          display: flex;
+          gap: 7px;
+          flex: 0 0 auto;
+        }
+
+        .cd-edit-btn,
+        .cd-delete-btn {
+          border-radius: 10px;
+          padding: 8px 10px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 800;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          border: 1px solid;
+          transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .cd-edit-btn {
+          background: #fff7e8;
+          color: #9a5f0f;
+          border-color: #d98a1f;
+        }
+
+        .cd-delete-btn {
+          background: #fff1f5;
+          color: #b5536b;
+          border-color: #c4607a;
+        }
+
+        .cd-edit-btn:hover,
+        .cd-delete-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        @keyframes cdFadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 900px) {
+          .cd-header {
+            flex-direction: column;
+          }
+
+          .cd-progress-card {
+            width: 100%;
+          }
+
+          .cd-equip-grid,
+          .cd-form-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .cd-task-header {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .cd-add-btn {
+            width: 100%;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .cd-back-btn {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .cd-header,
+          .cd-panel {
+            padding: 18px;
+          }
+
+          .cd-title {
+            font-size: 24px;
+          }
+
+          .cd-tab-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+          }
+
+          .cd-tab-btn {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .cd-task-item {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .cd-task-actions {
+            width: 100%;
+          }
+
+          .cd-edit-btn,
+          .cd-delete-btn {
+            flex: 1;
+            justify-content: center;
+          }
+
+          .cd-form-actions {
+            flex-direction: column;
+          }
+
+          .cd-submit-btn,
+          .cd-cancel-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .cd-tab-row {
+            grid-template-columns: 1fr;
+          }
+
+          .cd-meta {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .cd-meta-pill {
+            justify-content: center;
+          }
+        }
+      `}</style>
+
+      <button onClick={onBack} className="cd-back-btn">
+        <FaArrowLeft />
+        Back to Campaigns
       </button>
 
-      {/* Campaign Header */}
-      <div style={styles.campaignHeader} className="cd-header">
-        <div style={styles.campaignHeaderLeft} className="cd-header-left">
-          <div style={styles.headerTop} className="cd-header-top">
-            <h2 style={styles.campaignTitle}>{campaign.title}</h2>
-            <span style={{ ...styles.statusBadge, ...statusColors[campaign.status] }}>
-              {campaign.status}
+      <div className="cd-header">
+        <div className="cd-header-left">
+          <div className="cd-header-top">
+            <div className="cd-campaign-icon">
+              <FaBullhorn />
+            </div>
+
+            <h2 className="cd-title">{campaign.title}</h2>
+
+            <span
+              className="cd-status-badge"
+              style={statusColors[campaign.status] || statusColors.draft}
+            >
+              {String(campaign.status).replaceAll('-', ' ')}
             </span>
           </div>
-          <p style={styles.campaignDesc}>{campaign.description || 'No description'}</p>
-          <div style={styles.campaignMeta} className="cd-meta">
-            <span><FaGlobe/> {campaign.platform}</span>
-            <span><FaCalendar/> {new Date(campaign.start_date).toLocaleDateString()} – {new Date(campaign.end_date).toLocaleDateString()}</span>
+
+          <p className="cd-desc">{campaign.description || 'No description'}</p>
+
+          <div className="cd-meta">
+            <span className="cd-meta-pill">
+              <FaGlobe />
+              {campaign.platform}
+            </span>
+
+            <span className="cd-meta-pill">
+              <FaCalendar />
+              {new Date(campaign.start_date).toLocaleDateString()} to {new Date(campaign.end_date).toLocaleDateString()}
+            </span>
           </div>
         </div>
 
-        {/* Overall Progress */}
-        <div style={styles.overallProgress} className="cd-progress">
-          <div style={styles.progressCircleWrapper}>
-            <svg width="90" height="90" viewBox="0 0 90 90">
-              <circle cx="45" cy="45" r="38" fill="none" stroke="#f0f0f0" strokeWidth="8" />
+        <div className="cd-progress-card">
+          <div className="cd-progress-circle">
+            <svg width="92" height="92" viewBox="0 0 92 92">
+              <circle cx="46" cy="46" r="38" fill="none" stroke="#f3e8ec" strokeWidth="8" />
               <circle
-                cx="45" cy="45" r="38"
+                cx="46"
+                cy="46"
+                r="38"
                 fill="none"
-                stroke={campaign.progress === 100 ? '#27ae60' : campaign.progress >= 50 ? '#f39c12' : '#c4607a'}
+                stroke={progressColor}
                 strokeWidth="8"
                 strokeDasharray={`${2 * Math.PI * 38}`}
                 strokeDashoffset={`${2 * Math.PI * 38 * (1 - campaign.progress / 100)}`}
                 strokeLinecap="round"
-                transform="rotate(-90 45 45)"
-                style={{ transition: 'stroke-dashoffset 0.5s ease' }}
+                transform="rotate(-90 46 46)"
+                style={{ transition: 'stroke-dashoffset 320ms ease' }}
               />
             </svg>
-            <div style={styles.progressCircleText}>
-              <span style={styles.progressPct}>{campaign.progress}%</span>
-            </div>
+
+            <div className="cd-progress-text">{campaign.progress}%</div>
           </div>
-          <p style={styles.progressLabel}>Overall Progress</p>
-          <p style={styles.progressSub}>{campaign.completed_tasks}/{campaign.total_tasks} tasks done</p>
+
+          <p className="cd-progress-label">Overall Progress</p>
+          <p className="cd-progress-sub">
+            {campaign.completed_tasks}/{campaign.total_tasks} tasks done
+          </p>
         </div>
       </div>
 
-      {/* Equipment Checklist */}
-      <div style={styles.equipmentBox} className="cd-equipment-box">
-        <h4 style={styles.equipTitle}>🎬 Equipment Checklist</h4>
-        <div style={styles.equipmentBox} className="cd-equipment-box">
+      <div className="cd-panel">
+        <div className="cd-panel-header">
+          <div className="cd-panel-title-wrap">
+            <div className="cd-panel-icon">
+              <FaClipboardList />
+            </div>
+
+            <div>
+              <h4 className="cd-panel-title">Equipment Checklist</h4>
+              <p className="cd-panel-note">Prepare the equipment needed for this campaign.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="cd-equip-grid">
           {[
             { key: 'equip_lights', icon: <FaLightbulb />, label: 'Lights' },
-            { key: 'equip_mic',    icon: <FaMicrophone />, label: 'Microphone' },
+            { key: 'equip_mic', icon: <FaMicrophone />, label: 'Microphone' },
             { key: 'equip_camera', icon: <FaCamera />, label: 'Camera' },
-          ].map(item => (
-            <div
-              key={item.key}
-              className="cd-equip-item"
-              onClick={() => handleEquipmentChange(item.key, !equipment[item.key])}
-              style={{
-                ...styles.equipItem,
-                backgroundColor: equipment[item.key] ? '#d4edda' : '#f8f9fa',
-                border: `2px solid ${equipment[item.key] ? '#27ae60' : '#eee'}`,
-              }}
-            >
-              <span style={styles.equipIcon}>{item.icon}</span>
-              <span style={{ ...styles.equipLabel, color: equipment[item.key] ? '#155724' : '#888' }}>
-                {item.label}
-              </span>
-              <span style={{
-                ...styles.equipCheck,
-                backgroundColor: equipment[item.key] ? '#27ae60' : '#ddd',
-              }}>
-                {equipment[item.key] ? '✓' : ''}
-              </span>
-            </div>
-          ))}
+          ].map(item => {
+            const active = equipment[item.key];
+
+            return (
+              <div
+                key={item.key}
+                onClick={() => handleEquipmentChange(item.key, !active)}
+                className="cd-equip-item"
+                style={{
+                  backgroundColor: active ? '#ecfdf3' : '#fff7fa',
+                  borderColor: active ? '#2f9d6a' : '#e2c6cf',
+                }}
+              >
+                <span
+                  className="cd-equip-icon"
+                  style={{ color: active ? '#2f9d6a' : '#b5536b' }}
+                >
+                  {item.icon}
+                </span>
+
+                <span className="cd-equip-label">{item.label}</span>
+
+                <span
+                  className="cd-equip-check"
+                  style={{ backgroundColor: active ? '#2f9d6a' : '#c9b6bf' }}
+                >
+                  {active && <FaCheck />}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
       {message && (
-        <div style={{
-          padding: '12px 16px', borderRadius: '8px', marginBottom: '16px',
-          fontSize: '14px', fontWeight: '500',
-          backgroundColor: isError ? '#f8d7da' : '#d4edda',
-          color:           isError ? '#721c24' : '#155724',
-          border:          `1px solid ${isError ? '#f5c6cb' : '#c3e6cb'}`,
-        }}>
-          {isSuccess ? '' : ''}{msgText}
+        <div className={`cd-message ${isError ? 'cd-message-error' : 'cd-message-success'}`}>
+          {msgText}
         </div>
       )}
 
-      {/* Task Tabs */}
-      <div style={styles.tabRow} className="cd-tabs">
+      <div className="cd-tab-row">
         {TASK_CATEGORIES.map(tab => {
-          const tabCount  = tasks.filter(t => t.category === tab.key).length;
-          const tabDone   = tasks.filter(t => t.category === tab.key && t.status === 'done').length;
-          const isActive  = activeTab === tab.key;
+          const tabCount = tasks.filter(t => t.category === tab.key).length;
+          const tabDone = tasks.filter(t => t.category === tab.key && t.status === 'done').length;
+          const isActive = activeTab === tab.key;
+
           return (
             <button
               key={tab.key}
-              onClick={() => { setActiveTab(tab.key); setShowForm(false); }}
-              className={isActive ? "cd-tab-btn-active" : "cd-tab-btn"}
-              style={isActive ? styles.tabActive : styles.tab}
+              onClick={() => {
+                setActiveTab(tab.key);
+                setShowForm(false);
+              }}
+              className={`cd-tab-btn ${isActive ? 'cd-tab-btn-active' : ''}`}
             >
-              {tab.icon} {tab.label}
-              <span style={{
-                ...styles.tabBadge,
-                backgroundColor: isActive ? 'rgba(255,255,255,0.3)' : '#f0f0f0',
-                color: isActive ? '#fff' : '#555',
-              }}>
-                {tabDone}/{tabCount}
-              </span>
+              {tab.icon}
+              {tab.label}
+              <span className="cd-tab-badge">{tabDone}/{tabCount}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Tab Content */}
-      <div style={styles.taskBox} className="cd-task-box">
-        <div style={styles.taskHeader} className="cd-task-header">
-          <div>
-            <h4 style={styles.taskBoxTitle}>
-              {TASK_CATEGORIES.find(t => t.key === activeTab)?.icon}{' '}
-              {TASK_CATEGORIES.find(t => t.key === activeTab)?.label}
-            </h4>
-            <p style={styles.taskBoxSub}>
-              {doneTasks}/{totalTasks} tasks completed
-              {totalTasks > 0 && (
-                <span style={styles.tabProgress}>
-                  — {Math.round((doneTasks / totalTasks) * 100)}%
-                </span>
-              )}
-            </p>
+      <div className="cd-panel">
+        <div className="cd-task-header">
+          <div className="cd-panel-title-wrap">
+            <div className="cd-panel-icon">
+              {activeCategory?.icon}
+            </div>
+
+            <div>
+              <h4 className="cd-panel-title">{activeCategory?.label}</h4>
+              <p className="cd-panel-note">
+                {doneTasks}/{totalTasks} tasks completed
+                {totalTasks > 0 ? ` (${tabProgressPercent}%)` : ''}
+              </p>
+            </div>
           </div>
-          <button onClick={() => setShowForm(!showForm)} style={styles.addTaskBtn} className="cd-add-task-btn">
-            {showForm ? '✕ Cancel' : '+ Add Task'}
+
+          <button onClick={() => setShowForm(!showForm)} className="cd-add-btn">
+            {showForm ? <FaTimes /> : <FaPlus />}
+            {showForm ? 'Cancel' : 'Add Task'}
           </button>
         </div>
 
-        {/* Tab Progress Bar */}
         {totalTasks > 0 && (
-          <div style={styles.tabProgressBar}>
-            <div style={{
-              ...styles.tabProgressFill,
-              width: `${Math.round((doneTasks / totalTasks) * 100)}%`,
-              backgroundColor: doneTasks === totalTasks ? '#27ae60' : '#c4607a',
-            }} />
+          <div className="cd-tab-progress-bar">
+            <div
+              className="cd-tab-progress-fill"
+              style={{
+                width: `${tabProgressPercent}%`,
+                backgroundColor: doneTasks === totalTasks ? '#2f9d6a' : '#c4607a',
+              }}
+            />
           </div>
         )}
 
-        {/* Add Task Form */}
         {showForm && (
-          <div style={styles.addForm}>
-            <div style={styles.addFormGrid} className="cd-form">
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Task Title</label>
+          <div className="cd-form-box">
+            <div className="cd-form-grid">
+              <div className="cd-field">
+                <label className="cd-label">Task Title</label>
                 <input
                   type="text"
-                  placeholder={`e.g. ${activeTab === 'tasks' ? 'Plan campaign strategy' : activeTab === 'photoshoot' ? 'Book photographer' : activeTab === 'graphics' ? 'Design banner' : 'Edit promo video'}`}
+                  placeholder={`e.g. ${
+                    activeTab === 'tasks'
+                      ? 'Plan campaign strategy'
+                      : activeTab === 'photoshoot'
+                      ? 'Book photographer'
+                      : activeTab === 'graphics'
+                      ? 'Design banner'
+                      : 'Edit promo video'
+                  }`}
                   value={newTask.title}
                   onChange={e => setNewTask({ ...newTask, title: e.target.value })}
-                  style={styles.input}
+                  className="cd-input"
                   onKeyDown={e => e.key === 'Enter' && handleAddTask()}
                 />
               </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Description (optional)</label>
+
+              <div className="cd-field">
+                <label className="cd-label">Description</label>
                 <input
                   type="text"
                   placeholder="Brief description..."
                   value={newTask.description}
                   onChange={e => setNewTask({ ...newTask, description: e.target.value })}
-                  style={styles.input}
+                  className="cd-input"
                 />
               </div>
             </div>
-            <button onClick={handleAddTask} style={styles.submitBtn}>Add Task</button>
+
+            <button onClick={handleAddTask} className="cd-submit-btn">
+              <FaPlus />
+              Add Task
+            </button>
           </div>
         )}
 
-        {/* Edit Task Form */}
         {editTaskId && (
-          <div style={{ ...styles.addForm, borderLeft: '4px solid #c4607a' }}>
-            <div style={styles.addFormGrid} className="cd-form">
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Task Title</label>
+          <div className="cd-form-box">
+            <div className="cd-form-grid">
+              <div className="cd-field">
+                <label className="cd-label">Task Title</label>
                 <input
                   type="text"
                   value={editTaskForm.title}
                   onChange={e => setEditTaskForm({ ...editTaskForm, title: e.target.value })}
-                  style={styles.input}
+                  className="cd-input"
                 />
               </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Description</label>
+
+              <div className="cd-field">
+                <label className="cd-label">Description</label>
                 <input
                   type="text"
                   value={editTaskForm.description}
                   onChange={e => setEditTaskForm({ ...editTaskForm, description: e.target.value })}
-                  style={styles.input}
+                  className="cd-input"
                 />
               </div>
-              <div style={styles.inputGroup}>
-                <label style={styles.label}>Status</label>
+
+              <div className="cd-field">
+                <label className="cd-label">Status</label>
                 <select
                   value={editTaskForm.status}
                   onChange={e => setEditTaskForm({ ...editTaskForm, status: e.target.value })}
-                  style={styles.input}
+                  className="cd-input"
                 >
                   <option value="todo">To Do</option>
                   <option value="in-progress">In Progress</option>
@@ -523,144 +1105,100 @@ function CampaignDetail({ campaignId, onBack }) {
                 </select>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: '8px' }} className="cd-form-actions">
-              <button onClick={handleUpdateTask} style={styles.submitBtn}>Save</button>
-              <button onClick={() => setEditTaskId(null)} style={styles.cancelBtn}>Cancel</button>
+
+            <div className="cd-form-actions">
+              <button onClick={handleUpdateTask} className="cd-submit-btn">
+                <FaCheck />
+                Save
+              </button>
+
+              <button onClick={() => setEditTaskId(null)} className="cd-cancel-btn">
+                Cancel
+              </button>
             </div>
           </div>
         )}
 
-        {/* Task List */}
         {tabTasks.length === 0 ? (
-          <div style={styles.emptyTasks}>
-            <p style={{ fontSize: '14px', color: '#aaa', margin: 0 }}>
-              No tasks yet for {TASK_CATEGORIES.find(t => t.key === activeTab)?.label}. Add one above!
-            </p>
+          <div className="cd-empty">
+            No tasks yet for {activeCategory?.label}. Add one above.
           </div>
         ) : (
-          <div style={styles.taskList}>
-            {tabTasks.map(task => (
-              <div
-                key={task.id}
-                className="cd-task-item"
-                style={{
-                  ...styles.taskItem,
-                  backgroundColor: task.status === 'done' ? '#f8fff9' : '#fff',
-                  borderLeft: `4px solid ${task.status === 'done' ? '#27ae60' : task.status === 'in-progress' ? '#f39c12' : '#ddd'}`,
-                }}
-              >
-                {/* Checkbox */}
+          <div className="cd-task-list">
+            {tabTasks.map(task => {
+              const isDone = task.status === 'done';
+              const taskBorder =
+                task.status === 'done' ? '#2f9d6a' :
+                task.status === 'in-progress' ? '#d98a1f' :
+                '#c9b6bf';
+
+              return (
                 <div
-                  onClick={() => handleToggleTask(task)}
+                  key={task.id}
+                  className="cd-task-item"
                   style={{
-                    ...styles.checkbox,
-                    backgroundColor: task.status === 'done' ? '#27ae60' : '#fff',
-                    borderColor: task.status === 'done' ? '#27ae60' : '#ddd',
+                    backgroundColor: isDone ? '#f8fff9' : '#ffffff',
+                    borderColor: taskBorder,
                   }}
                 >
-                  {task.status === 'done' && <span style={styles.checkmark}>✓</span>}
-                </div>
+                  <div
+                    onClick={() => handleToggleTask(task)}
+                    className="cd-checkbox"
+                    style={{
+                      backgroundColor: isDone ? '#2f9d6a' : '#ffffff',
+                      borderColor: isDone ? '#2f9d6a' : '#c9b6bf',
+                      color: '#ffffff',
+                    }}
+                  >
+                    {isDone && <FaCheck />}
+                  </div>
 
-                {/* Task Info */}
-                <div style={styles.taskInfo}>
-                  <p style={{
-                    ...styles.taskTitle,
-                    textDecoration: task.status === 'done' ? 'line-through' : 'none',
-                    color: task.status === 'done' ? '#aaa' : '#302e2e',
-                  }}>
-                    {task.title}
-                  </p>
-                  {task.description && (
-                    <p style={styles.taskDesc}>{task.description}</p>
-                  )}
-                </div>
+                  <div className="cd-task-info">
+                    <p
+                      className="cd-task-title"
+                      style={{
+                        textDecoration: isDone ? 'line-through' : 'none',
+                        color: isDone ? '#94a3b8' : '#1f2937',
+                      }}
+                    >
+                      {task.title}
+                    </p>
 
-                {/* Task Status Badge */}
-                <span className="cd-task-badge" style={{ ...styles.taskBadge, ...taskStatusColors[task.status] }}>
-                  {task.status === 'in-progress' ? 'In Progress' : task.status === 'todo' ? 'To Do' : 'Done'}
-                </span>
+                    {task.description && (
+                      <p className="cd-task-desc">{task.description}</p>
+                    )}
+                  </div>
 
-                {/* Task Actions */}
-                <div style={styles.taskActions} className="cd-actions">
-                  <button onClick={() => handleEditTask(task)} style={styles.editTaskBtn}>Edit</button>
-                  <button onClick={() => handleDeleteTask(task.id)} style={styles.delTaskBtn}>✕</button>
+                  <span
+                    className="cd-task-badge"
+                    style={taskStatusColors[task.status] || taskStatusColors.todo}
+                  >
+                    {task.status === 'in-progress'
+                      ? 'In Progress'
+                      : task.status === 'todo'
+                      ? 'To Do'
+                      : 'Done'}
+                  </span>
+
+                  <div className="cd-task-actions">
+                    <button onClick={() => handleEditTask(task)} className="cd-edit-btn">
+                      <FaEdit />
+                      Edit
+                    </button>
+
+                    <button onClick={() => handleDeleteTask(task.id)} className="cd-delete-btn">
+                      <FaTrash />
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
     </div>
   );
 }
-
-const styles = {
-  backBtn: { padding: '9px 18px', backgroundColor: '#f8f9fa', color: '#555', border: '1px solid #ddd', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600', marginBottom: '20px' },
-
-  // Campaign Header
-  campaignHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', backgroundColor: '#fff', borderRadius: '14px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '16px' },
-  campaignHeaderLeft: { flex: 1 },
-  headerTop: { display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' },
-  campaignTitle: { fontSize: '22px', fontWeight: '700', color: '#302e2e', margin: 0 },
-  statusBadge: { padding: '4px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: '600' },
-  campaignDesc: { fontSize: '14px', color: '#888', margin: '0 0 12px' },
-  campaignMeta: { display: 'flex', gap: '20px', fontSize: '13px', color: '#555', flexWrap: 'wrap' },
-
-  // Progress Circle
-  overallProgress: { textAlign: 'center', flexShrink: 0, marginLeft: '24px' },
-  progressCircleWrapper: { position: 'relative', width: '90px', height: '90px', margin: '0 auto 8px' },
-  progressCircleText: { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' },
-  progressPct: { fontSize: '18px', fontWeight: '700', color: '#302e2e' },
-  progressLabel: { fontSize: '13px', fontWeight: '600', color: '#302e2e', margin: '0 0 4px' },
-  progressSub: { fontSize: '12px', color: '#aaa', margin: 0 },
-
-  // Equipment
-  equipmentBox: { backgroundColor: '#fff', borderRadius: '12px', padding: '20px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginBottom: '16px' },
-  equipTitle: { fontSize: '15px', fontWeight: '600', color: '#302e2e', margin: '0 0 16px' },
-  equipGrid: { display: 'flex', gap: '16px', flexWrap: 'wrap' },
-  equipItem: { flex: 1, display: 'flex', alignItems: 'center', gap: '10px', padding: '14px 18px', borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' },
-  equipIcon: { fontSize: '22px' },
-  equipLabel: { flex: 1, fontSize: '14px', fontWeight: '600' },
-  equipCheck: { width: '22px', height: '22px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', color: '#fff', fontWeight: '700', flexShrink: 0 },
-
-  // Task Tabs
-  tabRow: { display: 'flex', gap: '8px', marginBottom: '0', flexWrap: 'wrap' },
-  tab: { display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 18px', borderRadius: '8px 8px 0 0', border: '1px solid #ddd', borderBottom: 'none', backgroundColor: '#f8f9fa', cursor: 'pointer', fontSize: '14px', color: '#555' },
-  tabActive: { display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 18px', borderRadius: '8px 8px 0 0', border: '1px solid #c4607a', borderBottom: '2px solid #fff', backgroundColor: '#fff', cursor: 'pointer', fontSize: '14px', color: '#c4607a', fontWeight: '600' },
-  tabBadge: { padding: '2px 8px', borderRadius: '10px', fontSize: '11px', fontWeight: '700' },
-
-  // Task Box
-  taskBox: { backgroundColor: '#fff', borderRadius: '0 12px 12px 12px', padding: '24px', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' },
-  taskHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' },
-  taskBoxTitle: { fontSize: '16px', fontWeight: '600', color: '#302e2e', margin: '0 0 4px' },
-  taskBoxSub: { fontSize: '13px', color: '#888', margin: 0 },
-  tabProgress: { color: '#c4607a', fontWeight: '600' },
-  addTaskBtn: { padding: '9px 18px', backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
-  tabProgressBar: { backgroundColor: '#f0f0f0', borderRadius: '10px', height: '6px', overflow: 'hidden', marginBottom: '16px' },
-  tabProgressFill: { height: '6px', borderRadius: '10px', transition: 'width 0.5s ease' },
-
-  // Add/Edit Form
-  addForm: { backgroundColor: '#f8f9fa', borderRadius: '10px', padding: '16px', marginBottom: '16px' },
-  addFormGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '12px' },
-  inputGroup: { display: 'flex', flexDirection: 'column', gap: '6px' },
-  label: { fontSize: '13px', fontWeight: '600', color: '#555' },
-  input: { padding: '10px 12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px', outline: 'none', backgroundColor: '#fff' },
-  submitBtn: { padding: '10px 20px', backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
-  cancelBtn: { padding: '10px 20px', backgroundColor: '#f0f0f0', color: '#555', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' },
-
-  // Task List
-  emptyTasks: { padding: '32px', textAlign: 'center', backgroundColor: '#f8f9fa', borderRadius: '8px' },
-  taskList: { display: 'flex', flexDirection: 'column', gap: '8px' },
-  taskItem: { display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', borderRadius: '10px', border: '1px solid #eee', transition: 'all 0.2s' },
-  checkbox: { width: '22px', height: '22px', borderRadius: '50%', border: '2px solid', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0, transition: 'all 0.2s' },
-  checkmark: { fontSize: '12px', color: '#fff', fontWeight: '700' },
-  taskInfo: { flex: 1, minWidth: 0 },
-  taskTitle: { fontSize: '14px', fontWeight: '500', margin: '0 0 2px' },
-  taskDesc: { fontSize: '12px', color: '#aaa', margin: 0 },
-  taskBadge: { padding: '3px 10px', borderRadius: '20px', fontSize: '11px', fontWeight: '600', flexShrink: 0 },
-  taskActions: { display: 'flex', gap: '6px', flexShrink: 0 },
-  editTaskBtn: { padding: '5px 10px', backgroundColor: '#eaf4fb', color: '#2980b9', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' },
-  delTaskBtn: { padding: '5px 10px', backgroundColor: '#f8d7da', color: '#721c24', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' },
-};
 
 export default CampaignDetail;

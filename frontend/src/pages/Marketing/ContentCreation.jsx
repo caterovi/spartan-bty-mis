@@ -1,6 +1,24 @@
 import { useState, useEffect } from 'react';
 import api from '../../api/axiosConfig';
-import { FaFacebook, FaInstagram, FaTiktok, FaShopify, FaYoutube } from "react-icons/fa";
+import Layout from '../../components/Layout';
+import {
+  FaFacebook,
+  FaInstagram,
+  FaTiktok,
+  FaShopify,
+  FaYoutube,
+  FaPhotoVideo,
+  FaPlus,
+  FaTimes,
+  FaSearch,
+  FaSave,
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaHeart,
+  FaCalendar,
+  FaUser,
+} from "react-icons/fa";
 
 function ContentCreation() {
   const [content, setContent] = useState([]);
@@ -35,7 +53,7 @@ function ContentCreation() {
   const handleSubmit = async () => {
     try {
       await api.post('/marketing/content', form);
-      setMessage('Content task created!');
+      setMessage('Content task created successfully!');
       setShowForm(false);
       setForm({
         title: '',
@@ -56,11 +74,11 @@ function ContentCreation() {
   const handleUpdate = async () => {
     try {
       await api.put(`/marketing/content/${editId}`, editForm);
-      setMessage('Content updated!');
+      setMessage('Content updated successfully!');
       setEditId(null);
       fetchContent();
     } catch (err) {
-      setMessage('Error updating.');
+      setMessage('Error updating content.');
     } finally {
       setTimeout(() => setMessage(''), 3000);
     }
@@ -85,11 +103,11 @@ function ContentCreation() {
   };
 
   const statusColors = {
-    idea: { backgroundColor: '#f0f0f0', color: '#888' },
-    'in-progress': { backgroundColor: '#eaf4fb', color: '#2980b9' },
-    'for-review': { backgroundColor: '#fef9e7', color: '#f39c12' },
-    published: { backgroundColor: '#eafaf1', color: '#27ae60' },
-    cancelled: { backgroundColor: '#fdf0f3', color: '#c4607a' },
+    idea: { backgroundColor: '#f8f3f5', color: '#6b5b63', borderColor: '#c9b6bf' },
+    'in-progress': { backgroundColor: '#fff7e8', color: '#9a5f0f', borderColor: '#d98a1f' },
+    'for-review': { backgroundColor: '#fff1f5', color: '#b5536b', borderColor: '#c4607a' },
+    published: { backgroundColor: '#ecfdf3', color: '#2f7d56', borderColor: '#2f9d6a' },
+    cancelled: { backgroundColor: '#f8f3f5', color: '#6b5b63', borderColor: '#c9b6bf' },
   };
 
   const filtered = content.filter(c => {
@@ -104,35 +122,231 @@ function ContentCreation() {
   });
 
   const kanbanStatuses = ['idea', 'in-progress', 'for-review', 'published'];
+  const filterOptions = ['all', 'idea', 'in-progress', 'for-review', 'published', 'cancelled'];
+
+  const formatStatus = (value) =>
+    value === 'all'
+      ? 'All'
+      : value.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
   return (
-    <div className="content-root">
+    <Layout>
       <style>{`
-        .content-root {
+        .content-page {
           width: 100%;
           min-width: 0;
+          animation: contentFadeUp 0.35s ease both;
         }
 
-        .content-top-row {
+        .content-hero {
+          background:
+            radial-gradient(circle at top right, rgba(196, 96, 122, 0.18), transparent 34%),
+            linear-gradient(135deg, #fff7fa 0%, #ffffff 100%);
+          border: 1px solid #ead1d9;
+          border-radius: 18px;
+          padding: 24px;
+          margin-bottom: 20px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 18px;
+        }
+
+        .content-eyebrow {
+          margin: 0 0 8px;
+          color: #b5536b;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .content-title {
+          margin: 0;
+          color: #1f2937;
+          font-size: 28px;
+          font-weight: 800;
+          letter-spacing: -0.04em;
+        }
+
+        .content-subtitle {
+          margin: 8px 0 0;
+          color: #64748b;
+          font-size: 14px;
+          line-height: 1.6;
+          max-width: 720px;
+        }
+
+        .content-hero-icon {
+          width: 56px;
+          height: 56px;
+          border-radius: 16px;
+          display: grid;
+          place-items: center;
+          background: linear-gradient(135deg, #c4607a, #e58ca3);
+          color: #ffffff;
+          font-size: 24px;
+          box-shadow: 0 8px 24px rgba(196, 96, 122, 0.25);
+          flex: 0 0 auto;
+        }
+
+        .content-toolbar {
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 18px;
+          padding: 16px;
+          margin-bottom: 18px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
           display: flex;
           justify-content: space-between;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 16px;
+          gap: 14px;
         }
 
-        .content-top-right {
-          display: flex;
-          gap: 10px;
-          align-items: center;
+        .content-search-wrap {
+          position: relative;
+          width: 300px;
+          max-width: 100%;
         }
 
-        .content-search,
-        .content-add-btn,
-        .content-input,
-        .content-submit-btn,
-        .content-cancel-btn {
+        .content-search-icon {
+          position: absolute;
+          left: 13px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #b5536b;
+          font-size: 13px;
+          pointer-events: none;
+        }
+
+        .content-search {
+          width: 100%;
+          padding: 11px 13px 11px 36px;
+          border-radius: 12px;
+          border: 1px solid #d8b8c2;
+          background: #fff7fa;
+          color: #1f2937;
+          font-size: 14px;
+          outline: none;
           box-sizing: border-box;
+          transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+        }
+
+        .content-search:focus {
+          border-color: #c4607a;
+          background: #ffffff;
+          box-shadow: 0 0 0 4px rgba(196, 96, 122, 0.12);
+        }
+
+        .content-add-btn,
+        .content-submit-btn {
+          border: none;
+          border-radius: 12px;
+          padding: 11px 16px;
+          background: linear-gradient(135deg, #c4607a, #e58ca3);
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          box-shadow: 0 8px 18px rgba(196, 96, 122, 0.22);
+          transition: transform 180ms ease, box-shadow 180ms ease;
+          white-space: nowrap;
+        }
+
+        .content-add-btn:hover,
+        .content-submit-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 10px 22px rgba(196, 96, 122, 0.28);
+        }
+
+        .content-message {
+          margin-bottom: 18px;
+          padding: 13px 15px;
+          border-radius: 14px;
+          font-size: 14px;
+          font-weight: 700;
+          border: 1px solid #2f9d6a;
+          background: #ecfdf3;
+          color: #2f7d56;
+        }
+
+        .content-filters {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 18px;
+          flex-wrap: wrap;
+        }
+
+        .content-filter-btn {
+          padding: 8px 13px;
+          border-radius: 9999px;
+          border: 1px solid #d8b8c2;
+          background: #ffffff;
+          color: #64748b;
+          cursor: pointer;
+          font-size: 13px;
+          font-weight: 800;
+          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background-color 180ms ease;
+        }
+
+        .content-filter-btn:hover {
+          transform: translateY(-1px);
+          border-color: #c4607a;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .content-filter-active {
+          background: linear-gradient(135deg, #c4607a, #e58ca3);
+          color: #ffffff;
+          border-color: #c4607a;
+          box-shadow: 0 8px 18px rgba(196, 96, 122, 0.18);
+        }
+
+        .content-form {
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 18px;
+          padding: 22px;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        .content-form-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 18px;
+        }
+
+        .content-form-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 13px;
+          display: grid;
+          place-items: center;
+          background: #fff1f5;
+          border: 1px solid #e8b9c6;
+          color: #b5536b;
+          flex: 0 0 auto;
+        }
+
+        .content-form-title {
+          margin: 0;
+          color: #1f2937;
+          font-size: 18px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
+
+        .content-form-note {
+          margin: 4px 0 0;
+          color: #64748b;
+          font-size: 13px;
         }
 
         .content-form-grid {
@@ -142,59 +356,337 @@ function ContentCreation() {
           margin-bottom: 16px;
         }
 
+        .content-field {
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+        }
+
+        .content-label {
+          font-size: 13px;
+          font-weight: 800;
+          color: #374151;
+        }
+
+        .content-input {
+          width: 100%;
+          box-sizing: border-box;
+          padding: 11px 12px;
+          border-radius: 12px;
+          border: 1px solid #d8b8c2;
+          background: #ffffff;
+          color: #1f2937;
+          font-size: 14px;
+          outline: none;
+          font-family: Segoe UI, sans-serif;
+          transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+        }
+
+        .content-input:focus {
+          border-color: #c4607a;
+          box-shadow: 0 0 0 4px rgba(196, 96, 122, 0.12);
+          background: #fffafa;
+        }
+
+        .content-span-2 {
+          grid-column: span 2;
+        }
+
+        .content-span-3 {
+          grid-column: span 3;
+        }
+
         .content-edit-actions {
           display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        .content-cancel-btn {
+          border: 1px solid #d8b8c2;
+          border-radius: 12px;
+          padding: 11px 16px;
+          background: #ffffff;
+          color: #64748b;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+
+        .content-result-count {
+          margin: 0 0 12px;
+          color: #64748b;
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        .content-kanban {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(260px, 1fr));
+          gap: 16px;
+          max-width: 100%;
+        }
+
+        .content-kanban-col {
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 18px;
+          padding: 14px;
+          min-width: 0;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        .content-kanban-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 12px;
+        }
+
+        .content-kanban-label {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 6px 10px;
+          border-radius: 9999px;
+          font-size: 12px;
+          font-weight: 800;
+          border: 1px solid;
+          text-transform: capitalize;
+        }
+
+        .content-kanban-count {
+          width: 26px;
+          height: 26px;
+          border-radius: 9999px;
+          display: grid;
+          place-items: center;
+          background: #fff1f5;
+          color: #b5536b;
+          border: 1px solid #e8b9c6;
+          font-size: 12px;
+          font-weight: 850;
+          flex: 0 0 auto;
+        }
+
+        .content-kanban-empty {
+          text-align: center;
+          color: #94a3b8;
+          font-size: 13px;
+          font-weight: 700;
+          padding: 24px 0;
+          border: 1px dashed #e2c6cf;
+          border-radius: 14px;
+          background: #fff7fa;
+        }
+
+        .content-kanban-card {
+          background: #fff7fa;
+          border: 1px solid #ead1d9;
+          border-radius: 16px;
+          padding: 14px;
+          margin-bottom: 10px;
+          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+        }
+
+        .content-kanban-card:hover {
+          transform: translateY(-2px);
+          border-color: #c4607a;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .content-card-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
           gap: 8px;
+          margin-bottom: 10px;
+        }
+
+        .content-platform-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          color: #b5536b;
+          background: #ffffff;
+          border: 1px solid #e8b9c6;
+          border-radius: 9999px;
+          padding: 6px 9px;
+          font-size: 11px;
+          font-weight: 800;
+          text-transform: capitalize;
+        }
+
+        .content-type {
+          font-size: 11px;
+          background: #ffffff;
+          color: #64748b;
+          border: 1px solid #ead1d9;
+          padding: 6px 9px;
+          border-radius: 9999px;
+          font-weight: 800;
+          text-transform: capitalize;
+          white-space: nowrap;
+        }
+
+        .content-card-title {
+          margin: 0 0 8px;
+          color: #1f2937;
+          font-size: 14px;
+          font-weight: 850;
+          line-height: 1.45;
+        }
+
+        .content-meta {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          color: #64748b;
+          font-size: 12px;
+          font-weight: 700;
+          margin: 5px 0;
+        }
+
+        .content-meta svg {
+          color: #b5536b;
+          flex: 0 0 auto;
+        }
+
+        .content-stats {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin: 10px 0 0;
+        }
+
+        .content-stat-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 9px;
+          border-radius: 9999px;
+          background: #ffffff;
+          color: #374151;
+          border: 1px solid #ead1d9;
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .content-card-actions {
+          display: flex;
+          gap: 7px;
+          margin-top: 12px;
+        }
+
+        .content-edit-btn,
+        .content-delete-btn {
+          flex: 1;
+          border-radius: 10px;
+          padding: 8px 10px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 800;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          border: 1px solid;
+          transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .content-edit-btn {
+          background: #fff7e8;
+          color: #9a5f0f;
+          border-color: #d98a1f;
+        }
+
+        .content-delete-btn {
+          background: #fff1f5;
+          color: #b5536b;
+          border-color: #c4607a;
+        }
+
+        .content-edit-btn:hover,
+        .content-delete-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        @keyframes contentFadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 1300px) {
+          .content-kanban {
+            grid-template-columns: repeat(2, minmax(260px, 1fr));
+          }
+        }
+
+        @media (max-width: 900px) {
+          .content-form-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .content-span-3 {
+            grid-column: span 2;
+          }
+
+          .content-span-2 {
+            grid-column: span 2;
+          }
         }
 
         @media (max-width: 768px) {
-          .content-top-row {
+          .content-hero {
+            align-items: flex-start;
+            padding: 20px;
+          }
+
+          .content-title {
+            font-size: 24px;
+          }
+
+          .content-hero-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
+          }
+
+          .content-toolbar {
             flex-direction: column;
             align-items: stretch;
           }
 
-          .content-top-right {
-            width: 100%;
-            flex-direction: row;
-            align-items: stretch;
-            gap: 10px;
-          }
-
-          .content-search {
-            flex: 1;
-            width: auto !important;
-            min-width: 0;
-          }
-
+          .content-search-wrap,
           .content-add-btn {
-            flex-shrink: 0;
-            width: auto !important;
-            white-space: normal;
-            padding-left: 14px !important;
-            padding-right: 14px !important;
+            width: 100%;
           }
 
-          .content-form-grid {
-            grid-template-columns: 1fr 1fr;
+          .content-kanban {
+            grid-template-columns: 1fr;
           }
 
-          .content-span-3 {
-            grid-column: span 2 !important;
+          .content-edit-actions {
+            flex-direction: column;
           }
 
-          .content-span-2 {
-            grid-column: span 2 !important;
+          .content-submit-btn,
+          .content-cancel-btn {
+            width: 100%;
           }
         }
 
         @media (max-width: 520px) {
-          .content-top-right {
-            flex-direction: column;
-          }
-
-          .content-search,
-          .content-add-btn {
-            width: 100% !important;
+          .content-hero {
+            flex-direction: column-reverse;
           }
 
           .content-form-grid {
@@ -203,350 +695,344 @@ function ContentCreation() {
 
           .content-span-3,
           .content-span-2 {
-            grid-column: span 1 !important;
+            grid-column: span 1;
           }
 
-          .content-edit-actions {
+          .content-card-top {
             flex-direction: column;
+            align-items: flex-start;
           }
 
-          .content-edit-actions button {
-            width: 100%;
+          .content-card-actions {
+            flex-direction: column;
           }
         }
       `}</style>
 
-      <div style={styles.topRow} className="resp-top-row content-top-row">
-        <h3 style={styles.sectionTitle}> Content Creation</h3>
+      <div className="content-page">
+        <div className="content-hero">
+          <div>
+            <p className="content-eyebrow">Marketing Content Board</p>
+            <h3 className="content-title">Content Creation</h3>
+            <p className="content-subtitle">
+              Plan, assign, review, and monitor content tasks across social platforms in a clean kanban workflow.
+            </p>
+          </div>
 
-        <div className="resp-actions">
-          <div style={styles.topRight} className="content-top-right">
+          <div className="content-hero-icon">
+            <FaPhotoVideo />
+          </div>
+        </div>
+
+        <div className="content-toolbar">
+          <div className="content-search-wrap">
+            <FaSearch className="content-search-icon" />
             <input
               type="text"
-              placeholder=" Search content..."
+              placeholder="Search content..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              style={styles.searchInput}
               className="content-search"
             />
-            <button
-              onClick={() => setShowForm(!showForm)}
-              style={styles.addBtn}
-              className="content-add-btn"
-            >
-              {showForm ? '✕ Cancel' : '+ New Content'}
-            </button>
           </div>
-        </div>
-      </div>
 
-      {message && <div style={styles.message}>{message}</div>}
-
-      <div style={styles.filterRow} className="resp-filters">
-        {['all', 'idea', 'in-progress', 'for-review', 'published', 'cancelled'].map(s => (
           <button
-            key={s}
-            onClick={() => setFilterStatus(s)}
-            style={filterStatus === s ? styles.filterActive : styles.filter}
+            onClick={() => setShowForm(!showForm)}
+            className="content-add-btn"
           >
-            {s === 'all'
-              ? 'All'
-              : s.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-          </button>
-        ))}
-      </div>
-
-      {showForm && (
-        <div style={styles.form}>
-          <h4 style={styles.formTitle}>New Content Task</h4>
-
-          <div className="content-form-grid">
-            <div
-              style={{ ...styles.inputGroup, gridColumn: 'span 3' }}
-              className="content-span-3"
-            >
-              <label style={styles.label}>Content Title</label>
-              <input
-                type="text"
-                placeholder="e.g. Skin care routine tutorial"
-                value={form.title}
-                onChange={e => setForm({ ...form, title: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              />
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Platform</label>
-              <select
-                value={form.platform}
-                onChange={e => setForm({ ...form, platform: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              >
-                {['tiktok', 'reels', 'shopee', 'youtube', 'facebook'].map(p => (
-                  <option key={p} value={p}>
-                    {p.charAt(0).toUpperCase() + p.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Content Type</label>
-              <select
-                value={form.content_type}
-                onChange={e => setForm({ ...form, content_type: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              >
-                {['product-review', 'tutorial', 'behind-the-scenes', 'promo', 'testimonial', 'other'].map(t => (
-                  <option key={t} value={t}>
-                    {t.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Assigned To</label>
-              <input
-                type="text"
-                placeholder="Team member name"
-                value={form.assigned_to}
-                onChange={e => setForm({ ...form, assigned_to: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              />
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Due Date</label>
-              <input
-                type="date"
-                value={form.due_date}
-                onChange={e => setForm({ ...form, due_date: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              />
-            </div>
-
-            <div
-              style={{ ...styles.inputGroup, gridColumn: 'span 2' }}
-              className="content-span-2"
-            >
-              <label style={styles.label}>Notes</label>
-              <input
-                type="text"
-                placeholder="Optional notes"
-                value={form.notes}
-                onChange={e => setForm({ ...form, notes: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              />
-            </div>
-          </div>
-
-          <button onClick={handleSubmit} style={styles.submitBtn} className="content-submit-btn">
-            Create Task
+            {showForm ? <FaTimes /> : <FaPlus />}
+            {showForm ? 'Cancel' : 'New Content'}
           </button>
         </div>
-      )}
 
-      {editId && (
-        <div style={{ ...styles.form, borderLeft: '4px solid #c4607a' }}>
-          <h4 style={styles.formTitle}>Update Content</h4>
+        {message && <div className="content-message">{message}</div>}
 
-          <div className="content-form-grid">
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Status</label>
-              <select
-                value={editForm.status}
-                onChange={e => setEditForm({ ...editForm, status: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              >
-                {['idea', 'in-progress', 'for-review', 'published', 'cancelled'].map(s => (
-                  <option key={s} value={s}>
-                    {s.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Views</label>
-              <input
-                type="number"
-                value={editForm.views}
-                onChange={e => setEditForm({ ...editForm, views: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              />
-            </div>
-
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Likes</label>
-              <input
-                type="number"
-                value={editForm.likes}
-                onChange={e => setEditForm({ ...editForm, likes: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              />
-            </div>
-
-            <div
-              style={{ ...styles.inputGroup, gridColumn: 'span 3' }}
-              className="content-span-3"
+        <div className="content-filters">
+          {filterOptions.map(status => (
+            <button
+              key={status}
+              onClick={() => setFilterStatus(status)}
+              className={`content-filter-btn ${filterStatus === status ? 'content-filter-active' : ''}`}
             >
-              <label style={styles.label}>Notes</label>
-              <input
-                type="text"
-                value={editForm.notes}
-                onChange={e => setEditForm({ ...editForm, notes: e.target.value })}
-                style={styles.input}
-                className="content-input"
-              />
-            </div>
-          </div>
-
-          <div className="content-edit-actions">
-            <button onClick={handleUpdate} style={styles.submitBtn} className="content-submit-btn">
-              Save
+              {formatStatus(status)}
             </button>
-            <button onClick={() => setEditId(null)} style={styles.cancelBtn} className="content-cancel-btn">
-              Cancel
-            </button>
-          </div>
+          ))}
         </div>
-      )}
 
-      <p style={styles.resultCount}>{filtered.length} task{filtered.length !== 1 ? 's' : ''} found</p>
-
-      <div style={styles.kanban}>
-        {kanbanStatuses.map(status => {
-          const cards = filtered.filter(c => c.status === status);
-          return (
-            <div key={status} style={styles.kanbanCol}>
-              <div style={styles.kanbanHeader}>
-                <span style={{ ...styles.kanbanLabel, ...statusColors[status] }}>
-                  {status.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-                </span>
-                <span style={styles.kanbanCount}>{cards.length}</span>
+        {showForm && (
+          <div className="content-form">
+            <div className="content-form-header">
+              <div className="content-form-icon">
+                <FaPhotoVideo />
               </div>
 
-              {cards.length === 0 ? (
-                <div style={styles.kanbanEmpty}>No tasks</div>
-              ) : cards.map(c => (
-                <div key={c.id} style={styles.kanbanCard}>
-                  <div style={styles.kanbanCardTop}>
-                    <span style={styles.platformBadge}>{platformIcons[c.platform]} {c.platform}</span>
-                    <span style={styles.contentType}>{c.content_type}</span>
-                  </div>
-
-                  <p style={styles.kanbanTitle}>{c.title}</p>
-                  {c.assigned_to && <p style={styles.kanbanMeta}>{c.assigned_to}</p>}
-                  {c.due_date && <p style={styles.kanbanMeta}>{new Date(c.due_date).toLocaleDateString()}</p>}
-
-                  {c.status === 'published' && (
-                    <div style={styles.kanbanStats}>
-                      <span>{c.views.toLocaleString()}</span>
-                      <span>{c.likes.toLocaleString()}</span>
-                    </div>
-                  )}
-
-                  <div style={styles.kanbanActions}>
-                    <button
-                      onClick={() => {
-                        setEditId(c.id);
-                        setEditForm({
-                          status: c.status,
-                          views: c.views,
-                          likes: c.likes,
-                          notes: c.notes || '',
-                        });
-                      }}
-                      style={styles.editBtn}
-                    >
-                      Edit
-                    </button>
-
-                    <button onClick={() => handleDelete(c.id)} style={styles.deleteBtn}>
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              ))}
+              <div>
+                <h4 className="content-form-title">New Content Task</h4>
+                <p className="content-form-note">
+                  Add content details, platform, assignee, and due date.
+                </p>
+              </div>
             </div>
-          );
-        })}
+
+            <div className="content-form-grid">
+              <div className="content-field content-span-3">
+                <label className="content-label">Content Title</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Skin care routine tutorial"
+                  value={form.title}
+                  onChange={e => setForm({ ...form, title: e.target.value })}
+                  className="content-input"
+                />
+              </div>
+
+              <div className="content-field">
+                <label className="content-label">Platform</label>
+                <select
+                  value={form.platform}
+                  onChange={e => setForm({ ...form, platform: e.target.value })}
+                  className="content-input"
+                >
+                  {['tiktok', 'reels', 'shopee', 'youtube', 'facebook'].map(p => (
+                    <option key={p} value={p}>
+                      {p.charAt(0).toUpperCase() + p.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="content-field">
+                <label className="content-label">Content Type</label>
+                <select
+                  value={form.content_type}
+                  onChange={e => setForm({ ...form, content_type: e.target.value })}
+                  className="content-input"
+                >
+                  {['product-review', 'tutorial', 'behind-the-scenes', 'promo', 'testimonial', 'other'].map(t => (
+                    <option key={t} value={t}>
+                      {formatStatus(t)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="content-field">
+                <label className="content-label">Assigned To</label>
+                <input
+                  type="text"
+                  placeholder="Team member name"
+                  value={form.assigned_to}
+                  onChange={e => setForm({ ...form, assigned_to: e.target.value })}
+                  className="content-input"
+                />
+              </div>
+
+              <div className="content-field">
+                <label className="content-label">Due Date</label>
+                <input
+                  type="date"
+                  value={form.due_date}
+                  onChange={e => setForm({ ...form, due_date: e.target.value })}
+                  className="content-input"
+                />
+              </div>
+
+              <div className="content-field content-span-2">
+                <label className="content-label">Notes</label>
+                <input
+                  type="text"
+                  placeholder="Optional notes"
+                  value={form.notes}
+                  onChange={e => setForm({ ...form, notes: e.target.value })}
+                  className="content-input"
+                />
+              </div>
+            </div>
+
+            <button onClick={handleSubmit} className="content-submit-btn">
+              <FaSave />
+              Create Task
+            </button>
+          </div>
+        )}
+
+        {editId && (
+          <div className="content-form">
+            <div className="content-form-header">
+              <div className="content-form-icon">
+                <FaEdit />
+              </div>
+
+              <div>
+                <h4 className="content-form-title">Update Content</h4>
+                <p className="content-form-note">
+                  Update status, views, likes, and notes for this content task.
+                </p>
+              </div>
+            </div>
+
+            <div className="content-form-grid">
+              <div className="content-field">
+                <label className="content-label">Status</label>
+                <select
+                  value={editForm.status}
+                  onChange={e => setEditForm({ ...editForm, status: e.target.value })}
+                  className="content-input"
+                >
+                  {['idea', 'in-progress', 'for-review', 'published', 'cancelled'].map(s => (
+                    <option key={s} value={s}>
+                      {formatStatus(s)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="content-field">
+                <label className="content-label">Views</label>
+                <input
+                  type="number"
+                  value={editForm.views}
+                  onChange={e => setEditForm({ ...editForm, views: e.target.value })}
+                  className="content-input"
+                />
+              </div>
+
+              <div className="content-field">
+                <label className="content-label">Likes</label>
+                <input
+                  type="number"
+                  value={editForm.likes}
+                  onChange={e => setEditForm({ ...editForm, likes: e.target.value })}
+                  className="content-input"
+                />
+              </div>
+
+              <div className="content-field content-span-3">
+                <label className="content-label">Notes</label>
+                <input
+                  type="text"
+                  value={editForm.notes}
+                  onChange={e => setEditForm({ ...editForm, notes: e.target.value })}
+                  className="content-input"
+                />
+              </div>
+            </div>
+
+            <div className="content-edit-actions">
+              <button onClick={handleUpdate} className="content-submit-btn">
+                <FaSave />
+                Save
+              </button>
+
+              <button onClick={() => setEditId(null)} className="content-cancel-btn">
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        <p className="content-result-count">
+          {filtered.length} task{filtered.length !== 1 ? 's' : ''} found
+        </p>
+
+        <div className="content-kanban">
+          {kanbanStatuses.map(status => {
+            const cards = filtered.filter(c => c.status === status);
+
+            return (
+              <div key={status} className="content-kanban-col">
+                <div className="content-kanban-header">
+                  <span
+                    className="content-kanban-label"
+                    style={statusColors[status]}
+                  >
+                    {formatStatus(status)}
+                  </span>
+
+                  <span className="content-kanban-count">{cards.length}</span>
+                </div>
+
+                {cards.length === 0 ? (
+                  <div className="content-kanban-empty">No tasks</div>
+                ) : (
+                  cards.map(c => (
+                    <div key={c.id} className="content-kanban-card">
+                      <div className="content-card-top">
+                        <span className="content-platform-badge">
+                          {platformIcons[c.platform]}
+                          {c.platform}
+                        </span>
+
+                        <span className="content-type">
+                          {formatStatus(c.content_type)}
+                        </span>
+                      </div>
+
+                      <p className="content-card-title">{c.title}</p>
+
+                      {c.assigned_to && (
+                        <p className="content-meta">
+                          <FaUser />
+                          {c.assigned_to}
+                        </p>
+                      )}
+
+                      {c.due_date && (
+                        <p className="content-meta">
+                          <FaCalendar />
+                          {new Date(c.due_date).toLocaleDateString()}
+                        </p>
+                      )}
+
+                      {c.status === 'published' && (
+                        <div className="content-stats">
+                          <span className="content-stat-pill">
+                            <FaEye />
+                            {Number(c.views || 0).toLocaleString()}
+                          </span>
+
+                          <span className="content-stat-pill">
+                            <FaHeart />
+                            {Number(c.likes || 0).toLocaleString()}
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="content-card-actions">
+                        <button
+                          onClick={() => {
+                            setEditId(c.id);
+                            setEditForm({
+                              status: c.status,
+                              views: c.views,
+                              likes: c.likes,
+                              notes: c.notes || '',
+                            });
+                          }}
+                          className="content-edit-btn"
+                        >
+                          <FaEdit />
+                          Edit
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(c.id)}
+                          className="content-delete-btn"
+                        >
+                          <FaTrash />
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
-
-const styles = {
-  topRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' },
-  sectionTitle: { fontSize: '18px', fontWeight: '600', color: '#302e2e', margin: 0 },
-  topRight: { display: 'flex', gap: '10px', alignItems: 'center' },
-  searchInput: {
-    padding: '10px 14px',
-    borderRadius: '8px',
-    border: '1px solid #ddd',
-    fontSize: '14px',
-    outline: 'none',
-    width: '200px',
-    maxWidth: '100%',
-    boxSizing: 'border-box',
-  },
-  addBtn: {
-    padding: '10px 18px',
-    backgroundColor: '#c4607a',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '600',
-  },
-  message: { backgroundColor: '#eafaf1', color: '#27ae60', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' },
-  filterRow: { display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' },
-  filter: { padding: '6px 14px', borderRadius: '20px', border: '1px solid #ddd', backgroundColor: '#fff', cursor: 'pointer', fontSize: '13px', color: '#555' },
-  filterActive: { padding: '6px 14px', borderRadius: '20px', border: '1px solid #302e2e', backgroundColor: '#302e2e', cursor: 'pointer', fontSize: '13px', color: '#fff' },
-  form: { backgroundColor: '#f8f9fa', borderRadius: '10px', padding: '20px', marginBottom: '24px' },
-  formTitle: { fontSize: '16px', fontWeight: '600', color: '#302e2e', margin: '0 0 16px' },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' },
-  inputGroup: { display: 'flex', flexDirection: 'column', gap: '6px' },
-  label: { fontSize: '13px', fontWeight: '600', color: '#555' },
-  input: {
-    padding: '10px 12px',
-    borderRadius: '8px',
-    border: '1px solid #ddd',
-    fontSize: '14px',
-    outline: 'none',
-    width: '100%',
-    boxSizing: 'border-box',
-  },
-  submitBtn: { padding: '11px 24px', backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
-  cancelBtn: { padding: '11px 24px', backgroundColor: '#f0f0f0', color: '#555', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' },
-  resultCount: { fontSize: '13px', color: '#888', margin: '0 0 12px' },
-  kanban: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' },
-  kanbanCol: { backgroundColor: '#f8f9fa', borderRadius: '10px', padding: '16px' },
-  kanbanHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' },
-  kanbanLabel: { padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' },
-  kanbanCount: { backgroundColor: '#ddd', color: '#555', borderRadius: '50%', width: '22px', height: '22px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: '600' },
-  kanbanEmpty: { textAlign: 'center', color: '#ccc', fontSize: '13px', padding: '20px 0' },
-  kanbanCard: { backgroundColor: '#fff', borderRadius: '8px', padding: '12px', marginBottom: '10px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' },
-  kanbanCardTop: { display: 'flex', justifyContent: 'space-between', marginBottom: '6px', gap: '8px' },
-  platformBadge: { fontSize: '11px', color: '#888' },
-  contentType: { fontSize: '11px', backgroundColor: '#f0f0f0', color: '#555', padding: '2px 8px', borderRadius: '10px' },
-  kanbanTitle: { fontSize: '13px', fontWeight: '600', color: '#302e2e', margin: '0 0 4px' },
-  kanbanMeta: { fontSize: '11px', color: '#aaa', margin: '2px 0' },
-  kanbanStats: { display: 'flex', gap: '10px', fontSize: '12px', color: '#555', margin: '6px 0' },
-  kanbanActions: { display: 'flex', gap: '6px', marginTop: '8px' },
-  editBtn: { flex: 1, padding: '5px', backgroundColor: '#eaf4fb', color: '#2980b9', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' },
-  deleteBtn: { flex: 1, padding: '5px', backgroundColor: '#fdf0f3', color: '#c4607a', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' },
-};
 
 export default ContentCreation;

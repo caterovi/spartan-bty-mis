@@ -1,343 +1,1094 @@
-import { useState, useEffect } from 'react';
-import api from '../../api/axiosConfig';
+import { useState, useEffect } from "react";
+import Layout from "../../components/Layout";
+import api from "../../api/axiosConfig";
+import {
+  FaMoneyCheckAlt,
+  FaPlus,
+  FaTimes,
+  FaSearch,
+  FaSave,
+  FaEdit,
+  FaCheck,
+  FaUser,
+  FaBuilding,
+  FaCalendar,
+  FaMoneyBillWave,
+  FaStickyNote,
+} from "react-icons/fa";
 
 const PAYROLL_NOTES = [
-  'Regular payroll',
-  '13th month pay',
-  'Bonus included',
-  'Deduction for absences',
-  'Deduction for tardiness',
-  'Overtime pay included',
-  'Final pay',
-  'Partial payment',
+  "Regular payroll",
+  "13th month pay",
+  "Bonus included",
+  "Deduction for absences",
+  "Deduction for tardiness",
+  "Overtime pay included",
+  "Final pay",
+  "Partial payment",
 ];
 
 function Payroll() {
-  const [payroll, setPayroll]     = useState([]);
+  const [payroll, setPayroll] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [showForm, setShowForm]   = useState(false);
-  const [editId, setEditId]       = useState(null);
-  const [message, setMessage]     = useState('');
-  const [search, setSearch]       = useState('');
-  const [editForm, setEditForm]   = useState({});
+  const [showForm, setShowForm] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
+  const [editForm, setEditForm] = useState({});
+
   const [form, setForm] = useState({
-    employee_id: '', period_start: '', period_end: '',
-    basic_salary: '', deductions: '0', notes: '',
+    employee_id: "",
+    period_start: "",
+    period_end: "",
+    basic_salary: "",
+    deductions: "0",
+    notes: "",
   });
 
-  useEffect(() => { fetchPayroll(); fetchEmployees(); }, []);
+  useEffect(() => {
+    fetchPayroll();
+    fetchEmployees();
+  }, []);
 
   const fetchPayroll = async () => {
     try {
-      const res = await api.get('/hr/payroll');
-      setPayroll(res.data);
-    } catch (err) { console.error(err); }
+      const res = await api.get("/hr/payroll");
+      setPayroll(res.data || []);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const fetchEmployees = async () => {
     try {
-      const res = await api.get('/hr/employees');
-      setEmployees(res.data);
-    } catch (err) { console.error(err); }
+      const res = await api.get("/hr/employees");
+      setEmployees(res.data || []);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSubmit = async () => {
+    if (!form.employee_id || !form.period_start || !form.period_end) {
+      setMessage("error:Please select employee and payroll period.");
+      setTimeout(() => setMessage(""), 3000);
+      return;
+    }
+
     try {
-      await api.post('/hr/payroll', form);
-      setMessage('success:Payroll generated!');
+      await api.post("/hr/payroll", form);
+      setMessage("success:Payroll generated!");
       setShowForm(false);
-      setForm({ employee_id: '', period_start: '', period_end: '', basic_salary: '', deductions: '0', notes: '' });
+      setForm({
+        employee_id: "",
+        period_start: "",
+        period_end: "",
+        basic_salary: "",
+        deductions: "0",
+        notes: "",
+      });
       fetchPayroll();
     } catch (err) {
-      setMessage('error:Error generating payroll.');
-    } finally { setTimeout(() => setMessage(''), 3000); }
+      console.error(err);
+      setMessage("error:Error generating payroll.");
+    } finally {
+      setTimeout(() => setMessage(""), 3000);
+    }
   };
 
   const handleEdit = (p) => {
     setEditId(p.id);
     setEditForm({
-      basic_salary: p.basic_salary,
-      deductions:   p.deductions,
-      status:       p.status,
-      notes:        p.notes || '',
+      basic_salary: p.basic_salary || "",
+      deductions: p.deductions || "0",
+      status: p.status || "pending",
+      notes: p.notes || "",
     });
   };
 
   const handleUpdate = async () => {
-    const net_salary = Number(editForm.basic_salary) - Number(editForm.deductions);
+    const net_salary =
+      Number(editForm.basic_salary || 0) - Number(editForm.deductions || 0);
+
     try {
       await api.put(`/hr/payroll/${editId}`, { ...editForm, net_salary });
-      setMessage('success:Payroll updated!');
+      setMessage("success:Payroll updated!");
       setEditId(null);
       fetchPayroll();
     } catch (err) {
-      setMessage('error:Error updating payroll.');
-    } finally { setTimeout(() => setMessage(''), 3000); }
+      console.error(err);
+      setMessage("error:Error updating payroll.");
+    } finally {
+      setTimeout(() => setMessage(""), 3000);
+    }
   };
 
   const handleMarkPaid = async (id) => {
     try {
       await api.patch(`/hr/payroll/${id}/pay`);
       fetchPayroll();
-    } catch (err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const filteredPayroll = payroll.filter(p =>
-    p.full_name.toLowerCase().includes(search.toLowerCase()) ||
-    p.department.toLowerCase().includes(search.toLowerCase()) ||
-    p.status.toLowerCase().includes(search.toLowerCase()) ||
-    (p.notes || '').toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredPayroll = payroll.filter((p) => {
+    const keyword = search.toLowerCase();
 
-  const net     = (Number(form.basic_salary) - Number(form.deductions)).toLocaleString();
-  const editNet = (Number(editForm.basic_salary) - Number(editForm.deductions)).toLocaleString();
+    return (
+      String(p.full_name || "").toLowerCase().includes(keyword) ||
+      String(p.department || "").toLowerCase().includes(keyword) ||
+      String(p.status || "").toLowerCase().includes(keyword) ||
+      String(p.notes || "").toLowerCase().includes(keyword)
+    );
+  });
 
-  const isSuccess = message.startsWith('success:');
-  const isError   = message.startsWith('error:');
-  const msgText   = message.replace(/^(success:|error:)/, '');
+  const net = Number(form.basic_salary || 0) - Number(form.deductions || 0);
+  const editNet =
+    Number(editForm.basic_salary || 0) - Number(editForm.deductions || 0);
+
+  const isError = message.startsWith("error:");
+  const msgText = message.replace(/^(success:|error:)/, "");
+
+  const money = (value) => `₱${Number(value || 0).toLocaleString()}`;
+
+  const dateText = (value) => {
+    if (!value) return "Not provided";
+    return new Date(value).toLocaleDateString();
+  };
+
+  const statusStyles = {
+    paid: {
+      backgroundColor: "#ecfdf3",
+      color: "#2f7d56",
+      borderColor: "#2f9d6a",
+    },
+    pending: {
+      backgroundColor: "#fff7e8",
+      color: "#9a5f0f",
+      borderColor: "#d98a1f",
+    },
+  };
 
   return (
-    <div>
-      <div style={styles.topRow} className="mobile-top-row">
-        <h3 style={styles.sectionTitle}>Payroll Records</h3>
-        <div className="mobile-button-group">
-          <input
-            type="text"
-            placeholder="Search payroll..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            style={styles.searchInput}
-            className="mobile-search"
-          />
-          <button onClick={() => setShowForm(!showForm)} style={styles.addBtn} className="mobile-action-btn">
-            {showForm ? '× Cancel' : '+ Generate Payroll'}
+    <Layout>
+      <style>{`
+        .payroll-page {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          animation: payrollFadeUp 0.35s ease both;
+        }
+
+        .payroll-hero {
+          background:
+            radial-gradient(circle at top right, rgba(196, 96, 122, 0.18), transparent 34%),
+            linear-gradient(135deg, #fff7fa 0%, #ffffff 100%);
+          border: 1px solid #ead1d9;
+          border-radius: 18px;
+          padding: 24px;
+          margin-bottom: 20px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 18px;
+        }
+
+        .payroll-eyebrow {
+          margin: 0 0 8px;
+          color: #b5536b;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .payroll-title {
+          margin: 0;
+          color: #1f2937;
+          font-size: 28px;
+          font-weight: 800;
+          letter-spacing: -0.04em;
+        }
+
+        .payroll-subtitle {
+          margin: 8px 0 0;
+          color: #64748b;
+          font-size: 14px;
+          line-height: 1.6;
+          max-width: 720px;
+        }
+
+        .payroll-hero-icon {
+          width: 56px;
+          height: 56px;
+          border-radius: 16px;
+          display: grid;
+          place-items: center;
+          background: linear-gradient(135deg, #c4607a, #e58ca3);
+          color: #ffffff;
+          font-size: 24px;
+          box-shadow: 0 8px 24px rgba(196, 96, 122, 0.25);
+          flex: 0 0 auto;
+        }
+
+        .payroll-toolbar {
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 18px;
+          padding: 16px;
+          margin-bottom: 18px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 14px;
+        }
+
+        .payroll-search-wrap {
+          position: relative;
+          width: 300px;
+          max-width: 100%;
+        }
+
+        .payroll-search-icon {
+          position: absolute;
+          left: 13px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #b5536b;
+          font-size: 13px;
+          pointer-events: none;
+        }
+
+        .payroll-search {
+          width: 100%;
+          padding: 11px 13px 11px 36px;
+          border-radius: 12px;
+          border: 1px solid #d8b8c2;
+          background: #fff7fa;
+          color: #1f2937;
+          font-size: 14px;
+          outline: none;
+          box-sizing: border-box;
+          transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+        }
+
+        .payroll-search:focus {
+          border-color: #c4607a;
+          background: #ffffff;
+          box-shadow: 0 0 0 4px rgba(196, 96, 122, 0.12);
+        }
+
+        .payroll-add-btn,
+        .payroll-submit-btn {
+          border: none;
+          border-radius: 12px;
+          padding: 11px 16px;
+          background: linear-gradient(135deg, #c4607a, #e58ca3);
+          color: #ffffff;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          box-shadow: 0 8px 18px rgba(196, 96, 122, 0.22);
+          transition: transform 180ms ease, box-shadow 180ms ease;
+          white-space: nowrap;
+        }
+
+        .payroll-add-btn:hover,
+        .payroll-submit-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 10px 22px rgba(196, 96, 122, 0.28);
+        }
+
+        .payroll-cancel-btn {
+          border: 1px solid #d8b8c2;
+          border-radius: 12px;
+          padding: 11px 16px;
+          background: #ffffff;
+          color: #64748b;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+
+        .payroll-message {
+          margin-bottom: 18px;
+          padding: 13px 15px;
+          border-radius: 14px;
+          font-size: 14px;
+          font-weight: 700;
+          border: 1px solid;
+        }
+
+        .payroll-message-success {
+          background: #ecfdf3;
+          color: #2f7d56;
+          border-color: #2f9d6a;
+        }
+
+        .payroll-message-error {
+          background: #fff1f5;
+          color: #b5536b;
+          border-color: #c4607a;
+        }
+
+        .payroll-form {
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 18px;
+          padding: 22px;
+          margin-bottom: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        .payroll-form-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 18px;
+        }
+
+        .payroll-form-icon {
+          width: 40px;
+          height: 40px;
+          border-radius: 13px;
+          display: grid;
+          place-items: center;
+          background: #fff1f5;
+          border: 1px solid #e8b9c6;
+          color: #b5536b;
+          flex: 0 0 auto;
+        }
+
+        .payroll-form-title {
+          margin: 0;
+          color: #1f2937;
+          font-size: 18px;
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
+
+        .payroll-form-note {
+          margin: 4px 0 0;
+          color: #64748b;
+          font-size: 13px;
+        }
+
+        .payroll-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 16px;
+          margin-bottom: 16px;
+        }
+
+        .payroll-field {
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+          min-width: 0;
+        }
+
+        .payroll-field-wide {
+          grid-column: span 2;
+        }
+
+        .payroll-label {
+          font-size: 13px;
+          font-weight: 800;
+          color: #374151;
+        }
+
+        .payroll-input {
+          width: 100%;
+          box-sizing: border-box;
+          padding: 11px 12px;
+          border-radius: 12px;
+          border: 1px solid #d8b8c2;
+          background: #ffffff;
+          color: #1f2937;
+          font-size: 14px;
+          outline: none;
+          font-family: Segoe UI, sans-serif;
+          transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+        }
+
+        .payroll-input:focus {
+          border-color: #c4607a;
+          box-shadow: 0 0 0 4px rgba(196, 96, 122, 0.12);
+          background: #fffafa;
+        }
+
+        .payroll-input-readonly {
+          background: #fff7fa;
+          font-weight: 900;
+          color: #b5536b;
+        }
+
+        .payroll-form-actions {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        .payroll-count {
+          margin: 0 0 12px;
+          color: #64748b;
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        .payroll-table-panel {
+          background: #ffffff;
+          border: 1px solid #e2c6cf;
+          border-radius: 18px;
+          padding: 16px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+          max-width: 100%;
+          overflow: hidden;
+        }
+
+        .payroll-table-wrap {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: auto;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
+          border: 1px solid #ead1d9;
+          border-radius: 14px;
+        }
+
+        .payroll-table {
+          width: 100%;
+          min-width: 1080px;
+          border-collapse: collapse;
+          background: #ffffff;
+        }
+
+        .payroll-table thead {
+          background: #fff7fa;
+        }
+
+        .payroll-table th {
+          padding: 13px 16px;
+          text-align: left;
+          font-size: 12px;
+          font-weight: 800;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          border-bottom: 1px solid #ead1d9;
+          white-space: nowrap;
+        }
+
+        .payroll-table td {
+          padding: 14px 16px;
+          font-size: 14px;
+          color: #374151;
+          border-bottom: 1px solid #f3e8ec;
+          white-space: nowrap;
+          vertical-align: middle;
+        }
+
+        .payroll-table tbody tr {
+          transition: background-color 180ms ease;
+        }
+
+        .payroll-table tbody tr:hover {
+          background: #fff7fa;
+        }
+
+        .payroll-table tbody tr:last-child td {
+          border-bottom: none;
+        }
+
+        .payroll-name {
+          font-weight: 850;
+          color: #1f2937;
+          max-width: 180px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .payroll-cell-icon {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+        }
+
+        .payroll-cell-icon svg {
+          color: #b5536b;
+          flex: 0 0 auto;
+        }
+
+        .payroll-dept {
+          color: #374151;
+          font-weight: 700;
+          text-transform: capitalize;
+        }
+
+        .payroll-period {
+          color: #475569;
+          font-weight: 700;
+        }
+
+        .payroll-money {
+          font-weight: 800;
+          color: #374151;
+        }
+
+        .payroll-net {
+          font-weight: 900;
+          color: #b5536b;
+        }
+
+        .payroll-note {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          max-width: 190px;
+          padding: 6px 10px;
+          border-radius: 10px;
+          background: #fff7fa;
+          color: #64748b;
+          border: 1px solid #ead1d9;
+          font-size: 12px;
+          font-weight: 700;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .payroll-status {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 6px 10px;
+          border-radius: 9999px;
+          font-size: 12px;
+          font-weight: 800;
+          border: 1px solid;
+          white-space: nowrap;
+          text-transform: capitalize;
+        }
+
+        .payroll-action-row {
+          display: flex;
+          gap: 7px;
+          align-items: center;
+          white-space: nowrap;
+        }
+
+        .payroll-edit-btn,
+        .payroll-pay-btn {
+          border-radius: 10px;
+          padding: 8px 10px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 800;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          border: 1px solid;
+          transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .payroll-edit-btn {
+          background: #fff7e8;
+          color: #9a5f0f;
+          border-color: #d98a1f;
+        }
+
+        .payroll-pay-btn {
+          background: #ecfdf3;
+          color: #2f7d56;
+          border-color: #2f9d6a;
+        }
+
+        .payroll-edit-btn:hover,
+        .payroll-pay-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+
+        .payroll-empty {
+          padding: 40px !important;
+          text-align: center;
+          color: #94a3b8 !important;
+          font-size: 14px !important;
+          font-weight: 700;
+        }
+
+        @keyframes payrollFadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 900px) {
+          .payroll-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .payroll-field-wide {
+            grid-column: span 2;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .payroll-hero {
+            align-items: flex-start;
+            padding: 20px;
+          }
+
+          .payroll-title {
+            font-size: 24px;
+          }
+
+          .payroll-hero-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
+          }
+
+          .payroll-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+          }
+
+          .payroll-search-wrap,
+          .payroll-add-btn {
+            width: 100%;
+          }
+
+          .payroll-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .payroll-field-wide {
+            grid-column: span 1;
+          }
+
+          .payroll-form-actions {
+            flex-direction: column;
+          }
+
+          .payroll-submit-btn,
+          .payroll-cancel-btn {
+            width: 100%;
+          }
+
+          .payroll-table-panel {
+            padding: 12px;
+          }
+
+          .payroll-table {
+            min-width: 980px;
+          }
+
+          .payroll-table th,
+          .payroll-table td {
+            padding: 11px 12px;
+            font-size: 12px;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .payroll-hero {
+            flex-direction: column-reverse;
+          }
+        }
+      `}</style>
+
+      <div className="payroll-page">
+        <div className="payroll-hero">
+          <div>
+            <p className="payroll-eyebrow">Human Resources</p>
+            <h3 className="payroll-title">Payroll Records</h3>
+            <p className="payroll-subtitle">
+              Generate payroll, calculate net salary, manage deductions, notes, and payment status.
+            </p>
+          </div>
+
+          <div className="payroll-hero-icon">
+            <FaMoneyCheckAlt />
+          </div>
+        </div>
+
+        <div className="payroll-toolbar">
+          <div className="payroll-search-wrap">
+            <FaSearch className="payroll-search-icon" />
+            <input
+              type="text"
+              placeholder="Search payroll..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="payroll-search"
+            />
+          </div>
+
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="payroll-add-btn"
+          >
+            {showForm ? <FaTimes /> : <FaPlus />}
+            {showForm ? "Cancel" : "Generate Payroll"}
           </button>
         </div>
+
+        {message && (
+          <div className={`payroll-message ${isError ? "payroll-message-error" : "payroll-message-success"}`}>
+            {msgText}
+          </div>
+        )}
+
+        {showForm && (
+          <div className="payroll-form">
+            <div className="payroll-form-header">
+              <div className="payroll-form-icon">
+                <FaPlus />
+              </div>
+
+              <div>
+                <h4 className="payroll-form-title">Generate Payroll</h4>
+                <p className="payroll-form-note">
+                  Select employee, payroll period, salary, deductions, and notes.
+                </p>
+              </div>
+            </div>
+
+            <div className="payroll-grid">
+              <div className="payroll-field">
+                <label className="payroll-label">Employee</label>
+                <select
+                  value={form.employee_id}
+                  onChange={(e) => setForm({ ...form, employee_id: e.target.value })}
+                  className="payroll-input"
+                >
+                  <option value="">Select employee</option>
+                  {employees.map((emp) => (
+                    <option key={emp.id} value={emp.id}>
+                      {emp.full_name} - {emp.department}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Period Start</label>
+                <input
+                  type="date"
+                  value={form.period_start}
+                  onChange={(e) => setForm({ ...form, period_start: e.target.value })}
+                  className="payroll-input"
+                />
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Period End</label>
+                <input
+                  type="date"
+                  value={form.period_end}
+                  onChange={(e) => setForm({ ...form, period_end: e.target.value })}
+                  className="payroll-input"
+                />
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Basic Salary</label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={form.basic_salary}
+                  onChange={(e) => setForm({ ...form, basic_salary: e.target.value })}
+                  className="payroll-input"
+                />
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Deductions</label>
+                <input
+                  type="number"
+                  placeholder="0.00"
+                  value={form.deductions}
+                  onChange={(e) => setForm({ ...form, deductions: e.target.value })}
+                  className="payroll-input"
+                />
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Net Salary</label>
+                <input
+                  readOnly
+                  value={money(net)}
+                  className="payroll-input payroll-input-readonly"
+                />
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Quick Note</label>
+                <select
+                  value=""
+                  onChange={(e) => setForm({ ...form, notes: e.target.value })}
+                  className="payroll-input"
+                >
+                  <option value="">Select a note</option>
+                  {PAYROLL_NOTES.map((note) => (
+                    <option key={note} value={note}>
+                      {note}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="payroll-field payroll-field-wide">
+                <label className="payroll-label">Custom Notes</label>
+                <input
+                  type="text"
+                  placeholder="Or type a custom note..."
+                  value={form.notes}
+                  onChange={(e) => setForm({ ...form, notes: e.target.value })}
+                  className="payroll-input"
+                />
+              </div>
+            </div>
+
+            <button onClick={handleSubmit} className="payroll-submit-btn">
+              <FaSave />
+              Generate Payroll
+            </button>
+          </div>
+        )}
+
+        {editId && (
+          <div className="payroll-form">
+            <div className="payroll-form-header">
+              <div className="payroll-form-icon">
+                <FaEdit />
+              </div>
+
+              <div>
+                <h4 className="payroll-form-title">Edit Payroll</h4>
+                <p className="payroll-form-note">
+                  Update salary, deductions, net salary, payment status, and notes.
+                </p>
+              </div>
+            </div>
+
+            <div className="payroll-grid">
+              <div className="payroll-field">
+                <label className="payroll-label">Basic Salary</label>
+                <input
+                  type="number"
+                  value={editForm.basic_salary || ""}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, basic_salary: e.target.value })
+                  }
+                  className="payroll-input"
+                />
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Deductions</label>
+                <input
+                  type="number"
+                  value={editForm.deductions || ""}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, deductions: e.target.value })
+                  }
+                  className="payroll-input"
+                />
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Net Salary</label>
+                <input
+                  readOnly
+                  value={money(editNet)}
+                  className="payroll-input payroll-input-readonly"
+                />
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Status</label>
+                <select
+                  value={editForm.status || "pending"}
+                  onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
+                  className="payroll-input"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                </select>
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Quick Note</label>
+                <select
+                  value=""
+                  onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
+                  className="payroll-input"
+                >
+                  <option value="">Select a note</option>
+                  {PAYROLL_NOTES.map((note) => (
+                    <option key={note} value={note}>
+                      {note}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="payroll-field">
+                <label className="payroll-label">Custom Notes</label>
+                <input
+                  type="text"
+                  placeholder="Custom note"
+                  value={editForm.notes || ""}
+                  onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
+                  className="payroll-input"
+                />
+              </div>
+            </div>
+
+            <div className="payroll-form-actions">
+              <button onClick={handleUpdate} className="payroll-submit-btn">
+                <FaSave />
+                Save Changes
+              </button>
+
+              <button onClick={() => setEditId(null)} className="payroll-cancel-btn">
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        <p className="payroll-count">
+          {filteredPayroll.length} record{filteredPayroll.length !== 1 ? "s" : ""} found
+        </p>
+
+        <div className="payroll-table-panel">
+          <div className="payroll-table-wrap">
+            <table className="payroll-table">
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Department</th>
+                  <th>Period</th>
+                  <th>Basic Salary</th>
+                  <th>Deductions</th>
+                  <th>Net Salary</th>
+                  <th>Notes</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {filteredPayroll.length === 0 ? (
+                  <tr>
+                    <td colSpan="9" className="payroll-empty">
+                      No payroll records found.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredPayroll.map((p) => (
+                    <tr key={p.id}>
+                      <td>
+                        <span className="payroll-cell-icon">
+                          <FaUser />
+                          <span className="payroll-name">
+                            {p.full_name || "Not provided"}
+                          </span>
+                        </span>
+                      </td>
+
+                      <td>
+                        <span className="payroll-cell-icon payroll-dept">
+                          <FaBuilding />
+                          {p.department || "Not provided"}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span className="payroll-cell-icon payroll-period">
+                          <FaCalendar />
+                          {dateText(p.period_start)} to {dateText(p.period_end)}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span className="payroll-cell-icon payroll-money">
+                          <FaMoneyBillWave />
+                          {money(p.basic_salary)}
+                        </span>
+                      </td>
+
+                      <td>{money(p.deductions)}</td>
+
+                      <td className="payroll-net">{money(p.net_salary)}</td>
+
+                      <td>
+                        {p.notes ? (
+                          <span className="payroll-note">
+                            <FaStickyNote />
+                            {p.notes}
+                          </span>
+                        ) : (
+                          "Not provided"
+                        )}
+                      </td>
+
+                      <td>
+                        <span
+                          className="payroll-status"
+                          style={statusStyles[p.status] || statusStyles.pending}
+                        >
+                          {p.status || "pending"}
+                        </span>
+                      </td>
+
+                      <td>
+                        <div className="payroll-action-row">
+                          <button
+                            onClick={() => handleEdit(p)}
+                            className="payroll-edit-btn"
+                          >
+                            <FaEdit />
+                            Edit
+                          </button>
+
+                          {p.status === "pending" && (
+                            <button
+                              onClick={() => handleMarkPaid(p.id)}
+                              className="payroll-pay-btn"
+                            >
+                              <FaCheck />
+                              Mark Paid
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-
-      {message && (
-        <div style={{
-          padding: '12px 16px', borderRadius: '8px', marginBottom: '16px',
-          fontSize: '14px', fontWeight: '500',
-          backgroundColor: isError ? '#f8d7da' : '#d4edda',
-          color:           isError ? '#721c24' : '#155724',
-          border:          `1px solid ${isError ? '#f5c6cb' : '#c3e6cb'}`,
-        }}>
-          {isSuccess ? ' ' : ' '}{msgText}
-        </div>
-      )}
-
-      {/* Generate Form */}
-      {showForm && (
-        <div style={styles.form}>
-          <h4 style={styles.formTitle}>Generate Payroll</h4>
-          <div style={styles.grid} className="mobile-form-grid">
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Employee</label>
-              <select value={form.employee_id} onChange={e => setForm({ ...form, employee_id: e.target.value })} style={styles.input}>
-                <option value="">Select employee</option>
-                {employees.map(emp => (
-                  <option key={emp.id} value={emp.id}>{emp.full_name} — {emp.department}</option>
-                ))}
-              </select>
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Period Start</label>
-              <input type="date" value={form.period_start} onChange={e => setForm({ ...form, period_start: e.target.value })} style={styles.input} />
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Period End</label>
-              <input type="date" value={form.period_end} onChange={e => setForm({ ...form, period_end: e.target.value })} style={styles.input} />
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Basic Salary (₱)</label>
-              <input type="number" placeholder="0.00" value={form.basic_salary} onChange={e => setForm({ ...form, basic_salary: e.target.value })} style={styles.input} />
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Deductions (₱)</label>
-              <input type="number" placeholder="0.00" value={form.deductions} onChange={e => setForm({ ...form, deductions: e.target.value })} style={styles.input} />
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Net Salary (₱)</label>
-              <input readOnly value={`₱${net}`} style={{ ...styles.input, backgroundColor: '#f0f0f0', fontWeight: '600' }} />
-            </div>
-
-            {/* Notes with templates */}
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Quick Note</label>
-              <select
-                value=""
-                onChange={e => setForm({ ...form, notes: e.target.value })}
-                style={styles.input}
-              >
-                <option value="">-- Select a note --</option>
-                {PAYROLL_NOTES.map(n => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
-            </div>
-
-            <div style={{ ...styles.inputGroup, gridColumn: 'span 2' }}>
-              <label style={styles.label}>Custom Notes</label>
-              <input
-                type="text"
-                placeholder="Or type a custom note..."
-                value={form.notes}
-                onChange={e => setForm({ ...form, notes: e.target.value })}
-                style={styles.input}
-              />
-            </div>
-          </div>
-          <button onClick={handleSubmit} style={styles.submitBtn}>Generate Payroll</button>
-        </div>
-      )}
-
-      {/* Edit Form */}
-      {editId && (
-        <div style={{ ...styles.form, borderLeft: '4px solid #c4607a' }}>
-          <h4 style={styles.formTitle}>✏️ Edit Payroll</h4>
-          <div style={styles.grid} className="mobile-form-grid">
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Basic Salary (₱)</label>
-              <input type="number" value={editForm.basic_salary} onChange={e => setEditForm({ ...editForm, basic_salary: e.target.value })} style={styles.input} />
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Deductions (₱)</label>
-              <input type="number" value={editForm.deductions} onChange={e => setEditForm({ ...editForm, deductions: e.target.value })} style={styles.input} />
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Net Salary (₱)</label>
-              <input readOnly value={`₱${editNet}`} style={{ ...styles.input, backgroundColor: '#f0f0f0', fontWeight: '600' }} />
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Status</label>
-              <select value={editForm.status} onChange={e => setEditForm({ ...editForm, status: e.target.value })} style={styles.input}>
-                <option value="pending">Pending</option>
-                <option value="paid">Paid</option>
-              </select>
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Quick Note</label>
-              <select
-                value=""
-                onChange={e => setEditForm({ ...editForm, notes: e.target.value })}
-                style={styles.input}
-              >
-                <option value="">-- Select a note --</option>
-                {PAYROLL_NOTES.map(n => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
-            </div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Custom Notes</label>
-              <input
-                type="text"
-                placeholder="Custom note"
-                value={editForm.notes}
-                onChange={e => setEditForm({ ...editForm, notes: e.target.value })}
-                style={styles.input}
-              />
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={handleUpdate} style={styles.submitBtn}>Save Changes</button>
-            <button onClick={() => setEditId(null)} style={styles.cancelBtn}>Cancel</button>
-          </div>
-        </div>
-      )}
-
-      <p style={styles.resultCount}>
-        {filteredPayroll.length} record{filteredPayroll.length !== 1 ? 's' : ''} found
-      </p>
-
-      <div className="resp-table-wrap mobile-table-container">
-      <table style={styles.table}>
-        <thead>
-          <tr style={styles.thead}>
-            <th style={styles.th}>Employee</th>
-            <th style={styles.th}>Department</th>
-            <th style={styles.th}>Period</th>
-            <th style={styles.th}>Basic Salary</th>
-            <th style={styles.th}>Deductions</th>
-            <th style={styles.th}>Net Salary</th>
-            <th style={styles.th}>Notes</th>
-            <th style={styles.th}>Status</th>
-            <th style={styles.th}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPayroll.length === 0 ? (
-            <tr><td colSpan="9" style={styles.empty}>No payroll records yet.</td></tr>
-          ) : filteredPayroll.map(p => (
-            <tr key={p.id} style={styles.tr}>
-              <td style={styles.td}>
-                <div style={{ fontWeight: '600' }}>{p.full_name}</div>
-              </td>
-              <td style={styles.td}>{p.department}</td>
-              <td style={styles.td} >
-                {new Date(p.period_start).toLocaleDateString()} –{' '}
-                {new Date(p.period_end).toLocaleDateString()}
-              </td>
-              <td style={styles.td}>₱{Number(p.basic_salary).toLocaleString()}</td>
-              <td style={styles.td}>₱{Number(p.deductions).toLocaleString()}</td>
-              <td style={{ ...styles.td, fontWeight: '700' }}>
-                ₱{Number(p.net_salary).toLocaleString()}
-              </td>
-              <td style={styles.td}>
-                {p.notes ? (
-                  <span style={styles.noteTag}>{p.notes}</span>
-                ) : '—'}
-              </td>
-              <td style={styles.td}>
-                <span style={p.status === 'paid' ? styles.badgePaid : styles.badgePending}>
-                  {p.status}
-                </span>
-              </td>
-              <td style={styles.td}>
-                <div style={styles.actionRow}>
-                  <button onClick={() => handleEdit(p)} style={styles.editBtn}>Edit</button>
-                  {p.status === 'pending' && (
-                    <button onClick={() => handleMarkPaid(p.id)} style={styles.payBtn}>Mark Paid</button>
-                  )}
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-    </div>
+    </Layout>
   );
 }
-
-const styles = {
-  topRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' },
-  sectionTitle: { fontSize: '18px', fontWeight: '600', color: '#302e2e', margin: 0 },
-  topRight: { display: 'flex', gap: '10px', alignItems: 'center' },
-  searchInput: { padding: '10px 14px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px', outline: 'none', width: '220px' },
-  addBtn: { padding: '10px 18px', backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
-  form: { backgroundColor: '#f8f9fa', borderRadius: '10px', padding: '20px', marginBottom: '24px' },
-  formTitle: { fontSize: '16px', fontWeight: '600', color: '#302e2e', margin: '0 0 16px' },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '16px' },
-  inputGroup: { display: 'flex', flexDirection: 'column', gap: '6px' },
-  label: { fontSize: '13px', fontWeight: '600', color: '#555' },
-  input: { padding: '10px 12px', borderRadius: '8px', border: '1px solid #ddd', fontSize: '14px', outline: 'none', backgroundColor: '#fff' },
-  submitBtn: { padding: '11px 24px', backgroundColor: '#c4607a', color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px', fontWeight: '600' },
-  cancelBtn: { padding: '11px 24px', backgroundColor: '#f0f0f0', color: '#555', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' },
-  resultCount: { fontSize: '13px', color: '#888', margin: '0 0 12px' },
-  table: { width: '100%', borderCollapse: 'collapse' },
-  thead: { backgroundColor: '#f8f9fa' },
-  th: { padding: '12px 16px', textAlign: 'left', fontSize: '13px', fontWeight: '600', color: '#555', borderBottom: '1px solid #eee' },
-  tr: { borderBottom: '1px solid #f0f0f0' },
-  td: { padding: '12px 16px', fontSize: '14px', color: '#333' },
-  empty: { padding: '40px', textAlign: 'center', color: '#aaa', fontSize: '14px' },
-  noteTag: { backgroundColor: '#f8f9fa', color: '#555', padding: '3px 8px', borderRadius: '6px', fontSize: '12px', border: '1px solid #eee' },
-  badgePaid: { backgroundColor: '#d4edda', color: '#155724', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' },
-  badgePending: { backgroundColor: '#fff3cd', color: '#856404', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: '600' },
-  actionRow: { display: 'flex', gap: '6px' },
-  editBtn: { padding: '6px 12px', backgroundColor: '#eaf4fb', color: '#2980b9', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' },
-  payBtn: { padding: '6px 12px', backgroundColor: '#d4edda', color: '#155724', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' },
-};
 
 export default Payroll;
