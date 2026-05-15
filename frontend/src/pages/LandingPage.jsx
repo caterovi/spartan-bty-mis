@@ -1075,7 +1075,7 @@ const handleScreenshotChange = (e) => {
   }, [liveSessions, statsLoading, featuredCampaigns, landingMaterials]);
 
   useEffect(() => {
-    const sections = ['hero', 'live-selling', 'campaigns', 'story', 'faq', 'support'];
+    const sections = ['hero', 'live-selling', 'story', 'faq', 'support'];
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 100;
       for (const sectionId of sections) {
@@ -1137,7 +1137,7 @@ const handleScreenshotChange = (e) => {
           <div className="lp-nav-center">
             <a className={activeSection === "hero" ? "active" : ""} onClick={() => scrollTo("hero")}>Home</a>
             <a className={activeSection === "live-selling" ? "active" : ""} onClick={() => scrollTo("live-selling")}>Live Selling</a>
-            <a className={activeSection === "campaigns" ? "active" : ""} onClick={() => scrollTo("campaigns")}>Campaigns</a>
+            
             <a className={activeSection === "story" ? "active" : ""} onClick={() => scrollTo("story")}>Our Story</a>
             <a className={activeSection === "faq" ? "active" : ""} onClick={() => scrollTo("faq")}>FAQ</a>
             <a className={activeSection === "support" ? "active" : ""} onClick={() => scrollTo("support")}>Support</a>
@@ -1178,7 +1178,7 @@ const handleScreenshotChange = (e) => {
         <div className={`lp-mob-menu${menuOpen ? " open" : ""}`}>
           <a onClick={() => scrollTo("hero")}>Home</a>
           <a onClick={() => scrollTo("live-selling")}>Live Selling</a>
-          <a onClick={() => scrollTo("campaigns")}>Campaigns</a>
+          
           <a onClick={() => scrollTo("story")}>Our Story</a>
           <a onClick={() => scrollTo("faq")}>FAQ</a>
           <a onClick={() => scrollTo("support")}>Support</a>
