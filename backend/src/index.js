@@ -53,6 +53,234 @@ const uploadReceipt = multer({
   },
 });
 
+// ── PUBLIC ROUTES (no auth) ──────────────────────────────────────────────────
+const db = require('./config/db');
+
+app.get('/api/public/landing-stats', async (req, res) => {
+  try {
+    const [[usersRow]] = await db.query(
+      `SELECT COUNT(*) AS total_users FROM users`
+    );
+    const [[ordersRow]] = await db.query(
+      `SELECT COUNT(*) AS total_orders FROM orders`
+    );
+    const [[ratingRow]] = await db.query(
+      `SELECT ROUND(AVG(rating), 1) AS avg_rating FROM feedback WHERE rating IS NOT NULL`
+    );
+    const [[shipmentsRow]] = await db.query(
+      `SELECT COUNT(*) AS completed_shipments FROM shipments WHERE shipping_status = 'delivered'`
+    );
+
+    res.json({
+      total_users:         Number(usersRow.total_users)          || 0,
+      total_orders:        Number(ordersRow.total_orders)         || 0,
+      avg_rating:          Number(ratingRow.avg_rating)           || 0,
+      completed_shipments: Number(shipmentsRow.completed_shipments) || 0,
+    });
+  } catch (err) {
+    console.error('Landing stats error:', err);
+    res.status(500).json({ message: 'Failed to fetch landing stats.' });
+  }
+});
+// ─────────────────────────────────────────────────────────────────────────────
+// GET /api/public/live-selling — no auth required
+app.get('/api/public/live-selling', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT
+        id, title, description, platform, live_url, thumbnail_url,
+        scheduled_date, status, viewers,
+        total_views, total_clicks, total_impressions,
+        engagement_rate, is_featured
+      FROM live_selling
+      WHERE
+        status = 'live'
+        OR status = 'scheduled'
+        OR (status = 'completed' AND is_featured = TRUE)
+      ORDER BY
+        CASE status
+          WHEN 'live'      THEN 1
+          WHEN 'scheduled' THEN 2
+          ELSE 3
+        END ASC,
+        scheduled_date ASC
+      LIMIT 3
+    `);
+
+    // Normalize platform display names
+    const platformMap = {
+      tiktok: 'TikTok',
+      shopee: 'Shopee',
+      facebook: 'Facebook',
+      instagram: 'Instagram',
+      youtube: 'YouTube',
+    };
+
+    const data = rows.map(r => ({
+      ...r,
+      platform: platformMap[r.platform?.toLowerCase()] || r.platform,
+      // Map MIS status values to landing page badge values
+      status:
+        r.status === 'live'      ? 'ongoing'  :
+        r.status === 'scheduled' ? 'upcoming' :
+        r.status === 'completed' ? 'ended'    : r.status,
+      // Use viewers as fallback for total_views if not set
+      total_views: r.total_views || r.viewers || 0,
+    }));
+
+    res.json({ success: true, data });
+  } catch (err) {
+    console.error('Live selling public endpoint error:', err);
+    res.status(500).json({ success: false, data: [] });
+  }
+});
+
+// POST /api/sales/orders/validate-promo — validate promo before applying
+app.post('/api/sales/orders/validate-promo', async (req, res) => {
+  const { promo_code, order_total, customer_id } = req.body;
+  if (!promo_code) return res.status(400).json({ valid: false, message: 'Promo code is required.' });
+
+  try {
+    const [[promo]] = await db.query(
+      'SELECT * FROM promotions WHERE promo_code = ?',
+      [promo_code.trim().toUpperCase()]
+    );
+
+    if (!promo) return res.json({ valid: false, message: 'Promo code not found.' });
+
+    const now = new Date();
+    const start = new Date(promo.start_date);
+    const end = new Date(promo.end_date);
+
+    if (promo.status !== 'active') return res.json({ valid: false, message: 'This promo is not active.' });
+    if (now < start) return res.json({ valid: false, message: 'This promo is not yet valid.' });
+    if (now > end)   return res.json({ valid: false, message: 'This promo has expired.' });
+    if (Number(order_total) < Number(promo.min_order))
+      return res.json({ valid: false, message: `Minimum order of ₱${Number(promo.min_order).toLocaleString()} required.` });
+
+    if (promo.usage_limit !== null && promo.total_redemptions >= promo.usage_limit)
+      return res.json({ valid: false, message: 'This promo has reached its usage limit.' });
+
+    if (customer_id && promo.per_customer_limit) {
+      const [[{ used }]] = await db.query(
+        'SELECT COUNT(*) as used FROM promotion_redemptions WHERE promotion_id=? AND customer_id=?',
+        [promo.id, customer_id]
+      );
+      if (used >= promo.per_customer_limit)
+        return res.json({ valid: false, message: 'You have already used this promo code.' });
+    }
+
+    // Calculate discount
+    let discount_amount = 0;
+    const total = Number(order_total);
+    if (promo.discount_type === 'percentage') {
+      discount_amount = (total * Number(promo.discount_value)) / 100;
+      if (promo.max_discount_cap && discount_amount > Number(promo.max_discount_cap))
+        discount_amount = Number(promo.max_discount_cap);
+    } else {
+      discount_amount = Number(promo.discount_value);
+      if (discount_amount > total) discount_amount = total;
+    }
+
+    const final_total = Math.max(0, total - discount_amount);
+
+    res.json({
+      valid: true,
+      promo_id: promo.id,
+      promo_code: promo.promo_code,
+      discount_type: promo.discount_type,
+      discount_value: promo.discount_value,
+      discount_amount: Number(discount_amount.toFixed(2)),
+      final_total: Number(final_total.toFixed(2)),
+      message: 'Promo applied successfully.',
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ valid: false, message: 'Server error.' });
+  }
+});
+
+// GET /api/public/featured-promotions — no auth required
+app.get('/api/public/featured-promotions', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT id, promo_code, description, discount_type, discount_value,
+             min_order, start_date, end_date, max_discount_cap
+      FROM promotions
+      WHERE status = 'active'
+        AND is_featured = TRUE
+        AND start_date <= CURDATE()
+        AND end_date >= CURDATE()
+      ORDER BY created_at DESC
+      LIMIT 6
+    `);
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    res.status(500).json({ success: false, data: [] });
+  }
+});
+
+// GET /api/public/featured-campaigns — no auth required
+app.get('/api/public/featured-campaigns', async (req, res) => {
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const [rows] = await db.query(`
+      SELECT
+        id, title, description, platform,
+        objective, campaign_type, season_event,
+        landing_headline, landing_subtitle,
+        start_date, end_date,
+        is_featured, approval_status
+      FROM campaigns
+      WHERE publish_to_landing = TRUE
+        AND approval_status IN ('approved', 'published')
+        AND archived_at IS NULL
+        AND start_date <= ?
+        AND end_date >= ?
+      ORDER BY is_featured DESC, created_at DESC
+      LIMIT 3
+    `, [today, today]);
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error('Featured campaigns error:', err);
+    res.status(500).json({ success: false, data: [] });
+  }
+});
+
+// GET /api/public/landing-materials — no auth required
+app.get('/api/public/landing-materials', async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT
+        cm.id, cm.campaign_id, cm.material_type, cm.title,
+        cm.description, cm.file_url, cm.caption,
+        cm.hashtags, cm.platform, cm.call_to_action,
+        cm.status, cm.scheduled_date,
+        c.title AS campaign_title,
+        c.landing_headline, c.landing_subtitle
+      FROM campaign_materials cm
+      JOIN campaigns c ON cm.campaign_id = c.id
+      WHERE cm.publish_to_landing = TRUE
+        AND cm.status IN ('approved', 'scheduled', 'published')
+        AND c.archived_at IS NULL
+        AND c.approval_status IN ('approved', 'published')
+      ORDER BY
+        CASE cm.material_type
+          WHEN 'landing_banner' THEN 1
+          WHEN 'poster'         THEN 2
+          WHEN 'cover_photo'    THEN 3
+          ELSE 4
+        END,
+        cm.created_at DESC
+      LIMIT 6
+    `);
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error('Landing materials error:', err);
+    res.status(500).json({ success: false, data: [] });
+  }
+});
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/hr', require('./routes/hr'));
@@ -61,6 +289,7 @@ app.use('/api/crm', require('./routes/crm'));
 app.use('/api/inventory', require('./routes/inventory'));
 app.use('/api/sales', require('./routes/sales'));
 app.use('/api/logistics', require('./routes/logistics'));
+app.use('/api/internal', require('./routes/internal'));
 
 // Test route
 app.get('/', (req, res) => {

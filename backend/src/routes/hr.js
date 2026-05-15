@@ -37,6 +37,13 @@ router.put(
   hr.updateEmployee
 );
 
+router.put(
+  '/employees/:id/archive',
+  authenticateToken,
+  requireRole(['admin', 'hr']),
+  hr.archiveEmployee
+);
+
 router.delete(
   '/employees/:id',
   authenticateToken,
@@ -45,23 +52,22 @@ router.delete(
   hr.deleteEmployee
 );
 
-// Attendance - Admin and HR only
-router.get(
-  '/attendance',
-  authenticateToken,
-  requireRole(['admin', 'hr']),
-  hr.getAttendance
-);
+// Attendance
+router.get('/attendance/summary/today',    authenticateToken, requireRole(['admin','hr']), hr.getTodaySummary);
+router.get('/attendance/monthly-summary',  authenticateToken, requireRole(['admin','hr']), hr.getMonthlySummary);
+router.get('/attendance',                  authenticateToken, requireRole(['admin','hr']), hr.getAttendance);
+router.post('/attendance',                 authenticateToken, requireRole(['admin','hr']), validate('attendanceCreate'), hr.addAttendance);
+router.put('/attendance/:id',              authenticateToken, requireRole(['admin','hr']), validate('params_id','params'), hr.updateAttendance);
+router.delete('/attendance/:id',           authenticateToken, requireRole(['admin','hr']), validate('params_id','params'), hr.deleteAttendance);
 
-router.post(
-  '/attendance',
-  authenticateToken,
-  requireRole(['admin', 'hr']),
-  validate('attendanceCreate'),
-  hr.addAttendance
-);
+// ─────────────────────────────────────────────────────────────────────────────
+// HR ROUTES — PAYROLL SECTION (replace existing payroll block in hrRoutes.js)
+// All Employees and Attendance routes above remain UNCHANGED.
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Payroll - Admin and HR only
+// Payroll — Admin and HR only
+
+// GET all payroll records
 router.get(
   '/payroll',
   authenticateToken,
@@ -69,29 +75,52 @@ router.get(
   hr.getPayroll
 );
 
+// GET attendance preview for generate form (live computation, no DB write)
+router.get(
+  '/payroll/attendance-preview',
+  authenticateToken,
+  requireRole(['admin', 'hr']),
+  hr.getAttendancePreview
+);
+
+// POST generate payroll (attendance-based)
 router.post(
   '/payroll',
   authenticateToken,
   requireRole(['admin', 'hr']),
-  validate('payrollCreate'),
-  hr.generatePayroll
+  hr.generatePayroll          // validation is done inline in the controller
 );
 
+// PUT edit adjustments (allowances, OT, other deductions, notes)
 router.put(
   '/payroll/:id',
   authenticateToken,
   requireRole(['admin', 'hr']),
-  validate('params_id', 'params'),
-  validate('payrollUpdate'),
   hr.updatePayroll
 );
 
+// PATCH mark as processed (pending → processed)
+router.patch(
+  '/payroll/:id/process',
+  authenticateToken,
+  requireRole(['admin', 'hr']),
+  hr.markAsProcessed
+);
+
+// PATCH mark as paid (pending/processed → paid)
 router.patch(
   '/payroll/:id/pay',
   authenticateToken,
   requireRole(['admin', 'hr']),
-  validate('params_id', 'params'),
   hr.markAsPaid
+);
+
+// PATCH cancel payroll (soft cancel, stays in history)
+router.patch(
+  '/payroll/:id/cancel',
+  authenticateToken,
+  requireRole(['admin', 'hr']),
+  hr.cancelPayroll
 );
 
 module.exports = router;

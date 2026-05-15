@@ -2,529 +2,169 @@ import { useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
 import api from '../../api/axiosConfig';
 import {
-  FaBox,
-  FaTruck,
-  FaClock,
-  FaWindowClose,
-  FaCheck,
-  FaChartBar,
-  FaClipboardCheck,
-} from "react-icons/fa";
+  FaTruck, FaCheck, FaClock, FaBoxOpen, FaUndoAlt,
+  FaExclamationTriangle, FaFileAlt, FaBox, FaChartBar, FaStar,
+} from 'react-icons/fa';
 
 function LogisticsSummary() {
   const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchSummary();
-  }, []);
+  useEffect(() => { fetchSummary(); }, []);
 
   const fetchSummary = async () => {
-    try {
-      const res = await api.get('/logistics/summary');
-      setSummary(res.data);
-    } catch (err) {
-      console.error(err);
-    }
+    setLoading(true);
+    try { const r = await api.get('/logistics/summary'); setSummary(r.data); }
+    catch(e){ console.error(e); }
+    finally { setLoading(false); }
   };
 
-  if (!summary) {
-    return (
-      <Layout>
-        <div className="logistics-summary-loading">Loading summary...</div>
-      </Layout>
-    );
-  }
+  if (loading) return (
+    <Layout>
+      <div style={{minHeight:240,display:'grid',placeItems:'center',color:'#b5536b',fontSize:14,fontWeight:700}}>
+        Loading summary...
+      </div>
+    </Layout>
+  );
+  if (!summary) return (
+    <Layout>
+      <div style={{padding:40,textAlign:'center',color:'#b5536b'}}>Failed to load summary.</div>
+    </Layout>
+  );
 
-  const shippingData = [
-    { label: 'Pending', value: summary.pending, color: '#8b7280', tint: '#f8f3f5' },
-    { label: 'Shipped', value: summary.shipped || 0, color: '#b5536b', tint: '#fff1f5' },
-    { label: 'In Transit', value: summary.in_transit, color: '#d98a1f', tint: '#fff7e8' },
-    { label: 'Delivered', value: summary.delivered, color: '#2f9d6a', tint: '#ecfdf3' },
-    { label: 'Failed', value: summary.failed, color: '#c4607a', tint: '#fff1f5' },
-  ];
-
-  const packingData = [
-    { label: 'Packed', value: summary.packed, color: '#2f9d6a', tint: '#ecfdf3' },
-    { label: 'Unpacked', value: summary.unpacked, color: '#c4607a', tint: '#fff1f5' },
-  ];
-
-  const maxShipping = Math.max(...shippingData.map((s) => Number(s.value) || 0), 1);
-  const maxPacking = Math.max(...packingData.map((s) => Number(s.value) || 0), 1);
+  const n = (v) => Number(v||0);
 
   const cards = [
-    {
-      label: 'Total Shipments',
-      value: summary.total,
-      icon: <FaBox />,
-      helper: 'All logistics records',
-    },
-    {
-      label: 'Delivered',
-      value: summary.delivered,
-      icon: <FaCheck />,
-      helper: 'Completed deliveries',
-    },
-    {
-      label: 'In Transit',
-      value: summary.in_transit,
-      icon: <FaTruck />,
-      helper: 'Currently moving',
-    },
-    {
-      label: 'Pending',
-      value: summary.pending,
-      icon: <FaClock />,
-      helper: 'Waiting for shipment',
-    },
-    {
-      label: 'Failed',
-      value: summary.failed,
-      icon: <FaWindowClose />,
-      helper: 'Unsuccessful delivery',
-    },
+    { label:'Total Shipments',   value:n(summary.total),           icon:<FaTruck />,            helper:'All shipment records' },
+    { label:'Delivered',         value:n(summary.delivered),       icon:<FaCheck />,             helper:'Completed deliveries',  color:'#2f7d56' },
+    { label:'In Transit',        value:n(summary.in_transit),      icon:<FaTruck />,             helper:'Currently shipping',    color:'#4f46e5' },
+    { label:'Pending',           value:n(summary.pending),         icon:<FaClock />,             helper:'Awaiting shipment',     color:'#9a5f0f' },
+    { label:'Returned',          value:n(summary.returned),        icon:<FaUndoAlt />,           helper:'Returned shipments',    color:n(summary.returned)>0?'#b5536b':undefined },
+    { label:'Delayed',           value:n(summary.delayed),         icon:<FaExclamationTriangle />,helper:'Past estimated delivery',color:n(summary.delayed)>0?'#dc2626':undefined },
+    { label:'Missing Receipts',  value:n(summary.missing_receipts),icon:<FaFileAlt />,           helper:'Delivered, no proof',   color:n(summary.missing_receipts)>0?'#b5536b':undefined },
+    { label:'Unpacked',          value:n(summary.unpacked),        icon:<FaBox />,               helper:'Not yet packed',        color:n(summary.unpacked)>0?'#9a5f0f':undefined },
+    { label:'On-Time Deliveries',value:n(summary.on_time),         icon:<FaStar />,              helper:'Delivered by estimate', color:'#2f7d56' },
+    { label:'Avg Delivery Days', value:summary.average_delivery_days ? `${summary.average_delivery_days}d` : '—', icon:<FaChartBar />, helper:'Ship to delivery' },
   ];
+
+  const statusData = [
+    { label:'Pending',    value:n(summary.pending),   color:'#d98a1f', tint:'#fff7e8' },
+    { label:'Shipped',    value:n(summary.shipped),   color:'#4a90d9', tint:'#e8f4ff' },
+    { label:'In Transit', value:n(summary.in_transit),color:'#4f46e5', tint:'#f0f0ff' },
+    { label:'Delivered',  value:n(summary.delivered), color:'#2f9d6a', tint:'#ecfdf3' },
+    { label:'Returned',   value:n(summary.returned),  color:'#c4607a', tint:'#fff1f5' },
+  ];
+  const maxVal = Math.max(...statusData.map(s=>s.value), 1);
 
   return (
     <Layout>
       <style>{`
-        .logistics-summary-page {
-          width: 100%;
-          animation: logisticsFadeUp 0.35s ease both;
+        .ls-page { width:100%; animation:lsFadeUp 0.35s ease both; }
+        .ls-hero { background:radial-gradient(circle at top right,rgba(196,96,122,.18),transparent 34%),linear-gradient(135deg,#fff7fa,#fff); border:1px solid #ead1d9; border-radius:18px; padding:24px; margin-bottom:20px; box-shadow:0 4px 16px rgba(0,0,0,.07); display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        .ls-eyebrow { margin:0 0 8px; color:#b5536b; font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        .ls-title { margin:0; color:#1f2937; font-size:28px; font-weight:800; letter-spacing:-.04em; }
+        .ls-subtitle { margin:8px 0 0; color:#64748b; font-size:14px; line-height:1.6; max-width:720px; }
+        .ls-hero-icon { width:56px; height:56px; border-radius:16px; display:grid; place-items:center; background:linear-gradient(135deg,#c4607a,#e58ca3); color:#fff; font-size:24px; box-shadow:0 8px 24px rgba(196,96,122,.25); flex:0 0 auto; }
+        .ls-cards { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin-bottom:20px; }
+        .ls-card { background:#fff; border:1px solid #e2c6cf; border-radius:14px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,.05); position:relative; overflow:hidden; transition:all 180ms ease; }
+        .ls-card::before { content:""; position:absolute; inset:0 auto 0 0; width:4px; background:linear-gradient(180deg,#c4607a,#e58ca3); }
+        .ls-card:hover { transform:translateY(-2px); border-color:#c4607a; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+        .ls-card-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+        .ls-card-label { margin:0; color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+        .ls-card-icon { width:36px; height:36px; border-radius:11px; display:grid; place-items:center; color:#b5536b; background:#fff1f5; border:1px solid #e8b9c6; font-size:15px; flex:0 0 auto; }
+        .ls-card-value { margin:0; color:#1f2937; font-size:22px; font-weight:850; letter-spacing:-.04em; }
+        .ls-card-helper { margin:5px 0 0; color:#94a3b8; font-size:11px; }
+        .ls-panel { background:#fff; border:1px solid #e2c6cf; border-radius:18px; padding:22px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,.05); }
+        .ls-panel-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+        .ls-panel-icon { width:40px; height:40px; border-radius:13px; display:grid; place-items:center; background:#fff1f5; border:1px solid #e8b9c6; color:#b5536b; flex:0 0 auto; }
+        .ls-panel-title { margin:0; color:#1f2937; font-size:18px; font-weight:800; letter-spacing:-.02em; }
+        .ls-panel-note { margin:4px 0 0; color:#64748b; font-size:13px; }
+        .ls-bar-row { display:grid; grid-template-columns:110px 1fr 52px; align-items:center; gap:12px; margin-bottom:14px; }
+        .ls-bar-label { display:flex; align-items:center; gap:8px; color:#374151; font-size:13px; font-weight:700; }
+        .ls-dot { width:9px; height:9px; border-radius:9999px; flex-shrink:0; }
+        .ls-bar-track { height:14px; border-radius:9999px; background:#f3e8ec; overflow:hidden; border:1px solid #ead1d9; }
+        .ls-bar-fill { height:100%; border-radius:9999px; transition:width 320ms ease; min-width:8px; }
+        .ls-bar-count { justify-self:end; min-width:40px; padding:4px 8px; border-radius:9999px; font-size:12px; font-weight:800; text-align:center; border:1px solid; }
+        @keyframes lsFadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+        @media (max-width:1180px) { .ls-cards { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+        @media (max-width:768px) {
+          .ls-hero { align-items:flex-start; padding:20px; }
+          .ls-title { font-size:24px; }
+          .ls-hero-icon { width:48px; height:48px; font-size:20px; }
+          .ls-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+          .ls-bar-row { grid-template-columns:1fr; gap:6px; }
+          .ls-bar-count { justify-self:start; }
         }
-
-        .logistics-summary-hero {
-          background:
-            radial-gradient(circle at top right, rgba(196, 96, 122, 0.18), transparent 34%),
-            linear-gradient(135deg, #fff7fa 0%, #ffffff 100%);
-          border: 1px solid #ead1d9;
-          border-radius: 18px;
-          padding: 24px;
-          margin-bottom: 20px;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-        }
-
-        .logistics-summary-eyebrow {
-          margin: 0 0 8px;
-          color: #b5536b;
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-        }
-
-        .logistics-summary-title {
-          margin: 0;
-          color: #1f2937;
-          font-size: 28px;
-          font-weight: 800;
-          letter-spacing: -0.04em;
-        }
-
-        .logistics-summary-subtitle {
-          margin: 8px 0 0;
-          color: #64748b;
-          font-size: 14px;
-          line-height: 1.6;
-          max-width: 700px;
-        }
-
-        .logistics-summary-hero-icon {
-          width: 56px;
-          height: 56px;
-          border-radius: 16px;
-          display: grid;
-          place-items: center;
-          background: linear-gradient(135deg, #c4607a, #e58ca3);
-          color: #ffffff;
-          font-size: 24px;
-          box-shadow: 0 8px 24px rgba(196, 96, 122, 0.25);
-          flex: 0 0 auto;
-        }
-
-        .logistics-summary-cards {
-          display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-          gap: 14px;
-          margin-bottom: 20px;
-        }
-
-        .logistics-summary-card {
-          background: #ffffff;
-          border: 1px solid #e2c6cf;
-          border-radius: 16px;
-          padding: 18px;
-          min-height: 128px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-          transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .logistics-summary-card::before {
-          content: "";
-          position: absolute;
-          inset: 0 auto 0 0;
-          width: 4px;
-          background: linear-gradient(180deg, #c4607a, #e58ca3);
-        }
-
-        .logistics-summary-card:hover {
-          transform: translateY(-2px);
-          border-color: #c4607a;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04);
-        }
-
-        .logistics-summary-card-top {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-          margin-bottom: 16px;
-        }
-
-        .logistics-summary-card-label {
-          margin: 0;
-          color: #64748b;
-          font-size: 12px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-        }
-
-        .logistics-summary-card-icon {
-          width: 38px;
-          height: 38px;
-          border-radius: 12px;
-          display: grid;
-          place-items: center;
-          color: #b5536b;
-          background: #fff1f5;
-          border: 1px solid #e8b9c6;
-          font-size: 17px;
-          flex: 0 0 auto;
-        }
-
-        .logistics-summary-card-value {
-          margin: 0;
-          color: #1f2937;
-          font-size: 25px;
-          font-weight: 850;
-          letter-spacing: -0.04em;
-        }
-
-        .logistics-summary-card-helper {
-          margin: 7px 0 0;
-          color: #7b8794;
-          font-size: 12px;
-          line-height: 1.4;
-        }
-
-        .logistics-summary-charts {
-          display: grid;
-          grid-template-columns: 1.2fr 0.8fr;
-          gap: 20px;
-        }
-
-        .logistics-summary-chart {
-          background: #ffffff;
-          border: 1px solid #e2c6cf;
-          border-radius: 18px;
-          padding: 22px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-        }
-
-        .logistics-summary-chart-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 20px;
-        }
-
-        .logistics-summary-chart-icon {
-          width: 40px;
-          height: 40px;
-          border-radius: 13px;
-          display: grid;
-          place-items: center;
-          background: #fff1f5;
-          border: 1px solid #e8b9c6;
-          color: #b5536b;
-          flex: 0 0 auto;
-        }
-
-        .logistics-summary-chart-title {
-          margin: 0;
-          color: #1f2937;
-          font-size: 18px;
-          font-weight: 800;
-          letter-spacing: -0.02em;
-        }
-
-        .logistics-summary-chart-note {
-          margin: 4px 0 0;
-          color: #64748b;
-          font-size: 13px;
-        }
-
-        .logistics-summary-status-list {
-          display: grid;
-          gap: 14px;
-        }
-
-        .logistics-summary-bar-row {
-          display: grid;
-          grid-template-columns: 120px 1fr 52px;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .logistics-summary-bar-label {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          color: #374151;
-          font-size: 13px;
-          font-weight: 700;
-        }
-
-        .logistics-summary-dot {
-          width: 9px;
-          height: 9px;
-          border-radius: 9999px;
-          flex: 0 0 auto;
-        }
-
-        .logistics-summary-bar-track {
-          height: 14px;
-          border-radius: 9999px;
-          background: #f3e8ec;
-          overflow: hidden;
-          border: 1px solid #ead1d9;
-        }
-
-        .logistics-summary-bar-fill {
-          height: 100%;
-          border-radius: 9999px;
-          transition: width 320ms ease;
-          min-width: 8px;
-        }
-
-        .logistics-summary-bar-count {
-          justify-self: end;
-          min-width: 38px;
-          padding: 5px 9px;
-          border-radius: 9999px;
-          font-size: 12px;
-          font-weight: 800;
-          text-align: center;
-          color: #1f2937;
-          border: 1px solid #e8b9c6;
-        }
-
-        .logistics-summary-loading {
-          min-height: 240px;
-          display: grid;
-          place-items: center;
-          color: #b5536b;
-          font-size: 14px;
-          font-weight: 700;
-        }
-
-        @keyframes logisticsFadeUp {
-          from {
-            opacity: 0;
-            transform: translateY(14px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @media (max-width: 1180px) {
-          .logistics-summary-cards {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-          }
-
-          .logistics-summary-charts {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .logistics-summary-hero {
-            align-items: flex-start;
-            padding: 20px;
-          }
-
-          .logistics-summary-title {
-            font-size: 24px;
-          }
-
-          .logistics-summary-hero-icon {
-            width: 48px;
-            height: 48px;
-            font-size: 20px;
-          }
-
-          .logistics-summary-cards {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-
-          .logistics-summary-bar-row {
-            grid-template-columns: 1fr;
-            gap: 8px;
-          }
-
-          .logistics-summary-bar-count {
-            justify-self: start;
-          }
-        }
-
-        @media (max-width: 520px) {
-          .logistics-summary-hero {
-            flex-direction: column-reverse;
-          }
-
-          .logistics-summary-cards {
-            grid-template-columns: 1fr;
-          }
-
-          .logistics-summary-card {
-            min-height: auto;
-          }
-        }
+        @media (max-width:520px) { .ls-hero { flex-direction:column-reverse; } .ls-cards { grid-template-columns:1fr; } }
       `}</style>
 
-      <div className="logistics-summary-page">
-        <div className="logistics-summary-hero">
+      <div className="ls-page">
+        {/* HERO */}
+        <div className="ls-hero">
           <div>
-            <p className="logistics-summary-eyebrow">Logistics Overview</p>
-            <h3 className="logistics-summary-title">Logistics Summary</h3>
-            <p className="logistics-summary-subtitle">
-              Track shipment progress, delivery performance, and packing status in one organized dashboard view.
-            </p>
+            <p className="ls-eyebrow">Logistics Overview</p>
+            <h3 className="ls-title">Logistics Summary</h3>
+            <p className="ls-subtitle">Monitor shipment statuses, delivery performance, and operational logistics metrics.</p>
           </div>
-
-          <div className="logistics-summary-hero-icon">
-            <FaTruck />
-          </div>
+          <div className="ls-hero-icon"><FaChartBar /></div>
         </div>
 
-        <div className="logistics-summary-cards">
-          {cards.map((card) => (
-            <div key={card.label} className="logistics-summary-card">
-              <div className="logistics-summary-card-top">
-                <p className="logistics-summary-card-label">{card.label}</p>
-                <span className="logistics-summary-card-icon">{card.icon}</span>
+        {/* SUMMARY CARDS */}
+        <div className="ls-cards">
+          {cards.map(c=>(
+            <div key={c.label} className="ls-card">
+              <div className="ls-card-top">
+                <p className="ls-card-label">{c.label}</p>
+                <span className="ls-card-icon">{c.icon}</span>
               </div>
-
-              <p className="logistics-summary-card-value">{card.value}</p>
-              <p className="logistics-summary-card-helper">{card.helper}</p>
+              <p className="ls-card-value" style={c.color && Number(c.value)>0 ? {color:c.color} : {}}>{c.value}</p>
+              <p className="ls-card-helper">{c.helper}</p>
             </div>
           ))}
         </div>
 
-        <div className="logistics-summary-charts">
-          <div className="logistics-summary-chart">
-            <div className="logistics-summary-chart-header">
-              <div className="logistics-summary-chart-icon">
-                <FaChartBar />
-              </div>
-              <div>
-                <h4 className="logistics-summary-chart-title">Shipments by Status</h4>
-                <p className="logistics-summary-chart-note">
-                  Current movement and delivery distribution.
-                </p>
-              </div>
-            </div>
-
-            <div className="logistics-summary-status-list">
-              {shippingData.map((status) => (
-                <div key={status.label} className="logistics-summary-bar-row">
-                  <span className="logistics-summary-bar-label">
-                    <span
-                      className="logistics-summary-dot"
-                      style={{ backgroundColor: status.color }}
-                    />
-                    {status.label}
-                  </span>
-
-                  <div className="logistics-summary-bar-track">
-                    <div
-                      className="logistics-summary-bar-fill"
-                      style={{
-                        width: `${((Number(status.value) || 0) / maxShipping) * 100}%`,
-                        backgroundColor: status.color,
-                      }}
-                    />
-                  </div>
-
-                  <span
-                    className="logistics-summary-bar-count"
-                    style={{
-                      backgroundColor: status.tint,
-                      borderColor: status.color,
-                    }}
-                  >
-                    {status.value}
-                  </span>
-                </div>
-              ))}
+        {/* STATUS BARS */}
+        <div className="ls-panel">
+          <div className="ls-panel-header">
+            <div className="ls-panel-icon"><FaBoxOpen /></div>
+            <div>
+              <h4 className="ls-panel-title">Shipments by Status</h4>
+              <p className="ls-panel-note">Distribution of current shipment workflow</p>
             </div>
           </div>
-
-          <div className="logistics-summary-chart">
-            <div className="logistics-summary-chart-header">
-              <div className="logistics-summary-chart-icon">
-                <FaClipboardCheck />
+          {statusData.map(s=>(
+            <div key={s.label} className="ls-bar-row">
+              <span className="ls-bar-label"><span className="ls-dot" style={{backgroundColor:s.color}}/>{s.label}</span>
+              <div className="ls-bar-track">
+                <div className="ls-bar-fill" style={{width:`${(s.value/maxVal)*100}%`,backgroundColor:s.color}}/>
               </div>
-              <div>
-                <h4 className="logistics-summary-chart-title">Packing Status</h4>
-                <p className="logistics-summary-chart-note">
-                  Packed and unpacked shipment preparation.
-                </p>
-              </div>
+              <span className="ls-bar-count" style={{backgroundColor:s.tint,borderColor:s.color}}>{s.value}</span>
             </div>
+          ))}
+        </div>
 
-            <div className="logistics-summary-status-list">
-              {packingData.map((status) => (
-                <div key={status.label} className="logistics-summary-bar-row">
-                  <span className="logistics-summary-bar-label">
-                    <span
-                      className="logistics-summary-dot"
-                      style={{ backgroundColor: status.color }}
-                    />
-                    {status.label}
-                  </span>
-
-                  <div className="logistics-summary-bar-track">
-                    <div
-                      className="logistics-summary-bar-fill"
-                      style={{
-                        width: `${((Number(status.value) || 0) / maxPacking) * 100}%`,
-                        backgroundColor: status.color,
-                      }}
-                    />
-                  </div>
-
-                  <span
-                    className="logistics-summary-bar-count"
-                    style={{
-                      backgroundColor: status.tint,
-                      borderColor: status.color,
-                    }}
-                  >
-                    {status.value}
-                  </span>
-                </div>
-              ))}
+        {/* PERFORMANCE PANEL */}
+        <div className="ls-panel">
+          <div className="ls-panel-header">
+            <div className="ls-panel-icon"><FaStar /></div>
+            <div>
+              <h4 className="ls-panel-title">Delivery Performance</h4>
+              <p className="ls-panel-note">On-time vs delayed breakdown</p>
             </div>
           </div>
+          {[
+            ['Total Delivered',        n(summary.delivered),             '#2f7d56'],
+            ['On-Time Deliveries',     n(summary.on_time),               '#2f7d56'],
+            ['Delayed Shipments',      n(summary.delayed),               n(summary.delayed)>0?'#dc2626':'#2f7d56'],
+            ['Returned Shipments',     n(summary.returned),              n(summary.returned)>0?'#b5536b':'#2f7d56'],
+            ['Missing Receipts',       n(summary.missing_receipts),      n(summary.missing_receipts)>0?'#b5536b':'#2f7d56'],
+            ['Avg Delivery Days',      summary.average_delivery_days ? `${summary.average_delivery_days}d` : '—', '#1f2937'],
+          ].map(([label,value,color])=>(
+            <div key={label} style={{display:'flex',justifyContent:'space-between',padding:'10px 0',borderBottom:'1px solid #f3e8ec',fontSize:13}}>
+              <span style={{color:'#64748b',fontWeight:700}}>{label}</span>
+              <span style={{fontWeight:850,color}}>{value}</span>
+            </div>
+          ))}
         </div>
       </div>
     </Layout>
